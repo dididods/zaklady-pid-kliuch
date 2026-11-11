@@ -568,6 +568,27 @@
     }
   })();
 
+  /* Підкреслення в підзаголовку «Вартість» малюється, коли він з'являється */
+  var priceLead = document.querySelector('.price__lead');
+  if (priceLead) {
+    if ('IntersectionObserver' in window && !calm) {
+      var plIO = new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { priceLead.classList.add('is-drawn'); plIO.disconnect(); }
+      }, { threshold: 1 });
+      plIO.observe(priceLead);
+    } else priceLead.classList.add('is-drawn');
+  }
+
+  /* Таблички на телефоні гойдаються, коли з'являються на екрані */
+  if ('IntersectionObserver' in window && matchMedia('(max-width: 900px)').matches) {
+    var signIO = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-swing'); signIO.unobserve(e.target); }
+      });
+    }, { threshold: .35 });
+    document.querySelectorAll('.sign').forEach(function (el) { signIO.observe(el); });
+  }
+
   /* =========================================================
      4. Етапи: ключ їде по лінії шляху
      ========================================================= */
@@ -595,6 +616,8 @@
       // ключ стоїть на відрізку лінії між останнім пройденим і наступним кружечком,
       // а кінчиком «входить» у наступний — цифри не перекриває
       var k = Math.min(Math.max(passed, 1), stepItems.length - 1);
+      // плашка підсвічує крок, біля якого зараз стоїть ключ
+      stepItems.forEach(function (li, i) { li.classList.toggle('is-current', i === k - 1); });
       var from = stepItems[k - 1].offsetTop + CIRCLE_TOP + CIRCLE + 3 - railTop;
       var to = stepItems[k].offsetTop + CIRCLE_TOP - railTop;
       var len = Math.max(24, (to - from) / 0.9);   // кінчик стрижня — на 90% висоти малюнка
@@ -823,4 +846,44 @@
     window.addEventListener('resize', resize);
     draw();
   }
+
+  /* =========================================================
+     Шапка: компактна плашка після першого екрана, бургер,
+     підсвічування розділу, де ми зараз
+     ========================================================= */
+  (function () {
+    var header = document.querySelector('.site-header');
+    if (!header) return;
+    var burger = header.querySelector('.burger');
+    var onScroll = function () {
+      header.classList.toggle('is-scrolled', window.scrollY > window.innerHeight * 0.5);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    var close = function () {
+      header.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+    };
+    burger.addEventListener('click', function () {
+      var open = !header.classList.contains('is-open');
+      header.classList.toggle('is-open', open);
+      burger.setAttribute('aria-expanded', String(open));
+    });
+    header.querySelectorAll('.site-nav a').forEach(function (a) { a.addEventListener('click', close); });
+    document.addEventListener('click', function (e) { if (!header.contains(e.target)) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+    if ('IntersectionObserver' in window) {
+      var links = {};
+      header.querySelectorAll('.site-nav a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+      var navIO = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          var a = links[e.target.id];
+          if (a) a.classList.toggle('is-active', e.isIntersecting);
+        });
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      Object.keys(links).forEach(function (id) { var el = document.getElementById(id); if (el) navIO.observe(el); });
+    }
+  })();
 })();

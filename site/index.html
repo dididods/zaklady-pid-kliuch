@@ -5,13 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- чернетка для узгодження: не показувати в пошуку. Прибрати перед запуском -->
   <meta name="robots" content="noindex, nofollow">
-  <title>Бюро ресторанних рішень — заклади під ключ</title>
-  <meta name="description" content="Відкриваємо піцерії, кав'ярні, бургерні, шаурму та ресторани під ключ по всій Україні.">
+  <title>Заклад під ключ по всій Україні | Бюро ресторанних рішень</title>
+  <meta name="description" content="Відкриваємо кав'ярні, піцерії, бургерні, шаурму, пекарні та інші заклади під ключ за 1,5–3 місяці. Веде запуск бренд-шеф Дмитро Барсуков, 20+ закладів уже працюють. Відкриті ціни.">
+  <!-- TODO: при переході на власний домен замінити адресу в canonical, og:url, og:image і JSON-LD -->
+  <link rel="canonical" href="https://dididods.github.io/zaklady-pid-kliuch/">
+  <meta name="theme-color" content="#1b1411">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Прев'ю посилання в Telegram, Viber, Facebook (Open Graph) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="uk_UA">
+  <meta property="og:site_name" content="Бюро ресторанних рішень">
+  <meta property="og:title" content="Хочете свій заклад? Відкриємо під ключ">
+  <meta property="og:description" content="Наші вже працюють, і ми знаємо, як запустити ваш. Кав'ярні, піцерії, бургерні та інші формати по всій Україні.">
+  <meta property="og:url" content="https://dididods.github.io/zaklady-pid-kliuch/">
+  <meta property="og:image" content="https://dididods.github.io/zaklady-pid-kliuch/img/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Бюро ресторанних рішень: заклади під ключ">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Дані для Google: хто ми і що робимо -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Бюро ресторанних рішень",
+    "description": "Відкриття закладів громадського харчування під ключ: концепція, дизайн, обладнання, меню, персонал, запуск.",
+    "url": "https://dididods.github.io/zaklady-pid-kliuch/",
+    "logo": "https://dididods.github.io/zaklady-pid-kliuch/img/logo.webp",
+    "image": "https://dididods.github.io/zaklady-pid-kliuch/img/og-image.jpg",
+    "areaServed": { "@type": "Country", "name": "Україна" },
+    "founder": { "@type": "Person", "name": "Дмитро Барсуков", "jobTitle": "Бренд-шеф" },
+    "sameAs": ["https://t.me/Dima_Brss"],
+    "priceRange": "2800–4800 у.о."
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
-  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="styles.css?v=20">
 
   <script>
     // Інтро показуємо раз за візит. ?intro=1 — показати примусово
@@ -140,21 +175,25 @@
 
   <!-- ===== Шапка ===== -->
   <header class="site-header">
-    <a class="brand" href="/" aria-label="Бюро ресторанних рішень, на головну">
+    <a class="brand" href="./" aria-label="Бюро ресторанних рішень, на головну">
       <img src="img/logo.webp" width="360" height="303" alt="Бюро ресторанних рішень">
     </a>
-    <nav class="site-nav" aria-label="Розділи">
-      <a href="#shef">Про шефа</a>
-      <a href="#pid-kliuch">Під ключ</a>
-      <a href="#keisy">Кейси</a>
-      <a href="#etapy">Етапи</a>
-      <a href="#vartist">Вартість</a>
-      <a href="#faq">Питання</a>
-    </nav>
-    <div class="header-actions">
-      <a class="pill" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a>
+    <!-- меню + кнопка: по центру, при скролі стискаються в плашку і їдуть разом зі сторінкою -->
+    <div class="header-bar">
+      <button class="burger" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Розділи">
+        <a href="#shef">Про шефа</a>
+        <a href="#pid-kliuch">Під&nbsp;ключ</a>
+        <a href="#keisy">Кейси</a>
+        <a href="#etapy">Етапи</a>
+        <a href="#vartist">Вартість</a>
+        <a href="#faq">Питання</a>
+      </nav>
       <a class="btn btn--small btn--primary" href="#zayavka">Консультація</a>
     </div>
+    <a class="pill header-tg" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a>
   </header>
 
   <main>
@@ -165,13 +204,13 @@
       <div class="hero__head">
         <h1 id="hero-title">
           <span class="hero__big">Хочете свій заклад?</span>
-          <span class="hero__small">Наші вже працюють, і&nbsp;ми знаємо, як відкрити ваш</span>
+          <span class="hero__small">Наші вже працюють, і&nbsp;ми&nbsp;знаємо, як&nbsp;запустити ваш</span>
         </h1>
         <!-- офер: що робимо, за скільки, де -->
         <ul class="hero__chips">
-          <li>Під ключ за 1,5–3 місяці</li>
-          <li>Відкриті ціни на послуги</li>
-          <li>По всій Україні</li>
+          <li>Під&nbsp;ключ за&nbsp;1,5–3 місяці</li>
+          <li>Відкриті ціни на&nbsp;послуги</li>
+          <li>По&nbsp;всій Україні</li>
         </ul>
       </div>
 
@@ -220,7 +259,7 @@
           </li>
         </ul>
 
-        <p class="stage__hint" aria-hidden="true">Потягніть або натисніть на заклад</p>
+        <p class="stage__hint" aria-hidden="true">Потягніть або&nbsp;натисніть на&nbsp;заклад</p>
 
         <div class="focus" hidden>
           <p class="focus__name"></p>
@@ -233,11 +272,11 @@
       <div class="hero__bottom">
         <a class="chef-chip" href="#shef">
           <img src="img/dmytro-barsukov.jpg" width="853" height="1280" alt="">
-          <span><b>Дмитро Барсуков</b> бренд-шеф і засновник бюро</span>
+          <span><b>Дмитро Барсуков</b> бренд-шеф і&nbsp;засновник бюро</span>
         </a>
         <div class="hero__actions">
           <a class="btn btn--primary" href="#vartist">Розрахувати вартість</a>
-          <a class="btn btn--ghost" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Написати в Telegram</a>
+          <a class="btn btn--ghost" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Написати в&nbsp;Telegram</a>
         </div>
         <p class="fact fact--right"><strong>20+</strong> закладів уже працюють</p>
       </div>
@@ -245,61 +284,61 @@
 
     <div class="tape" aria-hidden="true">
       <div class="tape__track">
-        <span>Шеф-практик, а не франшиза</span><span>20+ закладів працюють</span><span>У громадському харчуванні з 2012</span><span>Під ключ за 1,5–3 місяці</span><span>Відкриті ціни</span><span>Вся Україна</span>
-        <span>Шеф-практик, а не франшиза</span><span>20+ закладів працюють</span><span>У громадському харчуванні з 2012</span><span>Під ключ за 1,5–3 місяці</span><span>Відкриті ціни</span><span>Вся Україна</span>
+        <span>Шеф-практик, а&nbsp;не&nbsp;франшиза</span><span>20+ закладів працюють</span><span>У&nbsp;громадському харчуванні з&nbsp;2012</span><span>Під&nbsp;ключ за&nbsp;1,5–3 місяці</span><span>Відкриті ціни</span><span>Вся Україна</span>
+        <span>Шеф-практик, а&nbsp;не&nbsp;франшиза</span><span>20+ закладів працюють</span><span>У&nbsp;громадському харчуванні з&nbsp;2012</span><span>Під&nbsp;ключ за&nbsp;1,5–3 місяці</span><span>Відкриті ціни</span><span>Вся Україна</span>
       </div>
     </div>
 
     <!-- ===== 2. З чим до нас приходять ===== -->
     <section class="section" id="komu" aria-labelledby="t-komu">
       <div class="section__head">
-        <h2 id="t-komu">З чим до нас приходять</h2>
+        <h2 id="t-komu">З&nbsp;чим до&nbsp;нас приходять</h2>
       </div>
       <!-- таблички «Відчинено» на мотузці: гойдаються при наведенні -->
       <ul class="signs">
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
           <h3>Хочу перший заклад</h3>
-          <p>Є ідея і бюджет, але немає досвіду в ресторанному бізнесі.</p>
+          <p>Є ідея і&nbsp;бюджет, але немає досвіду в&nbsp;ресторанному бізнесі.</p>
           <ul>
-            <li>Рахуємо, чи зійдеться бюджет</li>
-            <li>Ведемо від ідеї до відкриття</li>
+            <li>Рахуємо, чи&nbsp;зійдеться бюджет</li>
+            <li>Ведемо від&nbsp;ідеї до&nbsp;відкриття</li>
             <li>Вчимо команду працювати</li>
           </ul>
-          <a href="#zayavka" class="sign__link" data-premises-pick="Немає">Це про мене</a>
+          <a href="#zayavka" class="sign__link" data-premises-pick="Немає">Це&nbsp;про мене</a>
         </li>
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
           <h3>Є приміщення</h3>
           <p>Площа вже є, але незрозуміло, який заклад там спрацює.</p>
           <ul>
-            <li>Аналізуємо локацію та аудиторію</li>
-            <li>Підбираємо формат під приміщення</li>
-            <li>Відкриваємо під ключ</li>
+            <li>Аналізуємо локацію та&nbsp;аудиторію</li>
+            <li>Підбираємо формат під&nbsp;приміщення</li>
+            <li>Відкриваємо під&nbsp;ключ</li>
           </ul>
-          <a href="#zayavka" class="sign__link" data-premises-pick="Є">Це про мене</a>
+          <a href="#zayavka" class="sign__link" data-premises-pick="Є">Це&nbsp;про мене</a>
         </li>
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
-          <h3>Заклад працює, але не так</h3>
-          <p>Гості є, а результату, на який розраховували, немає.</p>
+          <h3>Заклад працює, але не&nbsp;так</h3>
+          <p>Гості є, а&nbsp;результату, на&nbsp;який розраховували, немає.</p>
           <ul>
-            <li>Оновлюємо меню й техкарти</li>
+            <li>Оновлюємо меню й&nbsp;техкарти</li>
             <li>Переглядаємо концепцію</li>
-            <li>Робимо ребрендинг або перезапуск</li>
+            <li>Робимо ребрендинг або&nbsp;перезапуск</li>
           </ul>
-          <a href="#zayavka" class="sign__link" data-premises-pick="Є діючий заклад">Це про мене</a>
+          <a href="#zayavka" class="sign__link" data-premises-pick="Є діючий заклад">Це&nbsp;про мене</a>
         </li>
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
-          <h3>Хочу ще один заклад</h3>
-          <p>Перший уже працює, і хочеться розширитися.</p>
+          <h3>Хочу ще&nbsp;один заклад</h3>
+          <p>Перший уже працює, і&nbsp;хочеться розширитися.</p>
           <ul>
-            <li>Рахуємо нову локацію і бюджет</li>
-            <li>Такий самий формат або новий</li>
-            <li>Ви не відриваєтесь від першого закладу</li>
+            <li>Рахуємо нову локацію і&nbsp;бюджет</li>
+            <li>Такий самий формат або&nbsp;новий</li>
+            <li>Ви&nbsp;не&nbsp;відриваєтесь від&nbsp;першого закладу</li>
           </ul>
-          <a href="#zayavka" class="sign__link">Це про мене</a>
+          <a href="#zayavka" class="sign__link">Це&nbsp;про мене</a>
         </li>
       </ul>
     </section>
@@ -312,14 +351,14 @@
           <img class="founder__extra" src="img/dmytro-grill.jpg" width="900" height="900" alt="Дмитро на кухні біля гриля" loading="lazy">
         </div>
         <div class="founder__text">
-          <h2 id="t-who">Заклад вам відкриває <span class="hl">шеф&#8209;практик</span>, <s class="soft-strike">а&nbsp;не&nbsp;франшиза</s></h2>
-          <p class="founder__name">Дмитро Барсуков, бренд-шеф і засновник бюро</p>
-          <p>Сам щодня керую рестораном, який відкрив з нуля і який працює вже два роки. Тому знаю, що має працювати в закладі з першого дня, а не тільки гарно виглядати на відкритті.</p>
-          <!-- слова клієнта з брифу, п. 6.2 -->
-          <blockquote class="founder__quote">Відкриваю не заради відкриття, а заради репутації. І з душею, бо люблю те, що роблю.</blockquote>
+          <h2 id="t-who">Заклад вам відкриває<br class="br-d"> <span class="hl">шеф&#8209;практик</span>, <s class="soft-strike">а&nbsp;не&nbsp;франшиза</s></h2>
+          <p class="founder__name">Дмитро Барсуков, бренд-шеф і&nbsp;засновник бюро</p>
+          <p>Сам щодня керую рестораном, який відкрив з&nbsp;нуля<br class="br-d"> і&nbsp;який працює вже два роки.<br class="br-d"> Тому знаю, що&nbsp;має працювати в&nbsp;закладі з&nbsp;першого дня,<br class="br-d"> а&nbsp;не&nbsp;тільки гарно виглядати на&nbsp;відкритті.</p>
+          <!-- слова клієнта з брифу, п. 6.2; формулювання погоджене користувачкою. Дефіс замість тире навмисно -->
+          <blockquote class="founder__quote">Для&nbsp;мене відкриття закладу&nbsp;-<br class="br-d"> це&nbsp;не&nbsp;просто черговий проєкт.<br class="br-d"> Це&nbsp;моя репутація.<br class="br-d"> Тому я вкладаю душу в&nbsp;кожну деталь<br class="br-d"> і&nbsp;відповідаю за&nbsp;результат.</blockquote>
           <ul class="founder__facts">
-            <li><strong>з 2012</strong> у громадському харчуванні</li>
-            <li><strong>20+</strong> закладів відкрив і перезапустив по всій Україні</li>
+            <li><strong>з&nbsp;2012</strong> у&nbsp;громадському харчуванні</li>
+            <li><strong>20+</strong> закладів відкрив і&nbsp;перезапустив по&nbsp;всій Україні</li>
             <li><strong>Red Cat Brewery</strong> бренд-шеф запуску кухні мережі, Харків</li>
             <li><strong>технолог</strong> диплом технолога харчової промисловості, закордонна практика</li>
           </ul>
@@ -343,7 +382,7 @@
         </div>
 
         <div class="vs__panel">
-          <h3 class="vs__title">Франшиза чи свій заклад?</h3>
+          <h3 class="vs__title">Франшиза чи&nbsp;свій заклад?</h3>
           <button type="button" class="vs__switch" role="switch" aria-checked="false" aria-label="Перемкнути: франшиза або свій заклад">
             <span class="vs__opt vs__opt--a">Франшиза</span>
             <span class="vs__opt vs__opt--b">Свій заклад</span>
@@ -351,20 +390,20 @@
               <svg viewBox="0 0 100 300"><use href="#keyShape"/></svg>
             </span>
           </button>
-          <p class="vs__hint">Поверніть ключ і подивіться різницю</p>
+          <p class="vs__hint">Поверніть ключ і&nbsp;подивіться різницю</p>
 
           <ul class="vs__rows">
             <li style="--i:0">
-              <span class="vs__label">Бренд і меню</span>
-              <span class="vs__val"><span class="vs__a">Чужі, за стандартами мережі</span><span class="vs__b">Ваші, під вашу ідею</span></span>
+              <span class="vs__label">Бренд і&nbsp;меню</span>
+              <span class="vs__val"><span class="vs__a">Чужі, за&nbsp;стандартами мережі</span><span class="vs__b">Ваші, під&nbsp;вашу ідею</span></span>
             </li>
             <li style="--i:1">
               <span class="vs__label">Постачальники</span>
-              <span class="vs__val"><span class="vs__a">Визначає мережа</span><span class="vs__b">Обираєте ви, ми допомагаємо підібрати</span></span>
+              <span class="vs__val"><span class="vs__a">Визначає мережа</span><span class="vs__b">Обираєте ви, ми&nbsp;допомагаємо підібрати</span></span>
             </li>
             <li style="--i:2">
               <span class="vs__label">Хто веде запуск</span>
-              <span class="vs__val"><span class="vs__a">Менеджер франшизи</span><span class="vs__b">Шеф, який сам працює в ресторані</span></span>
+              <span class="vs__val"><span class="vs__a">Менеджер франшизи</span><span class="vs__b">Шеф, який сам працює в&nbsp;ресторані</span></span>
             </li>
             <li style="--i:3">
               <span class="vs__label">Свобода змін</span>
@@ -378,8 +417,8 @@
     <!-- ===== 4. Що входить «під ключ» ===== -->
     <section class="section" id="pid-kliuch" aria-labelledby="t-turnkey">
       <div class="section__head">
-        <h2 id="t-turnkey">Що ми беремо на себе</h2>
-        <p class="section__lead">Від порожнього приміщення до першого гостя. Вам не треба шукати десяток підрядників: усе зводиться в один проєкт і одні руки.</p>
+        <h2 id="t-turnkey">Що&nbsp;ми&nbsp;беремо на&nbsp;себе</h2>
+        <p class="section__lead">Від&nbsp;порожнього приміщення до&nbsp;першого гостя.<br class="br-d"> Вам не&nbsp;треба шукати десяток підрядників:<br class="br-d"> усе зводиться в&nbsp;один проєкт і&nbsp;одні руки.</p>
       </div>
 
       <!-- Закріплена сцена «будмайданчик»: скрол перемикає 6 етапів.
@@ -419,37 +458,37 @@
           <ol class="bs__steps">
             <li class="bs__step is-on">
               <span class="bs__num">01</span>
-              <h3>Приміщення і розрахунки</h3>
-              <p>Пошук або аналіз приміщення, аналіз локації та аудиторії, бізнес-план.</p>
+              <h3>Приміщення і&nbsp;розрахунки</h3>
+              <p>Пошук або&nbsp;аналіз приміщення,<br class="br-d"> аналіз локації та&nbsp;аудиторії, бізнес-план.</p>
             </li>
             <li class="bs__step">
               <span class="bs__num">02</span>
-              <h3>Концепція і дизайн</h3>
-              <p>Концепція й назва, дизайн, оформлення, контроль підрядників на ремонті.</p>
+              <h3>Концепція і&nbsp;дизайн</h3>
+              <p>Концепція й&nbsp;назва, дизайн, оформлення,<br class="br-d"> контроль підрядників на&nbsp;ремонті.</p>
             </li>
             <li class="bs__step">
               <span class="bs__num">03</span>
-              <h3>Обладнання й постачальники</h3>
-              <p>Підбираємо обладнання і постачальників або працюємо з вашими.</p>
+              <h3>Обладнання й&nbsp;постачальники</h3>
+              <p>Підбираємо обладнання і&nbsp;постачальників або&nbsp;працюємо з&nbsp;вашими.</p>
             </li>
             <li class="bs__step">
               <span class="bs__num">04</span>
-              <h3>Кухня і меню</h3>
+              <h3>Кухня і&nbsp;меню</h3>
               <p>Меню, технологічні карти, упаковка, уніформа.</p>
             </li>
             <li class="bs__step">
               <span class="bs__num">05</span>
               <h3>Команда</h3>
-              <p>Підбір і навчання персоналу.</p>
+              <p>Підбір і&nbsp;навчання персоналу.</p>
             </li>
             <li class="bs__step">
               <span class="bs__num">06</span>
               <h3>Запуск</h3>
-              <p>Допомога з документами, каса й автоматизація, просування до відкриття, відкриття і місяць супроводу.</p>
+              <p>Допомога з&nbsp;документами, каса й&nbsp;автоматизація, просування до&nbsp;відкриття, відкриття і&nbsp;місяць супроводу.</p>
             </li>
           </ol>
 
-          <p class="bs__note">Не потрібен весь пакет? Можна замовити окремі послуги: наприклад, меню й техкарти або перезапуск діючого закладу.</p>
+          <p class="bs__note">Не&nbsp;потрібен весь пакет?<br class="br-d"> Можна замовити окремі послуги:<br class="br-d"> наприклад, меню й&nbsp;техкарти або&nbsp;перезапуск діючого закладу.</p>
         </div>
       </div>
     </section>
@@ -468,7 +507,7 @@
             <div class="case__body">
               <span class="case__tag">Власний досвід</span>
               <h4>Ресторан Grey Stone</h4>
-              <p>Софіївська Борщагівка. Відкрив з нуля і керую ним досі.</p>
+              <p>Софіївська Борщагівка.<br class="br-d"> Відкрив з&nbsp;нуля і&nbsp;керую ним досі.</p>
             </div>
           </li>
           <li class="case">
@@ -476,7 +515,7 @@
             <div class="case__body">
               <span class="case__tag">Власний досвід</span>
               <h4>Red Cat Pub</h4>
-              <p>Харків: ТРЦ «Французький бульвар», Сумська, ХТЗ. Запуск кухні як бренд-шеф мережі.</p>
+              <p>Харків: ТРЦ «Французький&nbsp;бульвар», Сумська, ХТЗ.<br class="br-d"> Запуск кухні як&nbsp;бренд-шеф мережі.</p>
             </div>
           </li>
           <li class="case">
@@ -484,7 +523,7 @@
             <div class="case__body">
               <span class="case__tag case__tag--client">Проєкт клієнта</span>
               <h4>Eat it</h4>
-              <p>Заклад молодіжного формату при житловому комплексі.</p>
+              <p>Заклад молодіжного формату при&nbsp;житловому комплексі.</p>
             </div>
           </li>
           <li class="case">
@@ -492,7 +531,7 @@
             <div class="case__body">
               <span class="case__tag case__tag--client">Проєкт клієнта</span>
               <h4>Готові страви поруч</h4>
-              <p>Корисні домашні страви на щодень.</p>
+              <p>Корисні домашні страви на&nbsp;щодень.</p>
             </div>
           </li>
         </ul>
@@ -506,7 +545,7 @@
     <!-- ===== 6. Етапи ===== -->
     <section class="section" id="etapy" aria-labelledby="t-steps">
       <div class="section__head">
-        <h2 id="t-steps">Як відкриваємо заклад</h2>
+        <h2 id="t-steps">Як&nbsp;відкриваємо заклад</h2>
         <div class="switch" role="group" aria-label="Чи є у вас приміщення">
           <button type="button" class="switch__btn" aria-pressed="true" data-premises="yes">Є приміщення</button>
           <button type="button" class="switch__btn" aria-pressed="false" data-premises="no">Немає приміщення</button>
@@ -520,23 +559,23 @@
         <svg class="steps__key" viewBox="0 0 100 300"><use href="#keyShape"/></svg>
       </div>
       <ol class="steps">
-        <li><h3>Зустріч і консультація</h3><p>Формат, бюджет, очікування.</p></li>
-        <li><h3>Первинний розрахунок</h3><p>Скільки коштуватиме заклад і наші послуги, бізнес-план.</p></li>
+        <li><h3>Зустріч і&nbsp;консультація</h3><p>Формат, бюджет, очікування.</p></li>
+        <li><h3>Первинний розрахунок</h3><p>Скільки коштуватиме заклад і&nbsp;наші послуги, бізнес-план.</p></li>
         <li><h3>Договір</h3><p>Після нього стартуємо роботу.</p></li>
         <li class="steps__fork">
           <h3 data-yes="Аналіз вашого приміщення" data-no="Пошук приміщення">Аналіз вашого приміщення</h3>
-          <p data-yes="Перевіряємо приміщення, локацію та аудиторію під ваш формат." data-no="Шукаємо приміщення, аналізуємо локацію та аудиторію.">Перевіряємо приміщення, локацію та аудиторію під ваш формат.</p>
+          <p data-yes="Перевіряємо приміщення, локацію та аудиторію під ваш формат." data-no="Шукаємо приміщення, аналізуємо локацію та аудиторію.">Перевіряємо приміщення, локацію та&nbsp;аудиторію під&nbsp;ваш формат.</p>
         </li>
         <li><h3>Концепція, дизайн, меню</h3><p>Назва, проєкт, техкарти, упаковка.</p></li>
-        <li><h3>Ремонт, обладнання, команда</h3><p>Контроль підрядників, постачальники, підбір і навчання персоналу.</p></li>
-        <li><h3>Відкриття</h3><p>Документи, каса, просування до старту і перший робочий день.</p></li>
-        <li><h3>Місяць супроводу</h3><p>Залишаємося поруч, поки заклад стає на ноги.</p></li>
+        <li><h3>Ремонт, обладнання, команда</h3><p>Контроль підрядників, постачальники, підбір і&nbsp;навчання персоналу.</p></li>
+        <li><h3>Відкриття</h3><p>Документи, каса, просування до&nbsp;старту і&nbsp;перший робочий день.</p></li>
+        <li><h3>Місяць супроводу</h3><p>Залишаємося поруч, поки заклад стає на&nbsp;ноги.</p></li>
       </ol>
       </div>
 
-      <p class="steps__total">Від договору до відкриття зазвичай <strong>1,5–3 місяці</strong>. Великі проєкти займають більше.</p>
+      <p class="steps__total">Від&nbsp;договору до&nbsp;відкриття зазвичай <strong>1,5–3 місяці</strong>.<br class="br-d"> Великі проєкти займають більше.</p>
       <div class="cta-row">
-        <a class="btn btn--primary" href="#zayavka">Отримати план для мого закладу</a>
+        <a class="btn btn--primary" href="#zayavka">Отримати план для&nbsp;мого закладу</a>
       </div>
     </section>
 
@@ -544,7 +583,7 @@
     <section class="section section--alt" id="vartist" aria-labelledby="t-price">
       <div class="section__head">
         <h2 id="t-price">Скільки коштують наші послуги</h2>
-        <p class="section__lead">Ціна залежить від площі закладу. Це орієнтир: точний розрахунок робимо після знайомства з вашим проєктом.</p>
+        <p class="section__lead price__lead"><span class="mark">Ціна залежить від&nbsp;площі закладу.</span><br> Це&nbsp;орієнтир: точний розрахунок робимо після знайомства з&nbsp;вашим проєктом.</p>
       </div>
 
       <div class="price">
@@ -552,9 +591,9 @@
           <label class="calc__label" for="area">Площа закладу: <output id="area-out">35 м²</output></label>
           <input class="calc__range" id="area" type="range" min="10" max="150" step="5" value="35">
           <p class="calc__result"><span class="calc__sum">3 300</span> <span class="calc__cur">у.о.</span></p>
-          <p class="calc__note">вартість послуг «під ключ»</p>
+          <p class="calc__note">вартість послуг «під&nbsp;ключ»</p>
           <ul class="calc__tiers">
-            <li data-max="20"><span>до 20 м²</span><b>2 800 у.о.</b></li>
+            <li data-max="20"><span>до&nbsp;20 м²</span><b>2 800 у.о.</b></li>
             <li data-max="40"><span>20–40 м²</span><b>3 300 у.о.</b></li>
             <li data-max="60"><span>40–60 м²</span><b>3 600 у.о.</b></li>
             <li data-max="80"><span>60–80 м²</span><b>4 800 у.о.</b></li>
@@ -564,14 +603,14 @@
 
         <div class="price__side">
           <div class="invest">
-            <h3>А скільки коштує сам заклад?</h3>
+            <h3>А&nbsp;скільки коштує сам заклад?</h3>
             <!-- TODO: замінити на бюджети 2–3 реальних проєктів від клієнта -->
-            <p>Залежить від формату, стану приміщення й обладнання. Орієнтовний бюджет саме для вашого закладу назвемо на першій консультації.</p>
+            <p>Залежить від&nbsp;формату, стану приміщення й&nbsp;обладнання.<br class="br-d"> Орієнтовний бюджет саме для&nbsp;вашого закладу назвемо на&nbsp;першій консультації.</p>
           </div>
           <ul class="promises">
-            <li><h3>Працюємо за договором</h3><p>Співпраця починається з договору, а не з усних домовленостей.</p></li>
-            <li><h3>Одна відповідальна людина</h3><p>Ви не бігаєте між підрядниками: питання до однієї людини.</p></li>
-            <li><h3>Місяць супроводу</h3><p>Після відкриття не зникаємо, а допомагаємо закладу стати на ноги.</p></li>
+            <li><h3>Працюємо за&nbsp;договором</h3><p>Співпраця починається з&nbsp;договору, а&nbsp;не&nbsp;з&nbsp;усних домовленостей.</p></li>
+            <li><h3>Одна відповідальна людина</h3><p>Ви&nbsp;не&nbsp;бігаєте між підрядниками: питання до&nbsp;однієї людини.</p></li>
+            <li><h3>Місяць супроводу</h3><p>Після відкриття не&nbsp;зникаємо, а&nbsp;допомагаємо закладу стати на&nbsp;ноги.</p></li>
           </ul>
         </div>
       </div>
@@ -589,41 +628,41 @@
       <div class="faq">
         <details>
           <summary>Скільки коштує відкрити заклад повністю?</summary>
-          <p>Залежить від формату, площі, стану приміщення і обладнання. Вартість наших послуг є в блоці вище, а орієнтовний бюджет на сам заклад назвемо після першої розмови.</p>
+          <p>Залежить від&nbsp;формату, площі, стану приміщення і&nbsp;обладнання.<br class="br-d"> Вартість наших послуг є в&nbsp;блоці вище, а&nbsp;орієнтовний бюджет на&nbsp;сам заклад назвемо після першої розмови.</p>
         </details>
         <details>
           <summary>Скільки часу займає відкриття?</summary>
-          <p>Зазвичай від 1,5 до 3 місяців. Якщо проєкт великий, довше: термін фіксуємо після розрахунку.</p>
+          <p>Зазвичай від&nbsp;1,5 до&nbsp;3&nbsp;місяців.<br class="br-d"> Якщо проєкт великий, довше: термін фіксуємо після розрахунку.</p>
         </details>
         <details>
-          <summary>У мене немає приміщення. Ви допоможете?</summary>
-          <p>Так. Підбираємо приміщення, аналізуємо локацію та аудиторію і рахуємо, чи підходить воно під ваш формат.</p>
+          <summary>У&nbsp;мене немає приміщення. Ви&nbsp;допоможете?</summary>
+          <p>Так. Підбираємо приміщення, аналізуємо локацію та&nbsp;аудиторію і&nbsp;рахуємо, чи&nbsp;підходить воно під&nbsp;ваш формат.</p>
         </details>
         <details>
-          <summary>Обладнання треба купувати тільки у вас?</summary>
-          <p>Ні. Можемо підібрати обладнання і постачальників, а можемо працювати з вашими.</p>
+          <summary>Обладнання треба купувати тільки у&nbsp;вас?</summary>
+          <p>Ні.<br class="br-d"> Можемо підібрати обладнання і&nbsp;постачальників, а&nbsp;можемо працювати з&nbsp;вашими.</p>
         </details>
         <details>
-          <summary>Допомагаєте з документами?</summary>
+          <summary>Допомагаєте з&nbsp;документами?</summary>
           <!-- TODO: уточнити в клієнта, що саме входить у «документи» -->
-          <p>Так, допомагаємо з документами для запуску. Що саме потрібно для вашого формату, розповімо на консультації.</p>
+          <p>Так, допомагаємо з&nbsp;документами для&nbsp;запуску.<br class="br-d"> Що&nbsp;саме потрібно для&nbsp;вашого формату, розповімо на&nbsp;консультації.</p>
         </details>
         <details>
-          <summary>Що буде після відкриття?</summary>
+          <summary>Що&nbsp;буде після відкриття?</summary>
           <!-- TODO: уточнити формат супроводу (виїзди чи дзвінки) -->
-          <p>Перший місяць після відкриття супроводжуємо заклад і залишаємося на зв'язку.</p>
+          <p>Перший місяць після відкриття супроводжуємо заклад і&nbsp;залишаємося на&nbsp;зв'язку.</p>
         </details>
         <details>
-          <summary>У мене вже є заклад, але він не працює як треба. Візьметеся?</summary>
-          <p>Так, перезапускаємо діючі заклади: оновлюємо меню, концепцію, робимо ребрендинг або доводимо окремий напрям роботи.</p>
+          <summary>У&nbsp;мене вже є заклад, але він не&nbsp;працює як&nbsp;треба. Візьметеся?</summary>
+          <p>Так, перезапускаємо діючі заклади: оновлюємо меню, концепцію, робимо ребрендинг або&nbsp;доводимо окремий напрям роботи.</p>
         </details>
         <details>
-          <summary>Чим це краще за франшизу?</summary>
-          <p>Ви отримуєте свій бренд, своє меню і свободу рішень. Франшиза працює за чужими стандартами, а ми будуємо заклад під вашу ідею.</p>
+          <summary>Чим це&nbsp;краще за&nbsp;франшизу?</summary>
+          <p>Ви&nbsp;отримуєте свій бренд, своє меню і&nbsp;свободу рішень.<br class="br-d"> Франшиза працює за&nbsp;чужими стандартами, а&nbsp;ми&nbsp;будуємо заклад під&nbsp;вашу ідею.</p>
         </details>
       </div>
       <div class="faq__more">
-        <p><b>Не знайшли відповіді?</b> Запитайте напряму, відповідаємо особисто.</p>
+        <p><b>Не&nbsp;знайшли відповіді?</b><br class="br-d"> Запитайте напряму, відповідаємо особисто.</p>
         <div class="faq__more-actions">
           <a class="btn btn--primary" href="#zayavka">Поставити питання</a>
           <a class="btn btn--ghost" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a>
@@ -636,13 +675,13 @@
       <div class="quiz-wrap">
         <div class="quiz-intro">
           <h2 id="t-form">Розкажіть про свій заклад</h2>
-          <p class="section__lead">Чотири короткі питання про заклад і контакт, і ми підготуємо попередній розрахунок саме для вас.</p>
+          <p class="section__lead">Чотири короткі питання про заклад і&nbsp;контакт, і&nbsp;ми&nbsp;підготуємо попередній розрахунок саме для&nbsp;вас.</p>
           <p class="quiz-intro__alt">Зручніше написати? <a href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a></p>
         </div>
 
         <!-- TODO: підключити відправку (Telegram-бот або CRM) -->
         <form class="quiz" novalidate>
-          <p class="quiz__progress"><span class="quiz__step-num">1</span> з 5</p>
+          <p class="quiz__progress"><span class="quiz__step-num">1</span> з&nbsp;5</p>
 
           <fieldset class="quiz__step is-active" data-step="1">
             <legend>Який заклад плануєте?</legend>
@@ -663,12 +702,12 @@
           </fieldset>
 
           <fieldset class="quiz__step" data-step="2">
-            <legend>У якому місті?</legend>
+            <legend>У&nbsp;якому місті?</legend>
             <input class="field" type="text" name="city" placeholder="Наприклад, Київ" autocomplete="address-level2">
           </fieldset>
 
           <fieldset class="quiz__step" data-step="3">
-            <legend>Чи є приміщення?</legend>
+            <legend>Чи&nbsp;є приміщення?</legend>
             <div class="quiz__options">
               <label class="opt"><input type="radio" name="premises" value="Є"><span>Є</span></label>
               <label class="opt"><input type="radio" name="premises" value="Немає"><span>Немає</span></label>
@@ -679,12 +718,12 @@
           <fieldset class="quiz__step" data-step="4">
             <legend>Яка площа?</legend>
             <div class="quiz__options">
-              <label class="opt"><input type="radio" name="area" value="до 20"><span>до 20 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="до 20"><span>до&nbsp;20 м²</span></label>
               <label class="opt"><input type="radio" name="area" value="20–40"><span>20–40 м²</span></label>
               <label class="opt"><input type="radio" name="area" value="40–60"><span>40–60 м²</span></label>
               <label class="opt"><input type="radio" name="area" value="60–80"><span>60–80 м²</span></label>
               <label class="opt"><input type="radio" name="area" value="80+"><span>понад 80 м²</span></label>
-              <label class="opt"><input type="radio" name="area" value="не знаю"><span>Ще не знаю</span></label>
+              <label class="opt"><input type="radio" name="area" value="не знаю"><span>Ще&nbsp;не&nbsp;знаю</span></label>
             </div>
           </fieldset>
 
@@ -692,7 +731,8 @@
             <legend>Куди надіслати розрахунок?</legend>
             <input class="field" type="text" name="name" placeholder="Ваше ім'я" autocomplete="name" required>
             <input class="field" type="tel" name="phone" placeholder="+380" autocomplete="tel" required>
-            <p class="quiz__error" role="alert" hidden>Вкажіть ім'я і телефон, щоб ми могли зв'язатися.</p>
+            <p class="quiz__consent">Натискаючи «Отримати розрахунок», ви погоджуєтесь з&nbsp;<a href="privacy.html" target="_blank">політикою конфіденційності</a>.</p>
+            <p class="quiz__error" role="alert" hidden>Вкажіть ім'я і&nbsp;телефон, щоб ми&nbsp;могли зв'язатися.</p>
           </fieldset>
 
           <div class="quiz__done" hidden>
@@ -702,7 +742,7 @@
               <svg class="done-key__key" viewBox="0 0 100 300"><use href="#keyShape"/></svg>
             </div>
             <h3>Заявку прийнято</h3>
-            <p>Зв'яжемося з вами, щоб обговорити заклад і розрахунок.</p>
+            <p>Зв'яжемося з&nbsp;вами, щоб обговорити заклад і&nbsp;розрахунок.</p>
           </div>
 
           <div class="quiz__nav">
@@ -715,13 +755,40 @@
   </main>
 
   <footer class="footer">
-    <img src="img/logo.webp" width="360" height="303" alt="Бюро ресторанних рішень" loading="lazy">
-    <div class="footer__col">
-      <p>Відкриваємо заклади під ключ по всій Україні</p>
-      <!-- TODO: контакти для сайту не погоджені (особистий чи робочий номер) -->
-      <p><a href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a></p>
+    <div class="footer__top">
+      <div class="footer__brand">
+        <img src="img/logo.webp" width="360" height="303" alt="Бюро ресторанних рішень" loading="lazy">
+        <p>Відкриваємо заклади громадського харчування під&nbsp;ключ по&nbsp;всій Україні.</p>
+        <a class="btn btn--small btn--primary" href="#zayavka">Обговорити заклад</a>
+      </div>
+      <nav class="footer__col" aria-label="Розділи сайту">
+        <h3>Розділи</h3>
+        <a href="#shef">Про шефа</a>
+        <a href="#pid-kliuch">Під ключ</a>
+        <a href="#keisy">Кейси</a>
+        <a href="#etapy">Етапи</a>
+        <a href="#vartist">Вартість</a>
+        <a href="#faq">Питання</a>
+      </nav>
+      <div class="footer__col">
+        <h3>Послуги</h3>
+        <a href="#pid-kliuch">Заклад під&nbsp;ключ</a>
+        <a href="#komu">Перезапуск закладу</a>
+        <a href="#pid-kliuch">Меню й техкарти</a>
+        <a href="#etapy">Пошук приміщення</a>
+      </div>
+      <div class="footer__col">
+        <h3>Контакти</h3>
+        <!-- TODO: контакти для сайту не погоджені (телефон, Viber, Instagram) -->
+        <a href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a>
+        <p>Працюємо по&nbsp;всій Україні</p>
+      </div>
     </div>
-    <p class="footer__copy">© 2026 Бюро ресторанних рішень</p>
+    <div class="footer__bottom">
+      <p>© 2026 Бюро ресторанних рішень</p>
+      <p>Інформація на&nbsp;сайті не&nbsp;є публічною офертою</p>
+      <a href="privacy.html">Політика конфіденційності</a>
+    </div>
   </footer>
 
   <!-- Лише для узгодження, на живому сайті не буде -->
@@ -729,6 +796,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="main.js?v=17"></script>
+  <script src="main.js?v=18"></script>
 </body>
 </html>
