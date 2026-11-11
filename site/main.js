@@ -578,17 +578,30 @@
     var skey = stepsWrap.querySelector('.steps__key');
     var stepItems = Array.prototype.slice.call(stepsWrap.querySelectorAll('.steps li'));
 
+    var CIRCLE_TOP = 14, CIRCLE = 42;   // кружечок кроку: відступ зверху і розмір (як у CSS)
     var moveKey = function (p) {
       var h = rail.offsetHeight;
       var y = h * p;
-      fill.style.height = y + 'px';
-      skey.style.transform = 'translateY(' + y.toFixed(1) + 'px)';
       var railTop = rail.offsetTop;
+      fill.style.height = y + 'px';
+      var passed = 0;
       stepItems.forEach(function (li) {
         // центр кружечка кроку відносно початку лінії
-        var c = li.offsetTop + 35 - railTop;
-        li.classList.toggle('is-passed', c <= y + 2);
+        var c = li.offsetTop + CIRCLE_TOP + CIRCLE / 2 - railTop;
+        var on = c <= y + 2;
+        li.classList.toggle('is-passed', on);
+        if (on) passed++;
       });
+      // ключ стоїть на відрізку лінії між останнім пройденим і наступним кружечком,
+      // а кінчиком «входить» у наступний — цифри не перекриває
+      var k = Math.min(Math.max(passed, 1), stepItems.length - 1);
+      var from = stepItems[k - 1].offsetTop + CIRCLE_TOP + CIRCLE + 3 - railTop;
+      var to = stepItems[k].offsetTop + CIRCLE_TOP - railTop;
+      var len = Math.max(24, (to - from) / 0.9);   // кінчик стрижня — на 90% висоти малюнка
+      skey.style.top = from.toFixed(1) + 'px';
+      skey.style.height = len.toFixed(1) + 'px';
+      skey.style.width = (len / 3).toFixed(1) + 'px';
+      skey.style.marginLeft = (-len / 6).toFixed(1) + 'px';
     };
 
     if (hasST) {

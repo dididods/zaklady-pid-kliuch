@@ -47,6 +47,7 @@ button { font: inherit; color: inherit; }
   font-size: 1.0625rem;
   text-decoration: none;
   white-space: nowrap;
+  background: none;           /* щоб кнопки-<button> не отримували білий фон браузера */
   transition: transform .15s, background-color .2s, box-shadow .2s;
 }
 .btn--small { min-height: 44px; padding: 0 20px; font-size: .9375rem; border-radius: 11px; }
@@ -360,13 +361,14 @@ button { font: inherit; color: inherit; }
 
 /* ===== Загальне для блоків ===== */
 .section {
-  padding: clamp(72px, 10vw, 140px) var(--gutter);
+  padding: clamp(56px, 6.5vw, 96px) var(--gutter);
+  overflow-x: clip;   /* частинки й декор не створюють горизонтальний скрол */
   scroll-margin-top: 20px;
 }
 .section > * { max-width: 1240px; margin-left: auto; margin-right: auto; }
 .section--alt { background: var(--bg-2); }
 
-.section__head { margin-bottom: clamp(36px, 5vw, 64px); }
+.section__head { margin-bottom: clamp(28px, 3.5vw, 48px); }
 .section h2 {
   margin: 0;
   max-width: 18em;
@@ -379,7 +381,7 @@ button { font: inherit; color: inherit; }
 .section__lead { max-width: 38em; margin: 18px 0 0; font-size: clamp(1.05rem, 1rem + .3vw, 1.25rem); color: var(--text-dim); }
 .section h3 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; line-height: 1.25; }
 
-.cta-row { margin-top: clamp(40px, 5vw, 64px); text-align: center; }
+.cta-row { margin-top: clamp(32px, 4vw, 48px); text-align: center; }
 
 /* ===== 4. Що ми беремо на себе: закріплена сцена «будмайданчик» ===== */
 .bs {
@@ -592,6 +594,13 @@ button { font: inherit; color: inherit; }
   color: var(--text);
 }
 
+.hl { color: var(--hot); }
+/* легке червоне закреслення: текст лишається добре видимим */
+.soft-strike {
+  text-decoration: line-through;
+  text-decoration-color: rgba(227, 38, 28, .55);
+  text-decoration-thickness: .055em;
+}
 .founder__quote {
   margin: 26px 0 0;
   padding: 18px 22px;
@@ -790,11 +799,13 @@ button { font: inherit; color: inherit; }
 .vs[data-mode="own"] .vs__label { color: var(--hot); transition: color .3s calc(var(--i) * .14s + .95s); }
 
 /* --- з чим приходять: таблички на мотузці --- */
+#komu .section__head { text-align: center; }
+#komu .section__head h2 { margin: 0 auto; }
 .signs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(20px, 3vw, 36px);
-  margin: 0;
+  margin: 0 auto;   /* auto — щоб блок стояв по центру, як інші */
   padding: 56px 0 0;
   list-style: none;
 }
@@ -812,6 +823,10 @@ button { font: inherit; color: inherit; }
 }
 .sign:nth-child(2) { --tilt: 1deg; }
 .sign:nth-child(3) { --tilt: -.6deg; }
+.sign:nth-child(4) { --tilt: 1.4deg; }
+.sign { display: flex; flex-direction: column; }
+.sign ul { flex: 1; }
+.sign__link { align-self: flex-start; }
 .sign:hover { transform: rotate(0deg) translateY(-6px); }
 /* цвях і мотузка */
 .sign__string {
@@ -889,7 +904,7 @@ button { font: inherit; color: inherit; }
 .case__tag--client { background: rgba(227, 38, 28, .18); color: #ff8a7a; }
 
 /* ===== 4. Етапи ===== */
-#etapy .section__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px; }
+#etapy .section__head { display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
 .switch { display: inline-flex; padding: 5px; border-radius: 999px; background: var(--bg-2); }
 .switch__btn {
   padding: 12px 20px;
@@ -902,7 +917,7 @@ button { font: inherit; color: inherit; }
 }
 .switch__btn[aria-pressed="true"] { background: var(--hot); color: var(--bg); }
 
-.steps-wrap { position: relative; max-width: 780px; margin-left: 0; }
+.steps-wrap { position: relative; max-width: 720px; margin: 0 auto; }
 .steps {
   position: relative;
   margin: 0;
@@ -932,13 +947,14 @@ button { font: inherit; color: inherit; }
 .steps__key {
   position: absolute;
   left: 50%;
-  top: -48px;
+  top: 0;
   z-index: 3;
-  width: 32px;
-  height: 96px;
-  margin-left: -16px;
-  filter: drop-shadow(0 0 10px rgba(255, 180, 0, .7)) drop-shadow(0 6px 6px rgba(0, 0, 0, .5));
-  will-change: transform;
+  width: 20px;
+  height: 60px;
+  margin-left: -10px;
+  filter: drop-shadow(0 0 8px rgba(255, 180, 0, .7)) drop-shadow(0 4px 4px rgba(0, 0, 0, .5));
+  /* ключ «перескакує» з відрізка на відрізок */
+  transition: top .45s cubic-bezier(.4, 1.4, .5, 1), height .45s, width .45s, margin-left .45s;
 }
 .steps li.is-passed::before { background: var(--hot); color: var(--bg); box-shadow: 0 0 18px rgba(255, 180, 0, .55); }
 .steps li {
@@ -969,8 +985,7 @@ button { font: inherit; color: inherit; }
 .steps h3 { font-size: 1.05rem; padding-top: 9px; }
 .steps p { margin: 6px 0 0; color: var(--text-dim); font-size: .9375rem; }
 .steps__fork { background: linear-gradient(90deg, rgba(255, 180, 0, .1), transparent); border-radius: 14px; }
-.steps__fork::before { background: var(--hot); color: var(--bg) !important; }
-.steps__total { margin-top: 36px; font-size: 1.125rem; color: var(--text-dim); }
+.steps__total { margin-top: 36px; text-align: center; font-size: 1.125rem; color: var(--text-dim); }
 .steps__total strong { color: var(--text); }
 
 /* ===== 5. Вартість ===== */
@@ -1123,6 +1138,14 @@ button { font: inherit; color: inherit; }
 .field:focus { outline: none; border-color: var(--hot); }
 .quiz__error { margin: 4px 0 0; color: #ff8a7a; font-size: .9375rem; }
 .quiz__nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; }
+/* «Назад»: той самий стиль, що «Далі», але приглушено сіро-червоний */
+.quiz__back {
+  border: 0;
+  background: #5a2f2a;
+  color: var(--text);
+  cursor: pointer;
+}
+.quiz__back:hover { background: #6e3832; }
 .quiz__next { margin-left: auto; }
 .quiz__done h3 { font-size: 1.6rem; color: var(--hot); }
 
@@ -1391,6 +1414,7 @@ button { font: inherit; color: inherit; }
 
 /* ===== Адаптив ===== */
 @media (max-width: 1100px) {
+  .signs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 72px 32px; max-width: 760px; margin: 0 auto; }
   .site-nav { display: none; }
 }
 
