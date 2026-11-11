@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- чернетка для узгодження: не показувати в пошуку. Прибрати перед запуском -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Бюро ресторанних рішень — заклади під ключ</title>
+  <meta name="description" content="Відкриваємо піцерії, кав'ярні, бургерні, шаурму та ресторани під ключ по всій Україні.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+  <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
+  <link rel="stylesheet" href="styles.css?v=16">
+
+  <script>
+    // Інтро показуємо раз за візит. ?intro=1 — показати примусово
+    try {
+      var force = location.search.indexOf('intro=1') > -1;
+      var seen = sessionStorage.getItem('introSeen') === '1';
+      var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!force && (seen || calm)) document.documentElement.classList.add('no-intro');
+    } catch (e) { document.documentElement.classList.add('no-intro'); }
+  </script>
+</head>
+<body>
+
+  <!-- Спільні елементи дверей: стулка з горіха, книжкове дзеркалення текстури -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="walnut" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#5b321b"/>
+        <stop offset=".35" stop-color="#6d3e22"/>
+        <stop offset=".7" stop-color="#5f351d"/>
+        <stop offset="1" stop-color="#4a2814"/>
+      </linearGradient>
+      <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset=".55" stop-color="#ffd9a8" stop-opacity=".09"/>
+        <stop offset=".75" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="edgeShade" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#000" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity=".45"/>
+      </linearGradient>
+      <linearGradient id="brassBar" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#8a5a16"/>
+        <stop offset=".45" stop-color="#f3d58e"/>
+        <stop offset="1" stop-color="#a26c1d"/>
+      </linearGradient>
+      <!-- текстура волокон: розтягнутий по вертикалі шум -->
+      <filter id="grainDark" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.11 0.0028" numOctaves="4" seed="11"/>
+        <feColorMatrix type="matrix" values="0 0 0 0 .1  0 0 0 0 .045  0 0 0 0 .015  3.4 0 0 0 -1.4"/>
+      </filter>
+      <filter id="grainLight" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02 0.0012" numOctaves="3" seed="4"/>
+        <feColorMatrix type="matrix" values="0 0 0 0 .9  0 0 0 0 .62  0 0 0 0 .38  -1.1 0 0 0 .5"/>
+      </filter>
+      <!-- ключ для етапів і фіналу квізу; точка входу в замок — (50, 94) -->
+      <linearGradient id="keyBrassS" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fbe3a2"/>
+        <stop offset=".4" stop-color="#dcaa48"/>
+        <stop offset="1" stop-color="#8a5a16"/>
+      </linearGradient>
+      <symbol id="keyShape" viewBox="0 0 100 300">
+        <g fill="url(#keyBrassS)" stroke="#6b430f" stroke-width="1.5">
+          <path fill-rule="evenodd" d="M50 4a19 19 0 0 1 18 25 19 19 0 0 1 4 36 19 19 0 0 1-22 14 19 19 0 0 1-22-14 19 19 0 0 1 4-36A19 19 0 0 1 50 4zm0 32a12 12 0 1 0 0 24 12 12 0 0 0 0-24z"/>
+          <rect x="38" y="80" width="24" height="7" rx="2"/>
+          <rect x="42" y="88" width="16" height="6" rx="2"/>
+          <rect x="45" y="94" width="10" height="176" rx="2"/>
+          <path d="M55 228h22v9h-8v7h8v18H55z"/>
+        </g>
+        <ellipse cx="44" cy="22" rx="6" ry="3" fill="#fff" fill-opacity=".45"/>
+      </symbol>
+      <clipPath id="leafShape"><path d="M300 1000H0V300A300 300 0 0 1 300 0Z"/></clipPath>
+      <symbol id="leaf" viewBox="0 0 300 1000">
+        <g clip-path="url(#leafShape)">
+          <rect width="300" height="1000" fill="url(#walnut)"/>
+          <rect width="300" height="1000" filter="url(#grainDark)"/>
+          <rect width="300" height="1000" filter="url(#grainLight)"/>
+          <!-- верхня арочна філенка -->
+          <path d="M46 645V300A254 254 0 0 1 268 48V645Z" fill="none" stroke="#1d0e05" stroke-opacity=".6" stroke-width="9"/>
+          <path d="M52 639V300A248 248 0 0 1 262 54V639Z" fill="none" stroke="#ffd9a8" stroke-opacity=".14" stroke-width="2"/>
+          <path d="M64 627V300A236 236 0 0 1 250 66V627Z" fill="#000" fill-opacity=".07" stroke="#1d0e05" stroke-opacity=".35" stroke-width="3"/>
+          <!-- нижня філенка -->
+          <rect x="46" y="695" width="222" height="250" rx="2" fill="none" stroke="#1d0e05" stroke-opacity=".6" stroke-width="9"/>
+          <rect x="52" y="701" width="210" height="238" fill="none" stroke="#ffd9a8" stroke-opacity=".14" stroke-width="2"/>
+          <rect x="64" y="713" width="186" height="214" fill="#000" fill-opacity=".07" stroke="#1d0e05" stroke-opacity=".35" stroke-width="3"/>
+          <rect width="300" height="1000" fill="url(#sheen)"/>
+          <rect x="282" width="18" height="1000" fill="url(#edgeShade)"/>
+          <!-- латунна ручка-планка -->
+          <rect x="268" y="452" width="11" height="170" rx="5.5" fill="url(#brassBar)"/>
+          <rect x="264" y="462" width="8" height="10" rx="2" fill="#7a4e14"/>
+          <rect x="264" y="602" width="8" height="10" rx="2" fill="#7a4e14"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- ===== 0. Інтро: ключ відчиняє двері ===== -->
+  <div class="intro" aria-hidden="true">
+    <div class="wall-panel wall-panel--left"></div>
+    <div class="wall-panel wall-panel--right"></div>
+    <div class="portal">
+      <div class="portal__seam"></div>
+      <div class="portal__leaves">
+        <svg class="leaf leaf--left" viewBox="0 0 300 1000" preserveAspectRatio="none"><use href="#leaf"/></svg>
+        <svg class="leaf leaf--right" viewBox="0 0 300 1000" preserveAspectRatio="none"><g transform="translate(300 0) scale(-1 1)"><use href="#leaf"/></g></svg>
+      </div>
+      <div class="portal__reveal"></div>
+      <div class="lock">
+        <div class="lock__plate"><span class="lock__hole"></span></div>
+        <span class="lock__flash"></span>
+        <svg class="key" viewBox="0 0 100 300" aria-hidden="true">
+          <defs>
+            <linearGradient id="keyBrass" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#fbe3a2"/>
+              <stop offset=".4" stop-color="#dcaa48"/>
+              <stop offset="1" stop-color="#8a5a16"/>
+            </linearGradient>
+          </defs>
+          <g fill="url(#keyBrass)" stroke="#6b430f" stroke-width="1.5">
+            <!-- вушко-трилисник -->
+            <path fill-rule="evenodd" d="M50 4a19 19 0 0 1 18 25 19 19 0 0 1 4 36 19 19 0 0 1-22 14 19 19 0 0 1-22-14 19 19 0 0 1 4-36A19 19 0 0 1 50 4zm0 32a12 12 0 1 0 0 24 12 12 0 0 0 0-24z"/>
+            <!-- комірець -->
+            <rect x="38" y="80" width="24" height="7" rx="2"/>
+            <rect x="42" y="88" width="16" height="6" rx="2"/>
+            <!-- стрижень і борідка -->
+            <rect x="45" y="94" width="10" height="176" rx="2"/>
+            <path d="M55 228h22v9h-8v7h8v18H55z"/>
+          </g>
+          <ellipse cx="44" cy="22" rx="6" ry="3" fill="#fff" fill-opacity=".45"/>
+        </svg>
+      </div>
+      <div class="portal__floor"></div>
+    </div>
+    <button class="intro__skip" type="button">Пропустити</button>
+  </div>
+
+  <!-- ===== Шапка ===== -->
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Бюро ресторанних рішень, на головну">
+      <img src="img/logo.webp" width="360" height="303" alt="Бюро ресторанних рішень">
+    </a>
+    <nav class="site-nav" aria-label="Розділи">
+      <a href="#shef">Про шефа</a>
+      <a href="#pid-kliuch">Під ключ</a>
+      <a href="#keisy">Кейси</a>
+      <a href="#etapy">Етапи</a>
+      <a href="#vartist">Вартість</a>
+      <a href="#faq">Питання</a>
+    </nav>
+    <div class="header-actions">
+      <a class="pill" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a>
+      <a class="btn btn--small btn--primary" href="#zayavka">Консультація</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== 1. Перший екран ===== -->
+    <section class="hero" aria-labelledby="hero-title">
+      <canvas class="embers" aria-hidden="true"></canvas>
+
+      <div class="hero__head">
+        <h1 id="hero-title">
+          <span class="hero__big">Хочете свій заклад?</span>
+          <span class="hero__small">Наші вже працюють, і&nbsp;ми знаємо, як відкрити ваш</span>
+        </h1>
+        <!-- офер: що робимо, за скільки, де -->
+        <ul class="hero__chips">
+          <li>Під ключ за 1,5–3 місяці</li>
+          <li>Відкриті ціни на послуги</li>
+          <li>По всій Україні</li>
+        </ul>
+      </div>
+
+      <div class="stage">
+        <div class="stage__floor" aria-hidden="true"></div>
+        <!-- тепле світло в центрі орбіти -->
+        <span class="stage__halo" aria-hidden="true"></span>
+
+        <!-- Заклади на орбіті. data-desc — короткий опис у картці фокусу -->
+        <ul class="orbit" aria-label="Формати закладів">
+          <li class="orbit__item" data-name="Кав'ярня" data-desc="Від кавової точки на винос до кав'ярні із залом і десертами.">
+            <button type="button" aria-label="Кав'ярня"><img src="img/zaklady/kavyarnya.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Бургерна" data-desc="Гриль, соуси, швидка видача і зал під ваш формат.">
+            <button type="button" aria-label="Бургерна"><img src="img/zaklady/burgerna.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Суші" data-desc="Суші-бар із залом або точка, що працює на доставку.">
+            <button type="button" aria-label="Суші"><img src="img/zaklady/sushi.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Пекарня" data-desc="Власна випічка: цех, вітрина, меню і техкарти.">
+            <button type="button" aria-label="Пекарня"><img src="img/zaklady/pekarnya.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Шаурма" data-desc="Точка з видачею у вікно або заклад із посадкою та терасою.">
+            <button type="button" aria-label="Шаурма"><img src="img/zaklady/shaurma.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Кондитерська" data-desc="Цех, вітрина з десертами, меню і техкарти.">
+            <button type="button" aria-label="Кондитерська"><img src="img/zaklady/konditerska.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Піцерія" data-desc="Піч, тісто, меню й техкарти: піцерія з видачею або із залом.">
+            <button type="button" aria-label="Піцерія"><img src="img/zaklady/pitseriia.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Dark kitchen" data-desc="Кухня тільки на доставку: без залу, з фокусом на швидкість і упаковку.">
+            <button type="button" aria-label="Dark kitchen"><img src="img/zaklady/dark-kitchen.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Чебуречна" data-desc="Класика, яку люблять: кухня, вітрина і зал під формат.">
+            <button type="button" aria-label="Чебуречна"><img src="img/zaklady/cheburechna.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Стрітфуд" data-desc="Компактний формат: кіоск, контейнер або точка на фудкорті.">
+            <button type="button" aria-label="Стрітфуд"><img src="img/zaklady/stritfud.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Фастфуд" data-desc="Бургери, хот-доги, фрі: швидка кухня і зрозуміле меню.">
+            <button type="button" aria-label="Фастфуд"><img src="img/zaklady/fastfood.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+          <li class="orbit__item" data-name="Свій формат" data-desc="Ідея, якої ще немає в списку? Зберемо заклад саме під неї.">
+            <button type="button" aria-label="Свій формат"><img src="img/zaklady/indyvidualnyi.webp" alt="" draggable="false"></button><span class="orbit__shadow"></span>
+          </li>
+        </ul>
+
+        <p class="stage__hint" aria-hidden="true">Потягніть або натисніть на заклад</p>
+
+        <div class="focus" hidden>
+          <p class="focus__name"></p>
+          <p class="focus__desc"></p>
+          <a class="btn btn--primary focus__cta" href="#zayavka">Хочу такий заклад</a>
+          <button class="focus__close" type="button" aria-label="Закрити">×</button>
+        </div>
+      </div>
+
+      <div class="hero__bottom">
+        <a class="chef-chip" href="#shef">
+          <img src="img/dmytro-barsukov.jpg" width="853" height="1280" alt="">
+          <span><b>Дмитро Барсуков</b> бренд-шеф і засновник бюро</span>
+        </a>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#vartist">Розрахувати вартість</a>
+          <a class="btn btn--ghost" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Написати в Telegram</a>
+        </div>
+        <p class="fact fact--right"><strong>20+</strong> закладів уже працюють</p>
+      </div>
+    </section>
+
+    <div class="tape" aria-hidden="true">
+      <div class="tape__track">
+        <span>Шеф-практик, а не франшиза</span><span>20+ закладів працюють</span><span>У громадському харчуванні з 2012</span><span>Під ключ за 1,5–3 місяці</span><span>Відкриті ціни</span><span>Вся Україна</span>
+        <span>Шеф-практик, а не франшиза</span><span>20+ закладів працюють</span><span>У громадському харчуванні з 2012</span><span>Під ключ за 1,5–3 місяці</span><span>Відкриті ціни</span><span>Вся Україна</span>
+      </div>
+    </div>
+
+    <!-- ===== 2. З чим до нас приходять ===== -->
+    <section class="section" id="komu" aria-labelledby="t-komu">
+      <div class="section__head">
+        <h2 id="t-komu">З чим до нас приходять</h2>
+      </div>
+      <!-- таблички «Відчинено» на мотузці: гойдаються при наведенні -->
+      <ul class="signs">
+        <li class="sign">
+          <span class="sign__string" aria-hidden="true"></span>
+          <h3>Хочу перший заклад</h3>
+          <p>Є ідея і бюджет, але немає досвіду в ресторанному бізнесі.</p>
+          <ul>
+            <li>Рахуємо, чи зійдеться бюджет</li>
+            <li>Ведемо від ідеї до відкриття</li>
+            <li>Вчимо команду працювати</li>
+          </ul>
+          <a href="#zayavka" class="sign__link" data-premises-pick="Немає">Це про мене</a>
+        </li>
+        <li class="sign">
+          <span class="sign__string" aria-hidden="true"></span>
+          <h3>Є приміщення</h3>
+          <p>Площа вже є, але незрозуміло, який заклад там спрацює.</p>
+          <ul>
+            <li>Аналізуємо локацію та аудиторію</li>
+            <li>Підбираємо формат під приміщення</li>
+            <li>Відкриваємо під ключ</li>
+          </ul>
+          <a href="#zayavka" class="sign__link" data-premises-pick="Є">Це про мене</a>
+        </li>
+        <li class="sign">
+          <span class="sign__string" aria-hidden="true"></span>
+          <h3>Заклад працює, але не так</h3>
+          <p>Гості є, а результату, на який розраховували, немає.</p>
+          <ul>
+            <li>Оновлюємо меню й техкарти</li>
+            <li>Переглядаємо концепцію</li>
+            <li>Робимо ребрендинг або перезапуск</li>
+          </ul>
+          <a href="#zayavka" class="sign__link" data-premises-pick="Є діючий заклад">Це про мене</a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ===== 3. Шеф, а не франшиза ===== -->
+    <section class="section section--alt" id="shef" aria-labelledby="t-who">
+      <div class="founder">
+        <div class="founder__photos">
+          <img class="founder__main" src="img/dmytro-barsukov.jpg" width="853" height="1280" alt="Дмитро Барсуков, бренд-шеф" loading="lazy">
+          <img class="founder__extra" src="img/dmytro-grill.jpg" width="900" height="900" alt="Дмитро на кухні біля гриля" loading="lazy">
+        </div>
+        <div class="founder__text">
+          <h2 id="t-who">Заклад вам відкриває шеф&#8209;практик, а&nbsp;не&nbsp;франшиза</h2>
+          <p class="founder__name">Дмитро Барсуков, бренд-шеф і засновник бюро</p>
+          <p>Сам щодня керую рестораном, який відкрив з нуля і який працює вже два роки. Тому знаю, що має працювати в закладі з першого дня, а не тільки гарно виглядати на відкритті.</p>
+          <!-- слова клієнта з брифу, п. 6.2 -->
+          <blockquote class="founder__quote">Відкриваю не заради відкриття, а заради репутації. І з душею, бо люблю те, що роблю.</blockquote>
+          <ul class="founder__facts">
+            <li><strong>з 2012</strong> у громадському харчуванні</li>
+            <li><strong>20+</strong> закладів відкрив і перезапустив по всій Україні</li>
+            <li><strong>Red Cat Brewery</strong> бренд-шеф запуску кухні мережі, Харків</li>
+            <li><strong>технолог</strong> диплом технолога харчової промисловості, закордонна практика</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Інтерактив: повертаєте ключ — франшизний заклад стає вашим.
+           data-mode: "franchise" | "own". Автоматично вмикається при появі на екрані -->
+      <div class="vs" id="franshyza" data-mode="franchise">
+        <div class="vs__visual" aria-hidden="true">
+          <span class="vs__glow"></span>
+          <img class="vs__img" src="img/zaklady/pitseriia.webp" width="800" height="800" alt="" loading="lazy">
+          <span class="vs__sticker"><b>Франшиза</b><small>стандарт мережі №0417</small></span>
+          <svg class="vs__lock" viewBox="0 0 64 80">
+            <path class="vs__shackle" d="M18 36V24a14 14 0 0 1 28 0v12" fill="none" stroke="#c8ccd2" stroke-width="7" stroke-linecap="round"/>
+            <rect x="8" y="34" width="48" height="40" rx="8" fill="#8d939b"/>
+            <rect x="8" y="34" width="48" height="12" rx="6" fill="#a9afb7"/>
+            <circle cx="32" cy="54" r="5" fill="#3a3f45"/>
+            <rect x="30" y="56" width="4" height="9" rx="2" fill="#3a3f45"/>
+          </svg>
+        </div>
+
+        <div class="vs__panel">
+          <h3 class="vs__title">Франшиза чи свій заклад?</h3>
+          <button type="button" class="vs__switch" role="switch" aria-checked="false" aria-label="Перемкнути: франшиза або свій заклад">
+            <span class="vs__opt vs__opt--a">Франшиза</span>
+            <span class="vs__opt vs__opt--b">Свій заклад</span>
+            <span class="vs__knob" aria-hidden="true">
+              <svg viewBox="0 0 100 300"><use href="#keyShape"/></svg>
+            </span>
+          </button>
+          <p class="vs__hint">Поверніть ключ і подивіться різницю</p>
+
+          <ul class="vs__rows">
+            <li style="--i:0">
+              <span class="vs__label">Бренд і меню</span>
+              <span class="vs__val"><span class="vs__a">Чужі, за стандартами мережі</span><span class="vs__b">Ваші, під вашу ідею</span></span>
+            </li>
+            <li style="--i:1">
+              <span class="vs__label">Постачальники</span>
+              <span class="vs__val"><span class="vs__a">Визначає мережа</span><span class="vs__b">Обираєте ви, ми допомагаємо підібрати</span></span>
+            </li>
+            <li style="--i:2">
+              <span class="vs__label">Хто веде запуск</span>
+              <span class="vs__val"><span class="vs__a">Менеджер франшизи</span><span class="vs__b">Шеф, який сам працює в ресторані</span></span>
+            </li>
+            <li style="--i:3">
+              <span class="vs__label">Свобода змін</span>
+              <span class="vs__val"><span class="vs__a">Обмежена договором</span><span class="vs__b">Заклад належить вам повністю</span></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 4. Що входить «під ключ» ===== -->
+    <section class="section" id="pid-kliuch" aria-labelledby="t-turnkey">
+      <div class="section__head">
+        <h2 id="t-turnkey">Що ми беремо на себе</h2>
+        <p class="section__lead">Від порожнього приміщення до першого гостя. Вам не треба шукати десяток підрядників: усе зводиться в один проєкт і одні руки.</p>
+      </div>
+
+      <!-- Закріплена сцена «будмайданчик»: скрол перемикає 6 етапів.
+           Кожен кадр може мати data-video — відео-перехід з попереднього етапу
+           (напр. data-video="img/budivnytstvo/perehid-2.webm"). Без нього працює анімація кодом. -->
+      <div class="bs" data-step="0">
+        <div class="bs__stage" aria-hidden="true">
+          <span class="bs__glow"></span>
+          <svg class="bs__blueprint" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M8 88 H92 M8 88 V40 Q8 30 18 30 H60 Q72 18 86 28 V88 M60 30 V88 M8 60 H86 M30 60 V88 M70 52 V88" />
+            <path class="bs__grid" d="M0 20 H100 M0 40 H100 M0 60 H100 M0 80 H100 M20 0 V100 M40 0 V100 M60 0 V100 M80 0 V100" />
+          </svg>
+          <div class="bs__frames">
+            <img class="bs__frame is-on" src="img/budivnytstvo/etap-1.webp" width="900" height="900" alt="" data-fx="blueprint">
+            <img class="bs__frame" src="img/budivnytstvo/etap-2.webp" width="900" height="900" alt="" data-fx="paint" loading="lazy">
+            <img class="bs__frame" src="img/budivnytstvo/etap-3.webp" width="900" height="900" alt="" data-fx="sparks" loading="lazy">
+            <img class="bs__frame" src="img/budivnytstvo/etap-4.webp" width="900" height="900" alt="" data-fx="steam" loading="lazy">
+            <img class="bs__frame" src="img/budivnytstvo/etap-5.webp" width="900" height="900" alt="" data-fx="glow" loading="lazy">
+            <img class="bs__frame" src="img/budivnytstvo/etap-6.webp" width="900" height="900" alt="" data-fx="launch" loading="lazy">
+          </div>
+          <canvas class="bs__fx"></canvas>
+          <span class="bs__badge">Відкрито!</span>
+        </div>
+
+        <div class="bs__info">
+          <div class="bs__rail" role="tablist" aria-label="Етапи">
+            <span class="bs__track"><span class="bs__fill"></span></span>
+            <svg class="bs__key" viewBox="0 0 100 300" aria-hidden="true"><use href="#keyShape"/></svg>
+            <button type="button" class="bs__dot is-on" role="tab" aria-label="Приміщення і розрахунки"></button>
+            <button type="button" class="bs__dot" role="tab" aria-label="Концепція і дизайн"></button>
+            <button type="button" class="bs__dot" role="tab" aria-label="Обладнання й постачальники"></button>
+            <button type="button" class="bs__dot" role="tab" aria-label="Кухня і меню"></button>
+            <button type="button" class="bs__dot" role="tab" aria-label="Команда"></button>
+            <button type="button" class="bs__dot" role="tab" aria-label="Запуск"></button>
+          </div>
+
+          <ol class="bs__steps">
+            <li class="bs__step is-on">
+              <span class="bs__num">01</span>
+              <h3>Приміщення і розрахунки</h3>
+              <p>Пошук або аналіз приміщення, аналіз локації та аудиторії, бізнес-план.</p>
+            </li>
+            <li class="bs__step">
+              <span class="bs__num">02</span>
+              <h3>Концепція і дизайн</h3>
+              <p>Концепція й назва, дизайн, оформлення, контроль підрядників на ремонті.</p>
+            </li>
+            <li class="bs__step">
+              <span class="bs__num">03</span>
+              <h3>Обладнання й постачальники</h3>
+              <p>Підбираємо обладнання і постачальників або працюємо з вашими.</p>
+            </li>
+            <li class="bs__step">
+              <span class="bs__num">04</span>
+              <h3>Кухня і меню</h3>
+              <p>Меню, технологічні карти, упаковка, уніформа.</p>
+            </li>
+            <li class="bs__step">
+              <span class="bs__num">05</span>
+              <h3>Команда</h3>
+              <p>Підбір і навчання персоналу.</p>
+            </li>
+            <li class="bs__step">
+              <span class="bs__num">06</span>
+              <h3>Запуск</h3>
+              <p>Допомога з документами, каса й автоматизація, просування до відкриття, відкриття і місяць супроводу.</p>
+            </li>
+          </ol>
+
+          <p class="bs__note">Не потрібен весь пакет? Можна замовити окремі послуги: наприклад, меню й техкарти або перезапуск діючого закладу.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. Кейси ===== -->
+    <section class="section section--alt" id="keisy" aria-labelledby="t-cases">
+      <div class="cases">
+        <div class="cases__head">
+          <h2 id="t-cases">Заклади, які вже працюють</h2>
+          <p>Гортайте вбік</p>
+        </div>
+        <!-- TODO: фото узгодити з клієнтом (дозвіл, оригінали без ретуші ШІ), додати місто/площу/термін -->
+        <ul class="cases__track">
+          <li class="case">
+            <img src="img/keisy/grey-stone.jpg" alt="Фасад ресторану Grey Stone увечері" loading="lazy">
+            <div class="case__body">
+              <span class="case__tag">Власний досвід</span>
+              <h4>Ресторан Grey Stone</h4>
+              <p>Софіївська Борщагівка. Відкрив з нуля і керую ним досі.</p>
+            </div>
+          </li>
+          <li class="case">
+            <img src="img/keisy/red-cat.jpg" alt="Red Cat Pub у торговому центрі" loading="lazy">
+            <div class="case__body">
+              <span class="case__tag">Власний досвід</span>
+              <h4>Red Cat Pub</h4>
+              <p>Харків: ТРЦ «Французький бульвар», Сумська, ХТЗ. Запуск кухні як бренд-шеф мережі.</p>
+            </div>
+          </li>
+          <li class="case">
+            <img src="img/keisy/eat-it.jpg" alt="Фасад закладу Eat it" loading="lazy">
+            <div class="case__body">
+              <span class="case__tag case__tag--client">Проєкт клієнта</span>
+              <h4>Eat it</h4>
+              <p>Заклад молодіжного формату при житловому комплексі.</p>
+            </div>
+          </li>
+          <li class="case">
+            <img src="img/keisy/gotovi-stravy.jpg" alt="Вивіска «Готові страви поруч»" loading="lazy">
+            <div class="case__body">
+              <span class="case__tag case__tag--client">Проєкт клієнта</span>
+              <h4>Готові страви поруч</h4>
+              <p>Корисні домашні страви на щодень.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn--primary" href="#zayavka">Обговорити мій заклад</a>
+      </div>
+    </section>
+
+    <!-- ===== 6. Етапи ===== -->
+    <section class="section" id="etapy" aria-labelledby="t-steps">
+      <div class="section__head">
+        <h2 id="t-steps">Як відкриваємо заклад</h2>
+        <div class="switch" role="group" aria-label="Чи є у вас приміщення">
+          <button type="button" class="switch__btn" aria-pressed="true" data-premises="yes">Є приміщення</button>
+          <button type="button" class="switch__btn" aria-pressed="false" data-premises="no">Немає приміщення</button>
+        </div>
+      </div>
+
+      <div class="steps-wrap">
+      <!-- лінія шляху: ключ їде нею під час скролу -->
+      <div class="steps__rail" aria-hidden="true">
+        <span class="steps__fill"></span>
+        <svg class="steps__key" viewBox="0 0 100 300"><use href="#keyShape"/></svg>
+      </div>
+      <ol class="steps">
+        <li><h3>Зустріч і консультація</h3><p>Формат, бюджет, очікування.</p></li>
+        <li><h3>Первинний розрахунок</h3><p>Скільки коштуватиме заклад і наші послуги, бізнес-план.</p></li>
+        <li><h3>Договір</h3><p>Після нього стартуємо роботу.</p></li>
+        <li class="steps__fork">
+          <h3 data-yes="Аналіз вашого приміщення" data-no="Пошук приміщення">Аналіз вашого приміщення</h3>
+          <p data-yes="Перевіряємо приміщення, локацію та аудиторію під ваш формат." data-no="Шукаємо приміщення, аналізуємо локацію та аудиторію.">Перевіряємо приміщення, локацію та аудиторію під ваш формат.</p>
+        </li>
+        <li><h3>Концепція, дизайн, меню</h3><p>Назва, проєкт, техкарти, упаковка.</p></li>
+        <li><h3>Ремонт, обладнання, команда</h3><p>Контроль підрядників, постачальники, підбір і навчання персоналу.</p></li>
+        <li><h3>Відкриття</h3><p>Документи, каса, просування до старту і перший робочий день.</p></li>
+        <li><h3>Місяць супроводу</h3><p>Залишаємося поруч, поки заклад стає на ноги.</p></li>
+      </ol>
+      </div>
+
+      <p class="steps__total">Від договору до відкриття зазвичай <strong>1,5–3 місяці</strong>. Великі проєкти займають більше.</p>
+      <div class="cta-row">
+        <a class="btn btn--primary" href="#zayavka">Отримати план для мого закладу</a>
+      </div>
+    </section>
+
+    <!-- ===== 7. Вартість і зобов'язання ===== -->
+    <section class="section section--alt" id="vartist" aria-labelledby="t-price">
+      <div class="section__head">
+        <h2 id="t-price">Скільки коштують наші послуги</h2>
+        <p class="section__lead">Ціна залежить від площі закладу. Це орієнтир: точний розрахунок робимо після знайомства з вашим проєктом.</p>
+      </div>
+
+      <div class="price">
+        <div class="calc">
+          <label class="calc__label" for="area">Площа закладу: <output id="area-out">35 м²</output></label>
+          <input class="calc__range" id="area" type="range" min="10" max="150" step="5" value="35">
+          <p class="calc__result"><span class="calc__sum">3 300</span> <span class="calc__cur">у.о.</span></p>
+          <p class="calc__note">вартість послуг «під ключ»</p>
+          <ul class="calc__tiers">
+            <li data-max="20"><span>до 20 м²</span><b>2 800 у.о.</b></li>
+            <li data-max="40"><span>20–40 м²</span><b>3 300 у.о.</b></li>
+            <li data-max="60"><span>40–60 м²</span><b>3 600 у.о.</b></li>
+            <li data-max="80"><span>60–80 м²</span><b>4 800 у.о.</b></li>
+            <li data-max="9999"><span>понад 80 м²</span><b>індивідуально</b></li>
+          </ul>
+        </div>
+
+        <div class="price__side">
+          <div class="invest">
+            <h3>А скільки коштує сам заклад?</h3>
+            <!-- TODO: замінити на бюджети 2–3 реальних проєктів від клієнта -->
+            <p>Залежить від формату, стану приміщення й обладнання. Орієнтовний бюджет саме для вашого закладу назвемо на першій консультації.</p>
+          </div>
+          <ul class="promises">
+            <li><h3>Працюємо за договором</h3><p>Співпраця починається з договору, а не з усних домовленостей.</p></li>
+            <li><h3>Одна відповідальна людина</h3><p>Ви не бігаєте між підрядниками: питання до однієї людини.</p></li>
+            <li><h3>Місяць супроводу</h3><p>Після відкриття не зникаємо, а допомагаємо закладу стати на ноги.</p></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn--primary" href="#zayavka">Розрахувати мій заклад</a>
+      </div>
+    </section>
+
+    <!-- ===== 8. Питання ===== -->
+    <section class="section" id="faq" aria-labelledby="t-faq">
+      <div class="section__head">
+        <h2 id="t-faq">Часті питання</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Скільки коштує відкрити заклад повністю?</summary>
+          <p>Залежить від формату, площі, стану приміщення і обладнання. Вартість наших послуг є в блоці вище, а орієнтовний бюджет на сам заклад назвемо після першої розмови.</p>
+        </details>
+        <details>
+          <summary>Скільки часу займає відкриття?</summary>
+          <p>Зазвичай від 1,5 до 3 місяців. Якщо проєкт великий, довше: термін фіксуємо після розрахунку.</p>
+        </details>
+        <details>
+          <summary>У мене немає приміщення. Ви допоможете?</summary>
+          <p>Так. Підбираємо приміщення, аналізуємо локацію та аудиторію і рахуємо, чи підходить воно під ваш формат.</p>
+        </details>
+        <details>
+          <summary>Обладнання треба купувати тільки у вас?</summary>
+          <p>Ні. Можемо підібрати обладнання і постачальників, а можемо працювати з вашими.</p>
+        </details>
+        <details>
+          <summary>Допомагаєте з документами?</summary>
+          <!-- TODO: уточнити в клієнта, що саме входить у «документи» -->
+          <p>Так, допомагаємо з документами для запуску. Що саме потрібно для вашого формату, розповімо на консультації.</p>
+        </details>
+        <details>
+          <summary>Що буде після відкриття?</summary>
+          <!-- TODO: уточнити формат супроводу (виїзди чи дзвінки) -->
+          <p>Перший місяць після відкриття супроводжуємо заклад і залишаємося на зв'язку.</p>
+        </details>
+        <details>
+          <summary>У мене вже є заклад, але він не працює як треба. Візьметеся?</summary>
+          <p>Так, перезапускаємо діючі заклади: оновлюємо меню, концепцію, робимо ребрендинг або доводимо окремий напрям роботи.</p>
+        </details>
+        <details>
+          <summary>Чим це краще за франшизу?</summary>
+          <p>Ви отримуєте свій бренд, своє меню і свободу рішень. Франшиза працює за чужими стандартами, а ми будуємо заклад під вашу ідею.</p>
+        </details>
+      </div>
+      <div class="faq__more">
+        <p><b>Не знайшли відповіді?</b> Запитайте напряму, відповідаємо особисто.</p>
+        <div class="faq__more-actions">
+          <a class="btn btn--primary" href="#zayavka">Поставити питання</a>
+          <a class="btn btn--ghost" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 9. Квіз-заявка ===== -->
+    <section class="section section--alt" id="zayavka" aria-labelledby="t-form">
+      <div class="quiz-wrap">
+        <div class="quiz-intro">
+          <h2 id="t-form">Розкажіть про свій заклад</h2>
+          <p class="section__lead">Чотири короткі питання про заклад і контакт, і ми підготуємо попередній розрахунок саме для вас.</p>
+          <p class="quiz-intro__alt">Зручніше написати? <a href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a></p>
+        </div>
+
+        <!-- TODO: підключити відправку (Telegram-бот або CRM) -->
+        <form class="quiz" novalidate>
+          <p class="quiz__progress"><span class="quiz__step-num">1</span> з 5</p>
+
+          <fieldset class="quiz__step is-active" data-step="1">
+            <legend>Який заклад плануєте?</legend>
+            <div class="quiz__formats">
+              <label class="pick"><input type="radio" name="format" value="Кав'ярня"><img src="img/zaklady/kavyarnya-sm.webp" alt="" loading="lazy"><span>Кав'ярня</span></label>
+              <label class="pick"><input type="radio" name="format" value="Піцерія"><img src="img/zaklady/pitseriia-sm.webp" alt="" loading="lazy"><span>Піцерія</span></label>
+              <label class="pick"><input type="radio" name="format" value="Бургерна"><img src="img/zaklady/burgerna-sm.webp" alt="" loading="lazy"><span>Бургерна</span></label>
+              <label class="pick"><input type="radio" name="format" value="Шаурма"><img src="img/zaklady/shaurma-sm.webp" alt="" loading="lazy"><span>Шаурма</span></label>
+              <label class="pick"><input type="radio" name="format" value="Суші"><img src="img/zaklady/sushi-sm.webp" alt="" loading="lazy"><span>Суші</span></label>
+              <label class="pick"><input type="radio" name="format" value="Пекарня"><img src="img/zaklady/pekarnya-sm.webp" alt="" loading="lazy"><span>Пекарня</span></label>
+              <label class="pick"><input type="radio" name="format" value="Кондитерська"><img src="img/zaklady/konditerska-sm.webp" alt="" loading="lazy"><span>Кондитерська</span></label>
+              <label class="pick"><input type="radio" name="format" value="Чебуречна"><img src="img/zaklady/cheburechna-sm.webp" alt="" loading="lazy"><span>Чебуречна</span></label>
+              <label class="pick"><input type="radio" name="format" value="Фастфуд"><img src="img/zaklady/fastfood-sm.webp" alt="" loading="lazy"><span>Фастфуд</span></label>
+              <label class="pick"><input type="radio" name="format" value="Стрітфуд"><img src="img/zaklady/stritfud-sm.webp" alt="" loading="lazy"><span>Стрітфуд</span></label>
+              <label class="pick"><input type="radio" name="format" value="Dark kitchen"><img src="img/zaklady/dark-kitchen-sm.webp" alt="" loading="lazy"><span>Dark kitchen</span></label>
+              <label class="pick"><input type="radio" name="format" value="Свій формат"><img src="img/zaklady/indyvidualnyi-sm.webp" alt="" loading="lazy"><span>Свій формат</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="quiz__step" data-step="2">
+            <legend>У якому місті?</legend>
+            <input class="field" type="text" name="city" placeholder="Наприклад, Київ" autocomplete="address-level2">
+          </fieldset>
+
+          <fieldset class="quiz__step" data-step="3">
+            <legend>Чи є приміщення?</legend>
+            <div class="quiz__options">
+              <label class="opt"><input type="radio" name="premises" value="Є"><span>Є</span></label>
+              <label class="opt"><input type="radio" name="premises" value="Немає"><span>Немає</span></label>
+              <label class="opt"><input type="radio" name="premises" value="Є діючий заклад"><span>Є діючий заклад</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="quiz__step" data-step="4">
+            <legend>Яка площа?</legend>
+            <div class="quiz__options">
+              <label class="opt"><input type="radio" name="area" value="до 20"><span>до 20 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="20–40"><span>20–40 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="40–60"><span>40–60 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="60–80"><span>60–80 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="80+"><span>понад 80 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="не знаю"><span>Ще не знаю</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="quiz__step" data-step="5">
+            <legend>Куди надіслати розрахунок?</legend>
+            <input class="field" type="text" name="name" placeholder="Ваше ім'я" autocomplete="name" required>
+            <input class="field" type="tel" name="phone" placeholder="+380" autocomplete="tel" required>
+            <p class="quiz__error" role="alert" hidden>Вкажіть ім'я і телефон, щоб ми могли зв'язатися.</p>
+          </fieldset>
+
+          <div class="quiz__done" hidden>
+            <div class="done-key" aria-hidden="true">
+              <span class="done-key__plate"></span>
+              <span class="done-key__flash"></span>
+              <svg class="done-key__key" viewBox="0 0 100 300"><use href="#keyShape"/></svg>
+            </div>
+            <h3>Заявку прийнято</h3>
+            <p>Зв'яжемося з вами, щоб обговорити заклад і розрахунок.</p>
+          </div>
+
+          <div class="quiz__nav">
+            <button type="button" class="btn btn--ghost quiz__back" hidden>Назад</button>
+            <button type="button" class="btn btn--primary quiz__next">Далі</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <img src="img/logo.webp" width="360" height="303" alt="Бюро ресторанних рішень" loading="lazy">
+    <div class="footer__col">
+      <p>Відкриваємо заклади під ключ по всій Україні</p>
+      <!-- TODO: контакти для сайту не погоджені (особистий чи робочий номер) -->
+      <p><a href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a></p>
+    </div>
+    <p class="footer__copy">© 2026 Бюро ресторанних рішень</p>
+  </footer>
+
+  <!-- Лише для узгодження, на живому сайті не буде -->
+  <button type="button" class="replay">Повторити інтро</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="main.js?v=16"></script>
+</body>
+</html>
