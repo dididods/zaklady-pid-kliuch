@@ -46,7 +46,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
-  <link rel="stylesheet" href="styles.css?v=20">
+  <link rel="stylesheet" href="styles.css?v=21">
 
   <script>
     // Інтро показуємо раз за візит. ?intro=1 — показати примусово
@@ -305,7 +305,7 @@
             <li>Ведемо від&nbsp;ідеї до&nbsp;відкриття</li>
             <li>Вчимо команду працювати</li>
           </ul>
-          <a href="#zayavka" class="sign__link" data-premises-pick="Немає">Це&nbsp;про мене</a>
+          <a href="#zayavka" class="sign__link" data-stage="Ідея" data-premises="Немає">Це&nbsp;про мене</a>
         </li>
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
@@ -316,7 +316,7 @@
             <li>Підбираємо формат під&nbsp;приміщення</li>
             <li>Відкриваємо під&nbsp;ключ</li>
           </ul>
-          <a href="#zayavka" class="sign__link" data-premises-pick="Є">Це&nbsp;про мене</a>
+          <a href="#zayavka" class="sign__link" data-premises="Є">Це&nbsp;про мене</a>
         </li>
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
@@ -327,7 +327,7 @@
             <li>Переглядаємо концепцію</li>
             <li>Робимо ребрендинг або&nbsp;перезапуск</li>
           </ul>
-          <a href="#zayavka" class="sign__link" data-premises-pick="Є діючий заклад">Це&nbsp;про мене</a>
+          <a href="#zayavka" class="sign__link" data-stage="Діючий заклад">Це&nbsp;про мене</a>
         </li>
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
@@ -348,7 +348,11 @@
       <div class="founder">
         <div class="founder__photos">
           <img class="founder__main" src="img/dmytro-barsukov.jpg" width="853" height="1280" alt="Дмитро Барсуков, бренд-шеф" loading="lazy">
-          <img class="founder__extra" src="img/dmytro-grill.jpg" width="900" height="900" alt="Дмитро на кухні біля гриля" loading="lazy">
+          <!-- друге фото без рамки: краї розчиняються у фоні, над грилем пара (canvas) -->
+          <div class="founder__extra">
+            <img src="img/dmytro-grill.jpg" width="900" height="900" alt="Дмитро на кухні біля гриля" loading="lazy">
+            <canvas class="founder__steam" aria-hidden="true"></canvas>
+          </div>
         </div>
         <div class="founder__text">
           <h2 id="t-who">Заклад вам відкриває<br class="br-d"> <span class="hl">шеф&#8209;практик</span>, <s class="soft-strike">а&nbsp;не&nbsp;франшиза</s></h2>
@@ -587,11 +591,29 @@
       </div>
 
       <div class="price">
+        <!-- Калькулятор: площа → ціна пакета; чекліст послуг з брифу 3.1.
+             Усе відмічено: ключ у замку, ціна пакета. Зняли пункт: ключ виходить,
+             окремі послуги шеф рахує після розмови (окремих цін немає, не вигадуємо) -->
         <div class="calc">
+         <div class="calc__main">
           <label class="calc__label" for="area">Площа закладу: <output id="area-out">35 м²</output></label>
           <input class="calc__range" id="area" type="range" min="10" max="150" step="5" value="35">
-          <p class="calc__result"><span class="calc__sum">3 300</span> <span class="calc__cur">у.о.</span></p>
-          <p class="calc__note">вартість послуг «під&nbsp;ключ»</p>
+          <div class="calc__box">
+            <div class="done-key calc__lock" aria-hidden="true">
+              <span class="done-key__plate"></span>
+              <span class="done-key__flash"></span>
+              <svg class="done-key__key" viewBox="0 0 100 300"><use href="#keyShape"/></svg>
+            </div>
+            <div class="calc__full" aria-live="polite">
+              <p class="calc__result"><span class="calc__sum">3 300</span> <span class="calc__cur">у.о.</span></p>
+              <p class="calc__note">вартість послуг «під&nbsp;ключ»</p>
+            </div>
+            <div class="calc__partial" aria-live="polite" hidden>
+              <p class="calc__partial-title">Окремі послуги: шеф порахує після розмови</p>
+              <p class="calc__partial-text">Під&nbsp;ключ вигідніше: <b>усі&nbsp;12&nbsp;послуг</b> уже в&nbsp;пакеті<span class="calc__pkg"> за&nbsp;<b class="calc__pkg-sum">3 300 у.о.</b></span></p>
+              <button type="button" class="calc__all">Повернути все під&nbsp;ключ</button>
+            </div>
+          </div>
           <ul class="calc__tiers">
             <li data-max="20"><span>до&nbsp;20 м²</span><b>2 800 у.о.</b></li>
             <li data-max="40"><span>20–40 м²</span><b>3 300 у.о.</b></li>
@@ -599,6 +621,27 @@
             <li data-max="80"><span>60–80 м²</span><b>4 800 у.о.</b></li>
             <li data-max="9999"><span>понад 80 м²</span><b>індивідуально</b></li>
           </ul>
+         </div>
+
+          <fieldset class="calc__services">
+            <legend>Що входить</legend>
+            <p class="calc__hint">Щось уже маєте? Зніміть галочку</p>
+            <div class="svc">
+              <label class="chk"><input type="checkbox" name="svc" value="Бізнес-план" checked><span>Бізнес-план</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Приміщення й аналіз локації" checked><span>Приміщення й&nbsp;аналіз локації</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Концепція й назва" checked><span>Концепція й&nbsp;назва</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Дизайн і підрядники" checked><span>Дизайн і&nbsp;підрядники</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Обладнання й постачальники" checked><span>Обладнання й&nbsp;постачальники</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Меню й техкарти" checked><span>Меню й&nbsp;техкарти</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Упаковка й уніформа" checked><span>Упаковка й&nbsp;уніформа</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Персонал" checked><span>Підбір і&nbsp;навчання персоналу</span></label>
+              <!-- TODO: уточнити в клієнта, що саме входить у «документи» -->
+              <label class="chk"><input type="checkbox" name="svc" value="Документи" checked><span>Допомога з&nbsp;документами</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Просування" checked><span>Просування до&nbsp;відкриття</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Відкриття" checked><span>Відкриття і&nbsp;місяць супроводу</span></label>
+              <label class="chk"><input type="checkbox" name="svc" value="Каса й автоматизація" checked><span>Каса й&nbsp;автоматизація</span></label>
+            </div>
+          </fieldset>
         </div>
 
         <div class="price__side">
@@ -616,7 +659,7 @@
       </div>
 
       <div class="cta-row">
-        <a class="btn btn--primary" href="#zayavka">Розрахувати мій заклад</a>
+        <a class="btn btn--primary" href="#zayavka" data-from-calc>Розрахувати мій заклад</a>
       </div>
     </section>
 
@@ -675,15 +718,18 @@
       <div class="quiz-wrap">
         <div class="quiz-intro">
           <h2 id="t-form">Розкажіть про свій заклад</h2>
-          <p class="section__lead">Чотири короткі питання про заклад і&nbsp;контакт, і&nbsp;ми&nbsp;підготуємо попередній розрахунок саме для&nbsp;вас.</p>
+          <p class="section__lead">Кілька коротких питань про&nbsp;заклад, і&nbsp;ми&nbsp;підготуємо попередній розрахунок саме для&nbsp;вас. Що&nbsp;ви&nbsp;вже обрали на&nbsp;сайті, тут заповнено.</p>
           <p class="quiz-intro__alt">Зручніше написати? <a href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a></p>
         </div>
 
         <!-- TODO: підключити відправку (Telegram-бот або CRM) -->
         <form class="quiz" novalidate>
-          <p class="quiz__progress"><span class="quiz__step-num">1</span> з&nbsp;5</p>
+          <div class="quiz__top">
+            <p class="quiz__progress">Крок <span class="quiz__step-num">1</span> з&nbsp;<span class="quiz__step-total">7</span></p>
+            <span class="quiz__bar" aria-hidden="true"><i></i></span>
+          </div>
 
-          <fieldset class="quiz__step is-active" data-step="1">
+          <fieldset class="quiz__step is-active" data-step="format">
             <legend>Який заклад плануєте?</legend>
             <div class="quiz__formats">
               <label class="pick"><input type="radio" name="format" value="Кав'ярня"><img src="img/zaklady/kavyarnya-sm.webp" alt="" loading="lazy"><span>Кав'ярня</span></label>
@@ -701,53 +747,92 @@
             </div>
           </fieldset>
 
-          <fieldset class="quiz__step" data-step="2">
-            <legend>У&nbsp;якому місті?</legend>
-            <input class="field" type="text" name="city" placeholder="Наприклад, Київ" autocomplete="address-level2">
+          <fieldset class="quiz__step" data-step="stage">
+            <legend>На&nbsp;якому ви&nbsp;етапі?</legend>
+            <div class="quiz__options quiz__options--col">
+              <label class="opt"><input type="radio" name="stage" value="Ідея"><span>Поки ідея</span></label>
+              <label class="opt"><input type="radio" name="stage" value="Концепція"><span>Є концепція</span></label>
+              <label class="opt"><input type="radio" name="stage" value="Дизайн-проєкт"><span>Є дизайн-проєкт</span></label>
+              <label class="opt"><input type="radio" name="stage" value="Діючий заклад"><span>Заклад уже працює</span></label>
+            </div>
           </fieldset>
 
-          <fieldset class="quiz__step" data-step="3">
-            <legend>Чи&nbsp;є приміщення?</legend>
+          <fieldset class="quiz__step" data-step="place">
+            <legend>Приміщення і&nbsp;місто</legend>
+            <p class="quiz__sub">Чи&nbsp;є приміщення?</p>
             <div class="quiz__options">
               <label class="opt"><input type="radio" name="premises" value="Є"><span>Є</span></label>
               <label class="opt"><input type="radio" name="premises" value="Немає"><span>Немає</span></label>
               <label class="opt"><input type="radio" name="premises" value="Є діючий заклад"><span>Є діючий заклад</span></label>
             </div>
+            <label class="quiz__sub" for="q-city">У&nbsp;якому місті?</label>
+            <input class="field" id="q-city" type="text" name="city" placeholder="Наприклад, Київ" autocomplete="address-level2">
           </fieldset>
 
-          <fieldset class="quiz__step" data-step="4">
+          <fieldset class="quiz__step" data-step="area">
             <legend>Яка площа?</legend>
             <div class="quiz__options">
-              <label class="opt"><input type="radio" name="area" value="до 20"><span>до&nbsp;20 м²</span></label>
-              <label class="opt"><input type="radio" name="area" value="20–40"><span>20–40 м²</span></label>
-              <label class="opt"><input type="radio" name="area" value="40–60"><span>40–60 м²</span></label>
-              <label class="opt"><input type="radio" name="area" value="60–80"><span>60–80 м²</span></label>
-              <label class="opt"><input type="radio" name="area" value="80+"><span>понад 80 м²</span></label>
-              <label class="opt"><input type="radio" name="area" value="не знаю"><span>Ще&nbsp;не&nbsp;знаю</span></label>
+              <label class="opt"><input type="radio" name="area" value="до 20 м²"><span>до&nbsp;20 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="20-40 м²"><span>20-40 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="40-60 м²"><span>40-60 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="60-80 м²"><span>60-80 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="понад 80 м²"><span>понад 80 м²</span></label>
+              <label class="opt"><input type="radio" name="area" value="Ще не знаю"><span>Ще&nbsp;не&nbsp;знаю</span></label>
             </div>
           </fieldset>
 
-          <fieldset class="quiz__step" data-step="5">
+          <fieldset class="quiz__step" data-step="needs">
+            <legend>Що&nbsp;потрібно зробити?</legend>
+            <p class="quiz__sub quiz__sub--dim">Відмічено все, що&nbsp;входить у&nbsp;«під&nbsp;ключ». Зніміть те, що&nbsp;вже маєте.</p>
+            <!-- список той самий, що в калькуляторі: будується з нього в main.js -->
+            <div class="svc svc--quiz"></div>
+          </fieldset>
+
+          <fieldset class="quiz__step" data-step="when">
+            <legend>Коли хочете відкритися?</legend>
+            <div class="quiz__options quiz__options--col">
+              <label class="opt"><input type="radio" name="when" value="Якнайшвидше"><span>Якнайшвидше</span></label>
+              <label class="opt"><input type="radio" name="when" value="За 1-3 місяці"><span>За&nbsp;1-3 місяці</span></label>
+              <label class="opt"><input type="radio" name="when" value="За 3-6 місяців"><span>За&nbsp;3-6 місяців</span></label>
+              <label class="opt"><input type="radio" name="when" value="Ще не знаю"><span>Ще&nbsp;не&nbsp;знаю</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="quiz__step" data-step="contact">
             <legend>Куди надіслати розрахунок?</legend>
             <input class="field" type="text" name="name" placeholder="Ваше ім'я" autocomplete="name" required>
-            <input class="field" type="tel" name="phone" placeholder="+380" autocomplete="tel" required>
+            <input class="field" type="tel" name="phone" placeholder="+380 __ ___ __ __" autocomplete="tel" inputmode="tel" required>
+            <p class="quiz__sub">Як&nbsp;зручніше зв'язатися?</p>
+            <div class="quiz__options">
+              <label class="opt"><input type="radio" name="channel" value="Дзвінок"><span>Дзвінок</span></label>
+              <label class="opt"><input type="radio" name="channel" value="Viber"><span>Viber</span></label>
+              <label class="opt"><input type="radio" name="channel" value="Telegram"><span>Telegram</span></label>
+            </div>
             <p class="quiz__consent">Натискаючи «Отримати розрахунок», ви погоджуєтесь з&nbsp;<a href="privacy.html" target="_blank">політикою конфіденційності</a>.</p>
-            <p class="quiz__error" role="alert" hidden>Вкажіть ім'я і&nbsp;телефон, щоб ми&nbsp;могли зв'язатися.</p>
           </fieldset>
 
           <div class="quiz__done" hidden>
-            <div class="done-key" aria-hidden="true">
-              <span class="done-key__plate"></span>
-              <span class="done-key__flash"></span>
-              <svg class="done-key__key" viewBox="0 0 100 300"><use href="#keyShape"/></svg>
+            <div class="quiz__summary">
+              <p class="quiz__summary-title">Ваш заклад</p>
+              <dl class="quiz__summary-list"></dl>
             </div>
-            <h3>Заявку прийнято</h3>
-            <p>Зв'яжемося з&nbsp;вами, щоб обговорити заклад і&nbsp;розрахунок.</p>
+            <div class="quiz__done-row">
+              <div class="done-key" aria-hidden="true">
+                <span class="done-key__plate"></span>
+                <span class="done-key__flash"></span>
+                <svg class="done-key__key" viewBox="0 0 100 300"><use href="#keyShape"/></svg>
+              </div>
+              <div>
+                <h3>Заявку прийнято</h3>
+                <p>Зв'яжемося з&nbsp;вами, щоб обговорити заклад і&nbsp;розрахунок.</p>
+              </div>
+            </div>
           </div>
 
+          <p class="quiz__error" role="alert" hidden></p>
           <div class="quiz__nav">
             <button type="button" class="btn btn--ghost quiz__back" hidden>Назад</button>
-            <button type="button" class="btn btn--primary quiz__next">Далі</button>
+            <button type="button" class="btn btn--primary quiz__next" aria-disabled="true">Далі</button>
           </div>
         </form>
       </div>
@@ -796,6 +881,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="main.js?v=18"></script>
+  <script src="main.js?v=19"></script>
 </body>
 </html>

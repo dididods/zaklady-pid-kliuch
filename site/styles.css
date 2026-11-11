@@ -634,17 +634,27 @@ button { font: inherit; color: inherit; }
 }
 .founder__photos { position: relative; padding: 0 12% 12% 0; }
 .founder__main { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%; border-radius: 24px; }
+/* друге фото без рамки: краї розчиняються у фоні, обличчя й гриль лишаються чіткими */
 .founder__extra {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 46%;
+  right: -9%;
+  bottom: -7%;
+  width: 60%;
   aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 20px;
-  border: 6px solid var(--bg-2);
-  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, .6);
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 44% 44%, #000 46%, transparent 100%);
+  mask-image: radial-gradient(ellipse 60% 60% at 44% 44%, #000 46%, transparent 100%);
+  will-change: transform;
 }
+.founder__extra img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* світлу кухню трохи приглушуємо й зігріваємо під темну палітру */
+  filter: brightness(.8) contrast(1.06) saturate(1.05) sepia(.14);
+}
+.founder__steam { position: absolute; inset: 0; width: 100%; height: 100%; }
 .founder__name { margin: 14px 0 22px; font-weight: 700; color: var(--hot); }
 .founder__text > p { max-width: 34em; color: var(--text-dim); font-size: 1.125rem; }
 .founder__facts {
@@ -1624,3 +1634,143 @@ html { scroll-padding-top: 84px; }
 /* без «вдів» — одного слова на останньому рядку */
 h1, h2, h3 { text-wrap: balance; }
 p, li, blockquote, summary { text-wrap: pretty; }
+
+/* =========================================================
+   Етап 2: калькулятор з чеклістом послуг, квіз з перевіркою
+   ========================================================= */
+.price { grid-template-columns: minmax(0, 1fr); }
+.calc {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(24px, 4vw, 56px);
+}
+.price__side {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+.price__side .invest { border-bottom: 0; padding: 22px 0 0; }
+
+/* результат: замок з ключем + ціна або повідомлення про окремі послуги */
+.calc__box { display: flex; align-items: center; gap: 4px; min-height: 124px; margin: 8px 0 18px; }
+.calc__lock { flex: none; transform: scale(.8); transform-origin: left center; margin: 0 -18px 0 -6px; }
+.calc__lock .done-key__key {
+  transform: rotate(90deg);
+  transition: transform .5s cubic-bezier(.3, 1.6, .5, 1), clip-path .5s ease;
+}
+.calc.is-partial .calc__lock .done-key__key {
+  /* ключ виходить із замка: видно частину стрижня */
+  transform: translateY(-34px) rotate(0deg);
+  clip-path: inset(0 0 calc(100% - 92px) 0);
+  transition: transform .45s ease, clip-path .45s ease;
+}
+.calc__lock .done-key__plate { transition: box-shadow .4s; }
+.calc:not(.is-partial) .calc__lock .done-key__plate {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .5), 0 0 26px rgba(255, 180, 0, .35), inset 0 0 0 3px #b98431, inset 0 0 0 4px rgba(255, 230, 170, .35);
+}
+.calc__full .calc__result { margin: 0; }
+.calc__full .calc__note { margin: 6px 0 0; }
+.calc__sum.is-custom { font-size: clamp(1.6rem, 1.3rem + 1.4vw, 2.4rem); }
+.calc__partial p { margin: 0; }
+.calc__partial-title { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.05rem, .95rem + .5vw, 1.3rem); line-height: 1.3; color: var(--text); }
+.calc__partial-text { margin-top: 8px !important; color: var(--text-dim); font-size: .9375rem; }
+.calc__partial-text b { color: var(--hot); }
+.calc__all {
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--hot);
+  font: inherit;
+  font-weight: 700;
+  font-size: .9375rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.calc__all:hover { color: var(--text); }
+
+.calc__services { margin: 0; padding: 0; border: 0; min-width: 0; }
+.calc__services legend { padding: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(1.15rem, 1rem + .6vw, 1.4rem); }
+.calc__hint { margin: 6px 0 16px; color: var(--text-dim); font-size: .9375rem; }
+
+/* чекліст послуг (калькулятор і квіз) */
+.svc { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.chk { position: relative; display: block; cursor: pointer; }
+.chk input { position: absolute; opacity: 0; pointer-events: none; }
+.chk span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: var(--bg-2);
+  border: 1.5px solid rgba(255, 241, 220, .1);
+  font-size: .9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-dim);
+  transition: border-color .2s, color .2s, background-color .2s;
+}
+.calc .chk span { background: rgba(255, 241, 220, .04); }
+.chk span::before {
+  content: "";
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 241, 220, .35);
+  background: transparent no-repeat center / 12px;
+  transition: background-color .2s, border-color .2s;
+}
+.chk input:checked + span { color: var(--text); border-color: rgba(255, 180, 0, .45); }
+.chk input:checked + span::before {
+  border-color: var(--hot);
+  background-color: var(--hot);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2 4.8 9 10 3' fill='none' stroke='%231b1411' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.chk input:focus-visible + span { outline: 2px solid var(--hot); outline-offset: 2px; }
+.chk:hover span { border-color: rgba(255, 180, 0, .35); }
+
+/* --- квіз --- */
+.quiz__top { display: flex; align-items: center; gap: 14px; margin: 0 0 18px; }
+.quiz__top .quiz__progress { margin: 0; flex: none; }
+.quiz__bar { position: relative; flex: 1; height: 4px; border-radius: 2px; background: rgba(255, 241, 220, .1); overflow: hidden; }
+.quiz__bar i { position: absolute; inset: 0 auto 0 0; width: 14%; border-radius: 2px; background: var(--hot); transition: width .35s ease; }
+.quiz__sub { display: block; margin: 0 0 10px; font-weight: 700; }
+.quiz__options + .quiz__sub { margin-top: 22px; }
+.quiz__sub--dim { margin-top: -8px; font-weight: 400; color: var(--text-dim); font-size: .9375rem; }
+.quiz__options--col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.opt span { transition: border-color .2s, background-color .2s; }
+.opt:hover span { border-color: rgba(255, 180, 0, .35); }
+.quiz .field + .quiz__sub { margin-top: 10px; }
+.quiz__step[data-step="contact"] .quiz__options { margin-bottom: 16px; }
+.quiz__next[aria-disabled="true"] { opacity: .45; box-shadow: none; cursor: not-allowed; transform: none; }
+.quiz__error { margin: 14px 0 0; }
+
+/* фінал: підсумок «Ваш заклад» і ключ */
+.quiz__summary { padding: 18px 20px; border-radius: 18px; background: var(--bg-2); border: 1px solid rgba(255, 180, 0, .25); }
+.quiz__summary-title { margin: 0 0 10px; font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; color: var(--hot); }
+.quiz__summary-list { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 16px; margin: 0; font-size: .9375rem; }
+.quiz__summary-list dt { color: var(--text-dim); }
+.quiz__summary-list dd { margin: 0; font-weight: 600; }
+.quiz__done-row { display: flex; align-items: center; gap: 18px; margin-top: 22px; }
+.quiz__done-row .done-key { flex: none; margin: 0; }
+.quiz__done-row h3 { margin: 0 0 6px; }
+.quiz__done-row p { margin: 0; }
+
+@media (max-width: 900px) {
+  .calc, .price__side { grid-template-columns: minmax(0, 1fr); }
+  .price__side .invest { padding-top: 0; }
+}
+@media (max-width: 560px) {
+  .svc, .quiz__options--col { grid-template-columns: minmax(0, 1fr); }
+  .founder__extra { right: -2%; bottom: -6%; width: 64%; }
+  .calc__box { min-height: 104px; }
+  .calc__lock { transform: scale(.66); margin: 0 -36px 0 -10px; }
+  .quiz__summary-list { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .quiz__summary-list dd { margin-bottom: 8px; }
+  .quiz__done-row { align-items: flex-start; flex-direction: column; gap: 8px; }
+}
