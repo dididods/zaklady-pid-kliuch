@@ -686,9 +686,10 @@
       var spawn = function (p, initial) {
         var k = w / 300;
         p.max = 140 + Math.random() * 140;
-        p.x = w * (0.28 + Math.random() * 0.5);
-        p.y = h * (0.7 + Math.random() * 0.14);
-        p.vx = (0.05 + Math.random() * 0.25) * k;
+        // джерело пари - вогонь під рукою шефа, щоб пара лишалась у видимому овалі
+        p.x = w * (0.24 + Math.random() * 0.3);
+        p.y = h * (0.72 + Math.random() * 0.12);
+        p.vx = (Math.random() - 0.35) * 0.2 * k;
         p.vy = -(0.3 + Math.random() * 0.45) * k;
         p.r = (12 + Math.random() * 16) * k;
         p.seed = Math.random() * 100;

@@ -637,13 +637,15 @@ button { font: inherit; color: inherit; }
 /* друге фото без рамки: краї розчиняються у фоні, обличчя й гриль лишаються чіткими */
 .founder__extra {
   position: absolute;
-  right: -9%;
-  bottom: -7%;
-  width: 60%;
+  right: -23%;
+  bottom: -13%;
+  width: 64%;
   aspect-ratio: 1;
   pointer-events: none;
-  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 44% 44%, #000 46%, transparent 100%);
-  mask-image: radial-gradient(ellipse 60% 60% at 44% 44%, #000 46%, transparent 100%);
+  /* овал навколо шефа і вогню (центр 40% / 48%), повністю зникає раніше,
+     ніж доходить до країв кадру, тому квадрат не видно */
+  -webkit-mask-image: radial-gradient(ellipse 40% 48% at 40% 48%, #000 64%, transparent 99%);
+  mask-image: radial-gradient(ellipse 40% 48% at 40% 48%, #000 64%, transparent 99%);
   will-change: transform;
 }
 .founder__extra img {
@@ -1767,7 +1769,7 @@ p, li, blockquote, summary { text-wrap: pretty; }
 }
 @media (max-width: 560px) {
   .svc, .quiz__options--col { grid-template-columns: minmax(0, 1fr); }
-  .founder__extra { right: -2%; bottom: -6%; width: 64%; }
+  .founder__extra { right: -10%; bottom: -6%; width: 66%; }
   .calc__box { min-height: 104px; }
   .calc__lock { transform: scale(.66); margin: 0 -36px 0 -10px; }
   .quiz__summary-list { grid-template-columns: minmax(0, 1fr); gap: 0; }
