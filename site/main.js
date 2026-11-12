@@ -93,7 +93,7 @@
     var h = stage.clientHeight;
     var mobile = w < 600;
     var rx = w * (mobile ? 0.45 : 0.4 + 0.08 * s.focus);
-    var ry = h * (mobile ? 0.3 : 0.2) * s.tilt;
+    var ry = h * (mobile ? 0.17 : 0.2) * s.tilt;   // на телефоні орбіта сплюснута
 
     items.forEach(function (el, i) {
       var a = s.angle + i * step;
@@ -101,7 +101,7 @@
       var t = (z + 1) / 2;
       var x = Math.sin(a) * rx + s.px * (0.4 + t);
       var y = z * ry;
-      var sc = (mobile ? 0.42 : 0.44) + (mobile ? 0.58 : 0.48) * Math.pow(t, 1.3);
+      var sc = (mobile ? 0.5 : 0.44) + (mobile ? 0.5 : 0.48) * Math.pow(t, 1.3);
       var bright = 0.5 + 0.5 * t;
       var op = 0.5 + 0.5 * t;
       var zi = z > 0 ? 60 + Math.round(t * 100) : Math.round(t * 40);

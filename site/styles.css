@@ -2036,14 +2036,22 @@ html:not(.no-intro) { overflow: hidden; }
 .bar-tg:hover .bar-tg__fold, .bar-tg:focus-visible .bar-tg__fold { stroke: var(--hot); }
 @media (max-width: 760px) { .bar-tg { width: 36px; height: 36px; } .bar-tg svg { width: 18px; height: 18px; } }
 
-/* ===== Перший екран: шеф · кнопка · 20+ одразу під офером, орбіта нижче ===== */
+/* ===== Перший екран: кнопка під офером, орбіта вище (задні будівлі трохи за кнопкою) ===== */
 .stage__floor { display: none; }   /* овал «підлоги» читався як темне коло */
+.hero__cta { position: relative; z-index: 6; margin-top: 18px; }
+.hero__bottom { grid-template-columns: 1fr 1fr; }
 @media (min-width: 901px) {
-  .hero__bottom { margin-top: 22px; }
-  .stage { flex-basis: clamp(330px, 48vh, 520px); }
+  .stage { margin-top: -96px; }
 }
 @media (max-width: 900px) {
-  .hero__bottom { order: 2; }       /* на планшеті й телефоні ряд лишається під орбітою */
+  .hero__cta { order: 2; margin-top: 12px; }   /* на планшеті й телефоні кнопка під орбітою */
+  .hero__bottom { order: 3; }
+}
+@media (max-width: 760px) {
+  .hero__cta { width: 100%; }
+  .hero__cta .btn { width: 100%; }
+  /* орбіта сплюснута, будівлі трохи більші */
+  .stage { --item: clamp(96px, 28vw, 124px); flex-basis: 300px; }
 }
 
 /* ===== Telegram у шапці (десктоп): повна кнопка нагорі → значок у плашці при скролі ===== */

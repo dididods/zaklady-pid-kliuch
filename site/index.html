@@ -46,7 +46,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
-  <link rel="stylesheet" href="styles.css?v=31">
+  <link rel="stylesheet" href="styles.css?v=32">
 
   <!-- GSAP вантажимо якомога раніше: поки його немає, інтро не може стартувати -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -236,16 +236,9 @@
         </ul>
       </div>
 
-      <!-- шеф · кнопка · факт: на десктопі одразу під офером, на ≤900px під орбітою (order) -->
-      <div class="hero__bottom">
-        <a class="chef-chip" href="#shef">
-          <img src="img/dmytro-barsukov.jpg" width="853" height="1280" alt="">
-          <span><b>Дмитро Барсуков</b> бренд-шеф і&nbsp;засновник бюро</span>
-        </a>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#vartist">Розрахувати вартість</a>
-        </div>
-        <p class="fact fact--right"><strong>20+</strong> закладів уже працюють</p>
+      <!-- кнопка одразу під офером; на ≤900px під орбітою (order) -->
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#vartist">Розрахувати вартість</a>
       </div>
 
       <div class="stage">
@@ -303,6 +296,14 @@
         </div>
       </div>
 
+      <!-- низ першого екрана: шеф і факт -->
+      <div class="hero__bottom">
+        <a class="chef-chip" href="#shef">
+          <img src="img/dmytro-barsukov.jpg" width="853" height="1280" alt="">
+          <span><b>Дмитро Барсуков</b> бренд-шеф і&nbsp;засновник бюро</span>
+        </a>
+        <p class="fact fact--right"><strong>20+</strong> закладів уже працюють</p>
+      </div>
     </section>
 
     <div class="tape" aria-hidden="true">
@@ -922,6 +923,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="main.js?v=24"></script>
+  <script src="main.js?v=25"></script>
 </body>
 </html>
