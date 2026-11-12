@@ -2088,10 +2088,11 @@ html:not(.no-intro) { overflow: hidden; }
 }
 
 /* ===== Телефон: вибраний заклад піднімається поверх офера (над заголовковим блоком) ===== */
+/* відкритий заклад (і десктоп, і телефон): сцена поверх офера й кнопки,
+   «Розрахувати вартість» майже зникає, щоб не змагалась з «Хочу такий заклад» */
+.stage.has-focus { z-index: 7; }
+.hero__cta { transition: opacity .35s; }
+.hero.is-focus .hero__cta { opacity: .12; pointer-events: none; }
 @media (max-width: 760px) {
-  .stage.has-focus { z-index: 7; }
-  /* картка закладу трохи нижче, а «Розрахувати вартість» під нею майже зникає */
-  .stage.has-focus .focus { bottom: -44px; }
-  .hero__cta { transition: opacity .35s; }
-  .hero.is-focus .hero__cta { opacity: .12; pointer-events: none; }
+  .stage.has-focus .focus { bottom: -44px; }   /* картка трохи нижче, на місці кнопки */
 }
