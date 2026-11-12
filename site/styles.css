@@ -100,8 +100,9 @@ button { font: inherit; color: inherit; }
 
 /* після першого екрана: логотип ховається, меню — компактна плашка */
 .site-header.is-scrolled { padding-top: 10px; padding-bottom: 10px; }
-.site-header.is-scrolled .brand,
-.site-header.is-scrolled .header-tg { opacity: 0; transform: translateY(-12px); pointer-events: none; }
+/* логотип лишається і їде разом з плашкою, лише трохи меншає */
+.brand img { transition: width .35s; }
+.site-header.is-scrolled .brand img { width: 60px; }
 .site-header.is-scrolled .header-bar {
   background: rgba(27, 20, 17, .82);
   border-color: rgba(255, 241, 220, .12);
@@ -1564,9 +1565,7 @@ html { scroll-padding-top: 84px; }
   .header-tg { display: none; }
   .site-header { grid-template-columns: auto 1fr; }
   .header-bar { justify-self: end; }
-  .site-header.is-scrolled { grid-template-columns: 1fr; }
-  .site-header.is-scrolled .header-bar { justify-self: center; }
-  .site-header.is-scrolled .brand { position: absolute; }
+  .site-header.is-scrolled .brand img { width: 48px; }
   .hero { padding-top: 80px; }
   .stage { --item: clamp(76px, 22vw, 100px); flex-basis: 400px; }
   .hero__chips { gap: 6px; margin-top: 14px; }
@@ -2019,3 +2018,20 @@ html:not(.no-intro) { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .slider.is-pulsing .slider__ring, .quiz__note.is-flash { animation: none; }
 }
+
+/* ===== Значок Telegram у плашці меню, праворуч від «Консультації» ===== */
+.bar-tg {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 180, 0, .55);
+  color: var(--hot);
+  transition: background-color .25s, color .25s, border-color .25s, transform .25s;
+}
+.bar-tg svg { width: 20px; height: 20px; margin-left: -2px; fill: currentColor; }
+.bar-tg__fold { fill: none; stroke: var(--bg); stroke-width: 1.4; stroke-linejoin: round; transition: stroke .25s; }
+.bar-tg:hover, .bar-tg:focus-visible { background: var(--hot); color: var(--bg); border-color: var(--hot); transform: translateY(-1px); }
+.bar-tg:hover .bar-tg__fold, .bar-tg:focus-visible .bar-tg__fold { stroke: var(--hot); }
+@media (max-width: 760px) { .bar-tg { width: 36px; height: 36px; } .bar-tg svg { width: 18px; height: 18px; } }

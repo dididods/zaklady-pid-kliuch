@@ -754,9 +754,9 @@
       if (quizApi) { quizApi.answer('area', areaTier(+range.value)); quizApi.calcChanged(); }
     };
     // людина сама взялася за повзунок: підказка «Потягніть» більше не потрібна
-    var touched = function () { slider.classList.add('is-touched'); slider.classList.remove('is-pulsing'); };
-    range.addEventListener('pointerdown', touched);
-    range.addEventListener('input', function () { touched(); updateCalc(); calcAreaToQuiz(); });
+    var sliderTouched = function () { slider.classList.add('is-touched'); slider.classList.remove('is-pulsing'); };
+    range.addEventListener('pointerdown', sliderTouched);
+    range.addEventListener('input', function () { sliderTouched(); updateCalc(); calcAreaToQuiz(); });
 
     svcCalc.forEach(function (c) {
       c.addEventListener('change', function () {
