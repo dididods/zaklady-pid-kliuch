@@ -46,7 +46,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
-  <link rel="stylesheet" href="styles.css?v=35">
+  <link rel="stylesheet" href="styles.css?v=36">
 
   <!-- GSAP вантажимо якомога раніше: поки його немає, інтро не може стартувати -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -56,16 +56,20 @@
   <script>
     // браузер не відновлює стару позицію прокрутки: сторінка відкривається з першого екрана
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    // Інтро показуємо раз за візит. ?intro=1 — показати примусово
+    // Інтро показуємо при кожному відкритті сайту. Не показуємо, якщо людина прийшла
+    // зі сторінки цього ж сайту (напр. «Повернутися до заявки» з privacy.html): тоді лишаємо якір.
+    // ?intro=1 — показати примусово
+    var internal = false;
     try {
       var force = location.search.indexOf('intro=1') > -1;
-      var seen = sessionStorage.getItem('introSeen') === '1';
+      internal = !!document.referrer && document.referrer.indexOf(location.origin + '/') === 0 &&
+        document.referrer.split('#')[0] !== location.href.split('#')[0];
       var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!force && (seen || calm)) document.documentElement.classList.add('no-intro');
+      if (!force && (internal || calm)) document.documentElement.classList.add('no-intro');
     } catch (e) { document.documentElement.classList.add('no-intro'); }
+    // відкриття сайту - завжди з першого екрана, навіть якщо в адресі лишився якір (#zayavka тощо)
+    if (!internal && location.hash) history.replaceState(null, '', location.pathname + location.search);
     if (!document.documentElement.classList.contains('no-intro')) {
-      // після інтро завжди перший екран, навіть якщо в адресі був якір (#zayavka тощо)
-      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
       // запобіжник: якщо анімація не стартувала за 2 с (повільний інтернет), інтро просто зникає
       setTimeout(function () {
         if (!window.__introStarted) document.documentElement.classList.add('no-intro');
@@ -923,6 +927,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="main.js?v=27"></script>
+  <script src="main.js?v=28"></script>
 </body>
 </html>

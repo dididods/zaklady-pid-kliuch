@@ -2087,7 +2087,7 @@ html:not(.no-intro) { overflow: hidden; }
   .bar-tg { margin-left: -8px; }      /* у режимі бургера gap плашки 8px */
 }
 
-/* ===== Телефон: картка закладу під сценою, заклад її не перекриває ===== */
-.stage { transition: margin-bottom .45s cubic-bezier(.3, .7, .2, 1); }
-.stage.focus-below { z-index: 7; margin-bottom: var(--focus-h, 0px); }   /* заклад поверх офера */
-.stage.focus-below .focus { top: 100%; bottom: auto; margin-top: 8px; }
+/* ===== Телефон: вибраний заклад піднімається поверх офера (над заголовковим блоком) ===== */
+@media (max-width: 760px) {
+  .stage.has-focus { z-index: 7; }
+}
