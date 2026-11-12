@@ -634,29 +634,36 @@ button { font: inherit; color: inherit; }
 }
 .founder__photos { position: relative; padding: 0 12% 12% 0; }
 .founder__main { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%; border-radius: 24px; }
-/* друге фото без рамки: краї розчиняються у фоні, обличчя й гриль лишаються чіткими */
+/* друге фото: без рамки, позаду гірчичний контур, зсунутий вниз-праворуч */
 .founder__extra {
   position: absolute;
-  right: -23%;
-  bottom: -13%;
-  width: 64%;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  isolation: isolate;
+  width: 46%;
   aspect-ratio: 1;
-  pointer-events: none;
-  /* овал навколо шефа і вогню (центр 40% / 48%), повністю зникає раніше,
-     ніж доходить до країв кадру, тому квадрат не видно */
-  -webkit-mask-image: radial-gradient(ellipse 40% 48% at 40% 48%, #000 64%, transparent 99%);
-  mask-image: radial-gradient(ellipse 40% 48% at 40% 48%, #000 64%, transparent 99%);
-  will-change: transform;
+}
+.founder__extra::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 2px solid var(--hot);
+  border-radius: 20px;
+  transform: translate(12px, 12px);
 }
 .founder__extra img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* світлу кухню трохи приглушуємо й зігріваємо під темну палітру */
-  filter: brightness(.8) contrast(1.06) saturate(1.05) sepia(.14);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, .6);
 }
-.founder__steam { position: absolute; inset: 0; width: 100%; height: 100%; }
+@media (max-width: 560px) {
+  .founder__extra::before { transform: translate(8px, 8px); }
+}
 .founder__name { margin: 14px 0 22px; font-weight: 700; color: var(--hot); }
 .founder__text > p { max-width: 34em; color: var(--text-dim); font-size: 1.125rem; }
 .founder__facts {
@@ -1769,7 +1776,6 @@ p, li, blockquote, summary { text-wrap: pretty; }
 }
 @media (max-width: 560px) {
   .svc, .quiz__options--col { grid-template-columns: minmax(0, 1fr); }
-  .founder__extra { right: -10%; bottom: -6%; width: 66%; }
   .calc__box { min-height: 104px; }
   .calc__lock { transform: scale(.66); margin: 0 -36px 0 -10px; }
   .quiz__summary-list { grid-template-columns: minmax(0, 1fr); gap: 0; }
