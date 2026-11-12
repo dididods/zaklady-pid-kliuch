@@ -46,7 +46,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
-  <link rel="stylesheet" href="styles.css?v=40">
+  <link rel="stylesheet" href="styles.css?v=52">
 
   <!-- GSAP вантажимо якомога раніше: поки його немає, інтро не може стартувати -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -318,15 +318,19 @@
     </div>
 
     <!-- ===== 2. З чого ви починаєте ===== -->
-    <section class="section" id="komu" aria-labelledby="t-komu">
-      <div class="section__head">
-        <h2 id="t-komu">З&nbsp;чого ви&nbsp;починаєте?</h2>
+    <section class="section section--paper" id="komu" aria-labelledby="t-komu">
+      <div class="section__head head-split">
+        <div>
+          <p class="eyebrow"><span class="eyebrow__num">02</span>Ваша ситуація</p>
+          <h2 id="t-komu">З&nbsp;чого ви <span class="kw">починаєте?</span></h2>
+        </div>
         <p class="section__lead">Оберіть свою ситуацію - і&nbsp;форма заявки внизу вже знатиме, з&nbsp;чого почати.</p>
       </div>
       <!-- таблички «Відчинено» на мотузці: гойдаються при наведенні -->
       <ul class="signs">
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
+          <span class="sign__tag"><b>01</b>Старт з&nbsp;нуля</span>
           <h3>Хочу перший заклад</h3>
           <p>Є ідея і&nbsp;бюджет, але немає досвіду в&nbsp;ресторанному бізнесі.</p>
           <ul>
@@ -338,6 +342,7 @@
         </li>
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
+          <span class="sign__tag"><b>02</b>Є площа</span>
           <h3>Є приміщення</h3>
           <p>Площа вже є, але незрозуміло, який заклад там спрацює.</p>
           <ul>
@@ -349,6 +354,7 @@
         </li>
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
+          <span class="sign__tag"><b>03</b>Перезапуск</span>
           <h3>Заклад працює, але не&nbsp;так</h3>
           <p>Гості є, а&nbsp;результату, на&nbsp;який розраховували, немає.</p>
           <ul>
@@ -360,6 +366,7 @@
         </li>
         <li class="sign">
           <span class="sign__string" aria-hidden="true"></span>
+          <span class="sign__tag"><b>04</b>Розширення</span>
           <h3>Хочу ще&nbsp;один заклад</h3>
           <p>Перший уже працює, і&nbsp;хочеться розширитися.</p>
           <ul>
@@ -372,8 +379,9 @@
       </ul>
     </section>
 
+
     <!-- ===== 3. Шеф, а не франшиза ===== -->
-    <section class="section section--alt" id="shef" aria-labelledby="t-who">
+    <section class="section section--alt section--deep" id="shef" aria-labelledby="t-who">
       <div class="founder">
         <div class="founder__photos">
           <img class="founder__main" src="img/dmytro-barsukov.jpg" width="853" height="1280" alt="Дмитро Барсуков, бренд-шеф" loading="lazy">

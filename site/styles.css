@@ -20,7 +20,7 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--paper-dark) 0 0 / 260px, var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 1.0625rem;
@@ -168,6 +168,7 @@ button { font: inherit; color: inherit; }
   text-align: center;
   background:
     radial-gradient(ellipse 60% 50% at 50% 60%, var(--glow), transparent 70%),
+    var(--paper-dark) 0 0 / 260px,
     var(--bg);
 }
 
@@ -439,7 +440,7 @@ button { font: inherit; color: inherit; }
   scroll-margin-top: 20px;
 }
 .section > * { max-width: 1240px; margin-left: auto; margin-right: auto; }
-.section--alt { background: var(--bg-2); }
+.section--alt { background: var(--paper-dark) 0 0 / 260px, var(--bg-2); }
 
 .section__head { margin-bottom: clamp(28px, 3.5vw, 48px); }
 .section h2 {
@@ -1304,7 +1305,7 @@ button { font: inherit; color: inherit; }
 .footer {
   padding: clamp(48px, 6vw, 72px) var(--gutter) 28px;
   border-top: 1px solid rgba(255, 241, 220, .1);
-  background: #150f0c;
+  background: var(--paper-dark) 0 0 / 260px, #150f0c;
   font-size: .9375rem;
   color: var(--text-dim);
 }
@@ -2100,3 +2101,114 @@ html:not(.no-intro) { overflow: hidden; }
 /* Тексти етап 5: акценти в етапах, підзаголовок кейсів */
 .bs__step p b { color: var(--hot); font-weight: 700; }
 .cases__head .cases__lead { margin-top: 10px; font-size: 1rem; }
+
+/* ===== Дизайн-система v2 (тест на блоці 2): світлий «аркуш», заголовок з міткою ===== */
+:root {
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-soft: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .1 0 0 0 .16 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Заголовок: мітка-номер, ключове слово з мазком, пояснення праворуч */
+.head-split { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px 64px; align-items: end; }
+.head-split .section__lead { margin: 0 0 .4em; max-width: 30em; font-size: clamp(.95rem, .9rem + .2vw, 1.05rem); line-height: 1.6; }
+.eyebrow {
+  display: flex; align-items: center; gap: 12px; margin: 0 0 18px;
+  font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-dim, var(--text-dim));
+}
+.eyebrow__num { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 600; letter-spacing: 0; color: var(--accent); }
+.eyebrow__num::after { content: ""; width: 40px; height: 1px; background: currentColor; opacity: .5; }
+.kw { position: relative; isolation: isolate; color: var(--accent); white-space: nowrap; }
+.kw::after {
+  content: ""; position: absolute; z-index: -1; left: -3%; right: -3%; bottom: -.06em; height: .3em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16' preserveAspectRatio='none'%3E%3Cpath d='M3 11 C 45 4 110 3 197 6 C 140 8 80 10 20 13' fill='none' stroke='%23ffb400' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  opacity: .85;
+}
+
+/* Світла секція: аркуш з теплими плямами, зерном і текстурою льону */
+.section--paper {
+  --ink: #24170f;
+  --ink-dim: #6f5745;
+  position: relative;
+  isolation: isolate;
+  margin: clamp(20px, 3vw, 40px) clamp(8px, 1.4vw, 20px);
+  border-radius: clamp(28px, 3.5vw, 48px);
+  color: var(--ink);
+  background:
+    radial-gradient(55% 50% at 6% 0%, rgba(255, 180, 0, .30), transparent 70%),
+    radial-gradient(45% 55% at 100% 100%, rgba(227, 38, 28, .17), transparent 70%),
+    radial-gradient(35% 40% at 72% 22%, rgba(255, 226, 180, .7), transparent 70%),
+    linear-gradient(172deg, #f9eedd 0%, #f0dec3 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 40px 90px -40px rgba(0, 0, 0, .85);
+}
+.section--paper::before,
+.section--paper::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; }
+.section--paper::before { background: var(--grain) 0 0 / 220px; opacity: .45; mix-blend-mode: multiply; }
+.section--paper::after {
+  /* лляна скатертина: дрібне плетіння ниток, а не сітка */
+  background-image:
+    repeating-linear-gradient(0deg, rgba(120, 70, 30, .045) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(120, 70, 30, .035) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, .18) 0 1px, transparent 1px 7px);
+  -webkit-mask-image: radial-gradient(90% 80% at 50% 40%, #000 40%, rgba(0, 0, 0, .35) 100%);
+          mask-image: radial-gradient(90% 80% at 50% 40%, #000 40%, rgba(0, 0, 0, .35) 100%);
+}
+.section--paper h2 { color: var(--ink); }
+.section--paper .section__lead { color: var(--ink-dim); }
+
+/* Таблички на аркуші: папір із зерном, тепла тінь, мітка-номер */
+.section--paper .sign {
+  background: var(--grain-soft) 0 0 / 220px, linear-gradient(165deg, #fffcf6 0%, #fbf1e1 100%);
+  border: 1px solid rgba(120, 75, 35, .12);
+  box-shadow: inset 0 1px 0 #fff, 0 2px 4px rgba(90, 45, 15, .06), 0 30px 46px -26px rgba(90, 45, 15, .55);
+}
+.sign__tag {
+  display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; margin-bottom: 14px;
+  padding: 4px 12px 4px 4px; border-radius: 999px;
+  background: rgba(227, 38, 28, .06); border: 1px solid rgba(227, 38, 28, .16);
+  font-size: .66rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9a3d22;
+}
+.sign__tag b { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-family: var(--font-display); font-size: .6rem; font-weight: 600; letter-spacing: 0; }
+.section--paper .sign > p { color: var(--ink-dim); font-size: .875rem; line-height: 1.5; }
+.section--paper .sign ul { border-top-color: rgba(120, 75, 35, .18); }
+.section--paper .sign ul li { font-size: .875rem; color: var(--ink); }
+.section--paper .sign ul li::before { width: 8px; height: 8px; top: 11px; background: linear-gradient(135deg, var(--hot), var(--accent)); }
+.section--paper .sign__link { display: inline-flex; align-items: center; gap: 10px; padding: 11px 20px; background: var(--ink); box-shadow: 0 10px 20px -10px rgba(36, 23, 15, .7); transition: background .2s, transform .2s; }
+.section--paper .sign__link::after { content: "→"; color: var(--hot); transition: transform .2s; }
+.section--paper .sign__link:hover { background: var(--accent); transform: translateY(-1px); }
+.section--paper .sign__link:hover::after { color: #fff; transform: translateX(3px); }
+
+@media (max-width: 900px) {
+  .head-split { grid-template-columns: 1fr; }
+  .head-split .section__lead { margin: 0; }
+}
+
+/* Темний блок: тепле світло від кухні, фактура паперу і зерно */
+:root {
+  --tx-paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='p' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.18 .9' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .86 3.4 0 0 0 -2.3'/%3E%3C/filter%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02' numOctaves='4' seed='12' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .92 0 0 0 0 .8 1.2 0 0 0 -.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  /* те саме, але з уже вбудованою прозорістю - для звичайного темного фону */
+  --paper-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='p' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.18 .9' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .86 .31 0 0 0 -.207'/%3E%3C/filter%3E%3Cfilter id='m' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02' numOctaves='4' seed='12' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .92 0 0 0 0 .8 .108 0 0 0 -.045'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+.section--deep {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(var(--bg), transparent 180px),
+    radial-gradient(38% 55% at 22% 55%, rgba(255, 150, 50, .20), transparent 72%),
+    radial-gradient(55% 65% at 0% 100%, rgba(227, 38, 28, .22), transparent 70%),
+    radial-gradient(45% 50% at 100% 15%, rgba(255, 180, 0, .12), transparent 70%),
+    radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(10, 6, 4, .55) 100%),
+    var(--bg-2);
+}
+.section--deep::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--tx-paper) 0 0 / 260px;
+  opacity: .09;
+  -webkit-mask-image: linear-gradient(transparent, #000 260px);
+          mask-image: linear-gradient(transparent, #000 260px);
+}
+.section--deep::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--grain) 0 0 / 220px; opacity: .35; mix-blend-mode: soft-light;
+}
+
