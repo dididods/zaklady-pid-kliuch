@@ -2035,3 +2035,38 @@ html:not(.no-intro) { overflow: hidden; }
 .bar-tg:hover, .bar-tg:focus-visible { background: var(--hot); color: var(--bg); border-color: var(--hot); transform: translateY(-1px); }
 .bar-tg:hover .bar-tg__fold, .bar-tg:focus-visible .bar-tg__fold { stroke: var(--hot); }
 @media (max-width: 760px) { .bar-tg { width: 36px; height: 36px; } .bar-tg svg { width: 18px; height: 18px; } }
+
+/* ===== Перший екран: шеф · кнопка · 20+ одразу під офером, орбіта нижче ===== */
+.stage__floor { display: none; }   /* овал «підлоги» читався як темне коло */
+@media (min-width: 901px) {
+  .hero__bottom { margin-top: 22px; }
+  .stage { flex-basis: clamp(330px, 48vh, 520px); }
+}
+@media (max-width: 900px) {
+  .hero__bottom { order: 2; }       /* на планшеті й телефоні ряд лишається під орбітою */
+}
+
+/* ===== Telegram у шапці (десктоп): повна кнопка нагорі → значок у плашці при скролі ===== */
+@media (min-width: 761px) {
+  .header-tg {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity .35s, transform .45s cubic-bezier(.5, 0, .2, 1);
+  }
+  .header-tg svg { width: 18px; height: 18px; fill: var(--hot); }
+  .site-header.is-scrolled .header-tg { opacity: 0; transform: translateX(-60px) scale(.5); pointer-events: none; }
+  .bar-tg {
+    width: 0;
+    margin-left: -26px;               /* гасимо gap плашки, поки значка немає */
+    border-width: 0;
+    opacity: 0;
+    transform: scale(.3);
+    overflow: hidden;
+    transition: width .45s cubic-bezier(.5, 0, .2, 1), margin .45s cubic-bezier(.5, 0, .2, 1), opacity .3s .1s, transform .45s cubic-bezier(.3, 1.4, .5, 1), background-color .25s, color .25s, border-color .25s;
+  }
+  .site-header.is-scrolled .bar-tg { width: 40px; margin-left: 0; border-width: 1.5px; opacity: 1; transform: none; }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .bar-tg { margin-left: -8px; }      /* у режимі бургера gap плашки 8px */
+}

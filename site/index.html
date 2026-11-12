@@ -46,7 +46,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
-  <link rel="stylesheet" href="styles.css?v=30">
+  <link rel="stylesheet" href="styles.css?v=31">
 
   <!-- GSAP вантажимо якомога раніше: поки його немає, інтро не може стартувати -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -211,6 +211,11 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.2 3.6 2.9 10.7c-1 .4-1 1.7.1 2l4.6 1.5 1.8 5.5c.3.9 1.4 1.1 2 .4l2.6-2.7 4.6 3.4c.8.6 1.9.1 2.1-.8l3-14.6c.2-1.1-.9-2-1.9-1.6Z"/><path class="bar-tg__fold" d="m7.6 14.2 9.9-6.6-7.6 7.9"/></svg>
       </a>
     </div>
+    <!-- десктоп: повна кнопка на верху сторінки; при скролі перетікає в значок у плашці -->
+    <a class="pill header-tg" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.2 3.6 2.9 10.7c-1 .4-1 1.7.1 2l4.6 1.5 1.8 5.5c.3.9 1.4 1.1 2 .4l2.6-2.7 4.6 3.4c.8.6 1.9.1 2.1-.8l3-14.6c.2-1.1-.9-2-1.9-1.6Z"/></svg>
+      Telegram
+    </a>
   </header>
 
   <main>
@@ -229,6 +234,18 @@
           <li>Відкриті ціни на&nbsp;послуги</li>
           <li>По&nbsp;всій Україні</li>
         </ul>
+      </div>
+
+      <!-- шеф · кнопка · факт: на десктопі одразу під офером, на ≤900px під орбітою (order) -->
+      <div class="hero__bottom">
+        <a class="chef-chip" href="#shef">
+          <img src="img/dmytro-barsukov.jpg" width="853" height="1280" alt="">
+          <span><b>Дмитро Барсуков</b> бренд-шеф і&nbsp;засновник бюро</span>
+        </a>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#vartist">Розрахувати вартість</a>
+        </div>
+        <p class="fact fact--right"><strong>20+</strong> закладів уже працюють</p>
       </div>
 
       <div class="stage">
@@ -286,17 +303,6 @@
         </div>
       </div>
 
-      <div class="hero__bottom">
-        <a class="chef-chip" href="#shef">
-          <img src="img/dmytro-barsukov.jpg" width="853" height="1280" alt="">
-          <span><b>Дмитро Барсуков</b> бренд-шеф і&nbsp;засновник бюро</span>
-        </a>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#vartist">Розрахувати вартість</a>
-          <a class="btn btn--ghost" href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Написати в&nbsp;Telegram</a>
-        </div>
-        <p class="fact fact--right"><strong>20+</strong> закладів уже працюють</p>
-      </div>
     </section>
 
     <div class="tape" aria-hidden="true">
