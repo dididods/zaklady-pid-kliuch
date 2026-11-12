@@ -109,9 +109,9 @@
 
       if (i === s.focused) {
         // вибраний заклад виїжджає вперед і збільшується;
-        // на телефоні — вгору, щоб під ним помістилася картка
+        // на телефоні — по центру сцени, картка стає під сценою (.focus-below)
         var fx = mobile ? 0 : -w * 0.08;
-        var fy = mobile ? -h * 0.18 : h * 0.06;
+        var fy = mobile ? h * 0.05 : h * 0.06;
         var fs = mobile ? 2.2 : 1.55;
         x = x * (1 - f) + fx * f;
         y = y * (1 - f) + fy * f;
@@ -194,6 +194,18 @@
   }
 
   /* --- фокус: заклад виїжджає вперед і оживає --- */
+  // телефон: картка не налазить на збільшений заклад, а стає під сценою;
+  // сцена отримує нижній відступ на висоту картки, тож кнопка нижче з'їжджає вниз
+  function placeCard() {
+    if (stage.clientWidth >= 600) return;
+    stage.classList.add('focus-below');
+    stage.style.setProperty('--focus-h', (focusCard.offsetHeight + 16) + 'px');
+  }
+  function unplaceCard() {
+    stage.classList.remove('focus-below');
+    stage.style.removeProperty('--focus-h');
+  }
+
   function openFocus(i) {
     var el = items[i];
     var target = -i * step;
@@ -220,9 +232,11 @@
       gsap.to(tw, { a: s.angle + diff, duration: .7, ease: 'power3.out', onUpdate: function () { s.angle = tw.a; } });
       gsap.to(s, { focus: 1, duration: .8, delay: .25, ease: 'power3.out' });
       focusCard.hidden = false;
+      placeCard();
       gsap.fromTo(focusCard, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .5, delay: .5, ease: 'power2.out' });
     } else {
       s.angle += diff; s.focus = 1; focusCard.hidden = false;
+      placeCard();
     }
     focusCard.querySelector('.focus__cta').focus({ preventScroll: true });
   }
@@ -234,9 +248,9 @@
     stage.classList.remove('has-focus');
     var done = function () { s.focused = -1; };
     if (hasGsap) {
-      gsap.to(focusCard, { opacity: 0, duration: .2, onComplete: function () { focusCard.hidden = true; } });
+      gsap.to(focusCard, { opacity: 0, duration: .2, onComplete: function () { focusCard.hidden = true; unplaceCard(); } });
       gsap.to(s, { focus: 0, duration: .6, ease: 'power3.inOut', onComplete: done });
-    } else { focusCard.hidden = true; s.focus = 0; done(); }
+    } else { focusCard.hidden = true; unplaceCard(); s.focus = 0; done(); }
   }
 
   items.forEach(function (el, i) {
