@@ -1135,8 +1135,12 @@
     var header = document.querySelector('.site-header');
     if (!header) return;
     var burger = header.querySelector('.burger');
+    /* «Консультація» в шапці з'являється, коли кнопка першого екрана вже пішла вгору за край */
+    var heroCtaBtn = document.querySelector('.hero__cta .btn');
     var onScroll = function () {
       header.classList.toggle('is-scrolled', window.scrollY > 8);
+      var showConsult = heroCtaBtn ? heroCtaBtn.getBoundingClientRect().bottom < 72 : window.scrollY > 8;
+      header.classList.toggle('show-consult', showConsult);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
