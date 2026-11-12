@@ -92,8 +92,8 @@
     var w = stage.clientWidth;
     var h = stage.clientHeight;
     var mobile = w < 600;
-    var rx = w * (mobile ? 0.45 : 0.4 + 0.08 * s.focus);
-    var ry = h * (mobile ? 0.17 : 0.2) * s.tilt;   // на телефоні орбіта сплюснута
+    var rx = w * (mobile ? 0.62 : 0.4 + 0.08 * s.focus);   // на телефоні ширше, щоб будівлі не злипались
+    var ry = h * (mobile ? 0.21 : 0.2) * s.tilt;   // на телефоні орбіта сплюснута
 
     items.forEach(function (el, i) {
       var a = s.angle + i * step;
