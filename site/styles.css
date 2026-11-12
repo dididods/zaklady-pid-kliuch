@@ -2183,6 +2183,7 @@ html:not(.no-intro) { overflow: hidden; }
   isolation: isolate;
   background:
     linear-gradient(var(--bg), transparent 180px),
+    linear-gradient(transparent calc(100% - 180px), var(--bg)),
     radial-gradient(38% 55% at 22% 55%, rgba(255, 150, 50, .20), transparent 72%),
     radial-gradient(55% 65% at 0% 100%, rgba(227, 38, 28, .22), transparent 70%),
     radial-gradient(45% 50% at 100% 15%, rgba(255, 180, 0, .12), transparent 70%),
@@ -2228,6 +2229,8 @@ html:not(.no-intro) { overflow: hidden; }
   position: relative;
   isolation: isolate;
   background:
+    linear-gradient(var(--bg), transparent 180px),
+    linear-gradient(transparent calc(100% - 180px), var(--bg)),
     radial-gradient(45% 55% at 100% 0%, rgba(255, 180, 0, .09), transparent 70%),
     radial-gradient(55% 60% at 0% 100%, rgba(227, 38, 28, .13), transparent 70%),
     var(--paper-dark) 0 0 / 260px,
