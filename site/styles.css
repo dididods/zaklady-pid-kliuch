@@ -918,7 +918,7 @@ button { font: inherit; color: inherit; }
 .sign:nth-child(4) { --tilt: 1.4deg; }
 .sign { display: flex; flex-direction: column; }
 .sign ul { flex: 1; }
-.sign__link { align-self: flex-start; }
+.sign__link { align-self: center; }
 .sign:hover { transform: rotate(0deg) translateY(-6px); }
 /* цвях і мотузка */
 .sign__string {
