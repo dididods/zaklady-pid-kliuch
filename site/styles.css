@@ -212,7 +212,7 @@ button { font: inherit; color: inherit; }
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 170, 60, .18), rgba(255, 170, 60, .04) 70%, transparent);
-  box-shadow: 0 0 0 1px rgba(255, 190, 90, .28), 0 0 40px rgba(255, 150, 40, .25);
+  box-shadow: 0 0 40px rgba(255, 150, 40, .2);
   pointer-events: none;
 }
 
@@ -1529,21 +1529,6 @@ html { scroll-padding-top: 84px; }
 }
 .intro__skip:hover { border-color: #fff1dc; }
 
-.replay {
-  position: absolute;
-  left: 16px;
-  top: 104px;
-  z-index: 90;
-  padding: 8px 14px;
-  border: 1px solid rgba(255, 241, 220, .25);
-  border-radius: 999px;
-  background: rgba(20, 14, 11, .88);
-  color: #fff1dc;
-  font-weight: 600;
-  font-size: .8125rem;
-  cursor: pointer;
-}
-
 /* ===== Адаптив ===== */
 @media (max-width: 1100px) {
   .signs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 72px 32px; max-width: 760px; margin: 0 auto; }
@@ -1587,7 +1572,6 @@ html { scroll-padding-top: 84px; }
   .hero__chips { gap: 6px; margin-top: 14px; }
   .hero__chips li { padding: 5px 10px 5px 24px; font-size: .78rem; }
   .hero__chips li::before { left: 10px; width: 6px; height: 6px; margin-top: -3px; }
-  .replay { display: none; }
   .stage__halo { width: 80vw; }
   .brand img { width: 64px; }
   .hero__actions { flex-direction: column; width: 100%; }
@@ -1781,4 +1765,114 @@ p, li, blockquote, summary { text-wrap: pretty; }
   .quiz__summary-list { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .quiz__summary-list dd { margin-bottom: 8px; }
   .quiz__done-row { align-items: flex-start; flex-direction: column; gap: 8px; }
+}
+
+/* ===== Інтро: поки грає, сторінка не гортається ===== */
+html:not(.no-intro) { overflow: hidden; }
+
+/* на телефоні арка майже на весь екран; радіус підігнаний під арку стулок
+   (по горизонталі - половина ширини, по вертикалі - 30% висоти) */
+@media (max-width: 760px) {
+  .portal {
+    --h: calc(100svh - 14px);
+    width: calc(100vw - 36px);
+    bottom: 0;
+    border-radius: 50% 50% 0 0 / calc(var(--h) * .3) calc(var(--h) * .3) 0 0;
+  }
+  .portal::before {
+    inset: -12px -12px 0;
+    border-width: 8px;
+    border-radius: 50% 50% 0 0 / calc(var(--h) * .3 + 12px) calc(var(--h) * .3 + 12px) 0 0;
+  }
+  .portal__floor { display: none; }
+  .intro__skip { right: 50%; transform: translateX(50%); bottom: 18px; }
+}
+
+/* ===== Кнопка «наверх» ===== */
+.to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 80;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(27, 20, 17, .92);
+  box-shadow: 0 10px 26px -8px rgba(0, 0, 0, .7), 0 0 22px -8px rgba(255, 180, 0, .45);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px) scale(.9);
+  transition: opacity .3s, transform .3s, visibility 0s .3s, box-shadow .2s;
+}
+.to-top.is-on { opacity: 1; visibility: visible; transform: none; transition: opacity .3s, transform .3s, visibility 0s, box-shadow .2s; }
+.to-top svg { display: block; width: 100%; height: 100%; transform: rotate(-90deg); }
+.to-top__track, .to-top__ring { fill: none; stroke-width: 2.5; }
+.to-top__track { stroke: rgba(255, 241, 220, .12); }
+.to-top__ring { stroke: var(--hot); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+.to-top__arrow {
+  fill: none;
+  stroke: var(--hot);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: rotate(90deg);
+  transform-origin: 24px 24px;
+  transition: transform .2s;
+}
+.to-top:hover { box-shadow: 0 12px 30px -8px rgba(0, 0, 0, .7), 0 0 26px -4px rgba(255, 180, 0, .6); }
+.to-top:hover .to-top__arrow { transform: rotate(90deg) translateX(-2px); }
+.to-top:focus-visible { outline: 2px solid var(--hot); outline-offset: 3px; }
+@media (max-width: 760px) {
+  .to-top { right: 14px; bottom: 14px; width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) { .to-top { transition: none; } }
+
+/* поле «Коментар» у квізі */
+.field--area { min-height: 92px; resize: vertical; line-height: 1.45; }
+.quiz__opt-mark { font-weight: 400; color: var(--text-dim); font-size: .875rem; }
+
+/* ===== Вартість: рядок «сам заклад» + зобов'язання над калькулятором ===== */
+.price__side {
+  grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid rgba(255, 241, 220, .12);
+  border-bottom: 1px solid rgba(255, 241, 220, .12);
+}
+.price__side .invest { padding: 24px 28px 24px 0; border: 0; }
+.price__side .invest h3 { margin: 0; }
+.price__side .promises { display: contents; }
+.price__side .promises li {
+  padding: 24px 22px 24px 58px;
+  border-bottom: 0;
+  border-left: 1px solid rgba(255, 241, 220, .12);
+}
+.price__side .promises li::before { left: 24px; top: 27px; }
+.price__side .promises h3 { margin: 0; }
+
+/* кнопка під чеклістом */
+.calc__go {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 241, 220, .1);
+}
+.calc__pick { margin: 0; color: var(--text-dim); font-size: .9375rem; }
+.calc__pick b { color: var(--hot); }
+
+@media (max-width: 900px) {
+  .price__side { grid-template-columns: minmax(0, 1fr); border: 0; }
+  .price__side .invest { padding: 0 0 24px; border-bottom: 1px solid rgba(255, 241, 220, .12); }
+  .price__side .promises li { padding: 20px 0 20px 40px; border-left: 0; border-bottom: 1px solid rgba(255, 241, 220, .12); }
+  .price__side .promises li::before { left: 0; top: 24px; }
+}
+@media (max-width: 560px) {
+  .calc__go { flex-direction: column; align-items: stretch; }
+  .calc__cta { width: 100%; white-space: normal; text-align: center; }
 }

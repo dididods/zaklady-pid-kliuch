@@ -14,9 +14,12 @@
     root.classList.add('no-intro');
   }
 
+  // уся анімація ~1,5 с: ключ → поворот → двері → крок в арку
   function playIntro() {
     if (!hasGsap) return finishIntro();
+    window.__introStarted = true;
     root.classList.remove('no-intro');
+    window.scrollTo(0, 0);
     if (tl) tl.kill();
 
     gsap.set('.intro', { opacity: 1, scale: 1 });
@@ -31,24 +34,24 @@
       clipPath: 'inset(0px 0px 15px 0px)'
     });
 
-    tl = gsap.timeline({ onComplete: finishIntro });
-    tl.to('.key', { opacity: 1, duration: .3 })
+    tl = gsap.timeline({ onComplete: function () { window.scrollTo(0, 0); finishIntro(); } });
+    tl.to('.key', { opacity: 1, duration: .2 })
       // ключ підлітає до замка
-      .to('.key', { x: 0, y: 0, scale: 1, rotate: 0, duration: .8, ease: 'power3.out' }, '<')
+      .to('.key', { x: 0, y: 0, scale: 1, rotate: 0, duration: .4, ease: 'power3.out' }, '<')
       // входить у щілину: стрижень ховається в замку, а не зникає
-      .to('.key', { y: 88, clipPath: 'inset(0px 0px 103px 0px)', duration: .45, ease: 'power2.in' }, '+=.05')
+      .to('.key', { y: 88, clipPath: 'inset(0px 0px 103px 0px)', duration: .2, ease: 'power2.in' }, '+=.02')
       // поворот і клацання
-      .to('.key', { rotate: 90, duration: .42, ease: 'back.out(2)' }, '+=.06')
-      .to('.lock__flash', { opacity: 1, scale: 1.4, duration: .16, yoyo: true, repeat: 1 }, '-=.15')
-      .to('.portal__seam', { opacity: 1, duration: .25 }, '<')
-      // двері розчиняються
-      .to('.lock', { opacity: 0, duration: .25 }, '+=.12')
-      .to('.leaf--left', { rotationY: 102, duration: 1.2, ease: 'power3.inOut' }, '<')
-      .to('.leaf--right', { rotationY: -102, duration: 1.2, ease: 'power3.inOut' }, '<')
-      .to('.portal__seam', { opacity: 0, duration: .3 }, '<')
+      .to('.key', { rotate: 90, duration: .22, ease: 'back.out(2)' }, '+=.03')
+      .to('.lock__flash', { opacity: 1, scale: 1.4, duration: .1, yoyo: true, repeat: 1 }, '-=.1')
+      .to('.portal__seam', { opacity: 1, duration: .15 }, '<')
+      // двері відчиняються
+      .to('.lock', { opacity: 0, duration: .15 }, '+=.04')
+      .to('.leaf--left', { rotationY: 102, duration: .5, ease: 'power3.inOut' }, '<')
+      .to('.leaf--right', { rotationY: -102, duration: .5, ease: 'power3.inOut' }, '<')
+      .to('.portal__seam', { opacity: 0, duration: .2 }, '<')
       // крок крізь арку
-      .to('.intro', { scale: 3.4, opacity: 0, duration: .9, ease: 'power2.in' }, '-=.5')
-      .from('.hero__head, .stage, .hero__bottom', { scale: 1.12, duration: 1.2, ease: 'power2.out', clearProps: 'transform' }, '<');
+      .to('.intro', { scale: 3.4, opacity: 0, duration: .4, ease: 'power2.in' }, '-=.28')
+      .from('.hero__head, .stage, .hero__bottom', { scale: 1.1, duration: .45, ease: 'power2.out', clearProps: 'transform' }, '<');
 
     window.introTimeline = tl; // для налагодження в консолі
   }
@@ -60,10 +63,6 @@
   document.querySelector('.intro__skip').addEventListener('click', skipIntro);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !root.classList.contains('no-intro')) skipIntro();
-  });
-  document.querySelector('.replay').addEventListener('click', function () {
-    window.scrollTo(0, 0);
-    playIntro();
   });
 
   /* =========================================================
@@ -665,12 +664,26 @@
   var svcCalc = calc ? Array.prototype.slice.call(calc.querySelectorAll('input[name="svc"]')) : [];
   var quizApi = null;           // з'явиться нижче, коли квіз готовий
   var updateCalc = function () {};
+  // підсумок калькулятора для коментаря в квізі: тільки відмічені послуги
+  var svcLabel = function (c) { return c.closest('label').textContent.trim(); };
+  var calcText = function () {
+    if (!range) return '';
+    var v = +range.value;
+    var price = [[20, 2800], [40, 3300], [60, 3600], [80, 4800]].filter(function (p) { return v <= p[0]; })[0];
+    var on = svcCalc.filter(function (c) { return c.checked; });
+    var off = svcCalc.filter(function (c) { return !c.checked; });
+    var svc = !on.length ? 'послуги ще не обрані'
+      : !off.length ? 'усе під ключ' + (price ? ' (пакет ' + price[1].toLocaleString('uk-UA').replace(/\s/g, ' ') + ' у.о.)' : '')
+      : off.length <= svcCalc.length / 2 ? 'під ключ, крім: ' + off.map(svcLabel).join(', ')
+      : 'окремі послуги: ' + on.map(svcLabel).join(', ');
+    return 'З калькулятора: площа ' + (v > 80 ? 'понад 80' : v) + ' м², ' + svc + '.';
+  };
   var areaTier = function (v) {
     return v <= 20 ? 'до 20 м²' : v <= 40 ? '20-40 м²' : v <= 60 ? '40-60 м²' : v <= 80 ? '60-80 м²' : 'понад 80 м²';
   };
   // одна послуга = дві галочки (калькулятор і квіз), тримаємо їх однаковими
   var setSvc = function (value, on) {
-    document.querySelectorAll('input[name="svc"], input[name="needs"]').forEach(function (c) {
+    svcCalc.forEach(function (c) {
       if (c.value === value) c.checked = on;
     });
   };
@@ -687,6 +700,8 @@
     var pkg = calc.querySelector('.calc__pkg');
     var pkgSum = calc.querySelector('.calc__pkg-sum');
     var lockFlash = calc.querySelector('.calc__lock .done-key__flash');
+    var pickArea = calc.querySelector('.calc__pick-area');
+    var pickSvc = calc.querySelector('.calc__pick-svc');
     var tiers = Array.prototype.slice.call(calc.querySelectorAll('.calc__tiers li'));
     var prices = [[20, 2800], [40, 3300], [60, 3600], [80, 4800]];
     var shown = { v: 3300 };
@@ -713,6 +728,10 @@
       var active = tiers.filter(function (li) { return v <= +li.dataset.max; })[0];
       tiers.forEach(function (li) { li.classList.toggle('is-active', li === active); });
 
+      // рядок над кнопкою: що саме піде в заявку
+      var nOn = svcCalc.filter(function (c) { return c.checked; }).length;
+      pickArea.textContent = (v > 80 ? 'понад 80' : v) + ' м²';
+      pickSvc.textContent = nOn === svcCalc.length ? 'усе під ключ' : nOn + ' з ' + svcCalc.length + ' послуг';
       // пакет чи окремі послуги
       var partial = svcCalc.some(function (c) { return !c.checked; });
       calc.classList.toggle('is-partial', partial);
@@ -729,7 +748,7 @@
 
     // площу, яку людина виставила сама, переносимо в квіз
     var calcAreaToQuiz = function () {
-      if (quizApi) quizApi.answer('area', areaTier(+range.value));
+      if (quizApi) { quizApi.answer('area', areaTier(+range.value)); quizApi.calcChanged(); }
     };
     range.addEventListener('input', function () { updateCalc(); calcAreaToQuiz(); });
 
@@ -737,13 +756,13 @@
       c.addEventListener('change', function () {
         setSvc(c.value, c.checked);
         updateCalc();
-        if (quizApi) quizApi.give('needs');
+        if (quizApi) quizApi.calcChanged();
       });
     });
     calc.querySelector('.calc__all').addEventListener('click', function () {
       svcCalc.forEach(function (c) { setSvc(c.value, true); });
       updateCalc();
-      if (quizApi) quizApi.give('needs');
+      if (quizApi) quizApi.calcChanged();
     });
     updateCalc();
 
@@ -791,16 +810,11 @@
     var stepOf = { format: 'format', stage: 'stage', premises: 'place', area: 'area', when: 'when', channel: 'contact' };
     quiz.querySelector('.quiz__step-total').textContent = String(N);
 
-    // «Що потрібно» — той самий список, що в калькуляторі
-    var needsBox = quiz.querySelector('.svc--quiz');
-    svcCalc.forEach(function (c) {
-      var lab = c.closest('.chk').cloneNode(true);
-      var inp = lab.querySelector('input');
-      inp.name = 'needs';
-      inp.checked = c.checked;
-      needsBox.appendChild(lab);
-    });
-    var needs = Array.prototype.slice.call(needsBox.querySelectorAll('input'));
+    // коментар: сам підхоплює вибір з калькулятора, поки людина не почала писати в ньому сама
+    var comment = quiz.querySelector('textarea[name="comment"]');
+    var calcUsed = false, commentOwn = false;
+    var fillComment = function () { if (calcUsed && !commentOwn) comment.value = calcText(); };
+    comment.addEventListener('input', function () { commentOwn = comment.value.trim() !== ''; });
 
     var picked = function (name) { return quiz.querySelector('input[name="' + name + '"]:checked'); };
     var val = function (name) { var r = picked(name); return r ? r.value : ''; };
@@ -838,7 +852,6 @@
           if (!val('premises')) return 'Вкажіть, чи є приміщення';
           return city.value.trim().length >= 2 ? '' : 'Вкажіть місто';
         case 'area': return val('area') ? '' : 'Оберіть площу або «Ще не знаю»';
-        case 'needs': return needs.some(function (c) { return c.checked; }) ? '' : 'Залиште хоча б одну послугу';
         case 'when': return val('when') ? '' : 'Оберіть, коли плануєте відкриття';
         case 'contact':
           if (nameF.value.trim().length < 2) return "Вкажіть ваше ім'я";
@@ -905,9 +918,6 @@
     });
     city.addEventListener('input', refresh);
     nameF.addEventListener('input', refresh);
-    needs.forEach(function (c) {
-      c.addEventListener('change', function () { setSvc(c.value, c.checked); updateCalc(); refresh(); });
-    });
     // Enter у текстовому полі = «Далі», а не відправка форми
     quiz.addEventListener('submit', function (e) { e.preventDefault(); });
     quiz.addEventListener('keydown', function (e) {
@@ -930,27 +940,21 @@
         picked('premises').checked = false; autoPremises = false;
       }
       updateCalc();
+      fillComment();
     };
 
     /* --- фінал: підсумок «Ваш заклад», потім ключ провертається --- */
     var submit = function () {
       sent = true;
-      var on = needs.filter(function (c) { return c.checked; });
-      var off = needs.filter(function (c) { return !c.checked; });
-      var labelsOf = function (list) { return list.map(function (c) { return c.closest('label').textContent.trim(); }).join(', '); };
-      // знято кілька пунктів: коротше написати, чого НЕ треба
-      var svcText = !off.length ? 'усе під ключ (' + needs.length + ' послуг)'
-        : off.length <= needs.length / 2 ? 'під ключ, крім: ' + labelsOf(off)
-        : labelsOf(on);
       var rows = [
         ['Формат', label('format')],
         ['Етап', label('stage')],
         ['Місто', city.value.trim()],
         ['Приміщення', label('premises')],
         ['Площа', label('area')],
-        ['Послуги', svcText],
         ['Відкриття', label('when')],
-        ["Зв'язок", label('channel') + ', ' + phone.value]
+        ["Зв'язок", label('channel') + ', ' + phone.value],
+        ['Коментар', comment.value.trim()]
       ];
       var dl = quiz.querySelector('.quiz__summary-list');
       dl.innerHTML = '';
@@ -991,6 +995,8 @@
         refresh();
       },
       give: function (step) { given[step] = true; refresh(); },
+      // людина змінила площу або галочки в калькуляторі
+      calcChanged: function () { calcUsed = true; fillComment(); },
       // перейти до першого питання, на яке ще немає відповіді
       jump: function () { if (!sent) show(firstOpen()); }
     };
@@ -1011,7 +1017,7 @@
     });
     // «Розрахувати мій заклад» під калькулятором
     var fromCalc = document.querySelector('[data-from-calc]');
-    if (fromCalc) fromCalc.addEventListener('click', quizApi.jump);
+    if (fromCalc) fromCalc.addEventListener('click', function () { quizApi.calcChanged(); quizApi.jump(); });
 
     show(0);
   })();
@@ -1118,5 +1124,31 @@
       }, { rootMargin: '-45% 0px -50% 0px' });
       Object.keys(links).forEach(function (id) { var el = document.getElementById(id); if (el) navIO.observe(el); });
     }
+  })();
+
+  /* =========================================================
+     Кнопка «наверх»: з'являється після першого екрана,
+     кільце заповнюється разом з прокруткою
+     ========================================================= */
+  (function () {
+    var btn = document.querySelector('.to-top');
+    if (!btn) return;
+    var ring = btn.querySelector('.to-top__ring');
+    var queued = false;
+    var update = function () {
+      queued = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      ring.style.strokeDashoffset = (100 - p * 100).toFixed(1);
+      btn.classList.toggle('is-on', window.scrollY > window.innerHeight * 0.9);
+    };
+    window.addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
+    });
+    update();
   })();
 })();

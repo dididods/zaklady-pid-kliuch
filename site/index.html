@@ -46,9 +46,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
-  <link rel="stylesheet" href="styles.css?v=27">
+  <link rel="stylesheet" href="styles.css?v=28">
+
+  <!-- GSAP вантажимо якомога раніше: поки його немає, інтро не може стартувати -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
+  <link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js">
 
   <script>
+    // браузер не відновлює стару позицію прокрутки: сторінка відкривається з першого екрана
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     // Інтро показуємо раз за візит. ?intro=1 — показати примусово
     try {
       var force = location.search.indexOf('intro=1') > -1;
@@ -56,6 +63,14 @@
       var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!force && (seen || calm)) document.documentElement.classList.add('no-intro');
     } catch (e) { document.documentElement.classList.add('no-intro'); }
+    if (!document.documentElement.classList.contains('no-intro')) {
+      // після інтро завжди перший екран, навіть якщо в адресі був якір (#zayavka тощо)
+      if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+      // запобіжник: якщо анімація не стартувала за 2 с (повільний інтернет), інтро просто зникає
+      setTimeout(function () {
+        if (!window.__introStarted) document.documentElement.classList.add('no-intro');
+      }, 2000);
+    }
   </script>
 </head>
 <body>
@@ -590,6 +605,20 @@
       </div>
 
       <div class="price">
+        <!-- спершу «скільки коштує сам заклад» і зобов'язання, потім калькулятор -->
+        <div class="price__side">
+          <div class="invest">
+            <h3>А&nbsp;скільки коштує сам заклад?</h3>
+            <!-- TODO: замінити на бюджети 2–3 реальних проєктів від клієнта -->
+            <p>Залежить від&nbsp;формату, стану приміщення й&nbsp;обладнання.<br class="br-d"> Орієнтовний бюджет саме для&nbsp;вашого закладу назвемо на&nbsp;першій консультації.</p>
+          </div>
+          <ul class="promises">
+            <li><h3>Працюємо за&nbsp;договором</h3><p>Співпраця починається з&nbsp;договору, а&nbsp;не&nbsp;з&nbsp;усних домовленостей.</p></li>
+            <li><h3>Одна відповідальна людина</h3><p>Ви&nbsp;не&nbsp;бігаєте між підрядниками: питання до&nbsp;однієї людини.</p></li>
+            <li><h3>Місяць супроводу</h3><p>Після відкриття не&nbsp;зникаємо, а&nbsp;допомагаємо закладу стати на&nbsp;ноги.</p></li>
+          </ul>
+        </div>
+
         <!-- Калькулятор: площа → ціна пакета; чекліст послуг з брифу 3.1.
              Усе відмічено: ключ у замку, ціна пакета. Зняли пункт: ключ виходить,
              окремі послуги шеф рахує після розмови (окремих цін немає, не вигадуємо) -->
@@ -640,26 +669,16 @@
               <label class="chk"><input type="checkbox" name="svc" value="Відкриття" checked><span>Відкриття і&nbsp;місяць супроводу</span></label>
               <label class="chk"><input type="checkbox" name="svc" value="Каса й автоматизація" checked><span>Каса й&nbsp;автоматизація</span></label>
             </div>
+            <!-- кнопка поруч з галочками: людина бачить, що саме піде в заявку -->
+            <div class="calc__go">
+              <p class="calc__pick"><b class="calc__pick-area">35 м²</b> · <span class="calc__pick-svc">усе під&nbsp;ключ</span></p>
+              <a class="btn btn--primary calc__cta" href="#zayavka" data-from-calc>Розрахувати мій заклад</a>
+            </div>
           </fieldset>
         </div>
 
-        <div class="price__side">
-          <div class="invest">
-            <h3>А&nbsp;скільки коштує сам заклад?</h3>
-            <!-- TODO: замінити на бюджети 2–3 реальних проєктів від клієнта -->
-            <p>Залежить від&nbsp;формату, стану приміщення й&nbsp;обладнання.<br class="br-d"> Орієнтовний бюджет саме для&nbsp;вашого закладу назвемо на&nbsp;першій консультації.</p>
-          </div>
-          <ul class="promises">
-            <li><h3>Працюємо за&nbsp;договором</h3><p>Співпраця починається з&nbsp;договору, а&nbsp;не&nbsp;з&nbsp;усних домовленостей.</p></li>
-            <li><h3>Одна відповідальна людина</h3><p>Ви&nbsp;не&nbsp;бігаєте між підрядниками: питання до&nbsp;однієї людини.</p></li>
-            <li><h3>Місяць супроводу</h3><p>Після відкриття не&nbsp;зникаємо, а&nbsp;допомагаємо закладу стати на&nbsp;ноги.</p></li>
-          </ul>
-        </div>
       </div>
 
-      <div class="cta-row">
-        <a class="btn btn--primary" href="#zayavka" data-from-calc>Розрахувати мій заклад</a>
-      </div>
     </section>
 
     <!-- ===== 8. Питання ===== -->
@@ -724,7 +743,7 @@
         <!-- TODO: підключити відправку (Telegram-бот або CRM) -->
         <form class="quiz" novalidate>
           <div class="quiz__top">
-            <p class="quiz__progress">Крок <span class="quiz__step-num">1</span> з&nbsp;<span class="quiz__step-total">7</span></p>
+            <p class="quiz__progress">Крок <span class="quiz__step-num">1</span> з&nbsp;<span class="quiz__step-total">6</span></p>
             <span class="quiz__bar" aria-hidden="true"><i></i></span>
           </div>
 
@@ -780,13 +799,6 @@
             </div>
           </fieldset>
 
-          <fieldset class="quiz__step" data-step="needs">
-            <legend>Що&nbsp;потрібно зробити?</legend>
-            <p class="quiz__sub quiz__sub--dim">Відмічено все, що&nbsp;входить у&nbsp;«під&nbsp;ключ». Зніміть те, що&nbsp;вже маєте.</p>
-            <!-- список той самий, що в калькуляторі: будується з нього в main.js -->
-            <div class="svc svc--quiz"></div>
-          </fieldset>
-
           <fieldset class="quiz__step" data-step="when">
             <legend>Коли хочете відкритися?</legend>
             <div class="quiz__options quiz__options--col">
@@ -807,6 +819,9 @@
               <label class="opt"><input type="radio" name="channel" value="Viber"><span>Viber</span></label>
               <label class="opt"><input type="radio" name="channel" value="Telegram"><span>Telegram</span></label>
             </div>
+            <label class="quiz__sub" for="q-comment">Коментар <span class="quiz__opt-mark">(необов'язково)</span></label>
+            <!-- якщо людина працювала з калькулятором, сюди підставляється її вибір (main.js, fillComment) -->
+            <textarea class="field field--area" id="q-comment" name="comment" rows="3" placeholder="Що ще варто знати про ваш заклад"></textarea>
             <p class="quiz__consent">Натискаючи «Отримати розрахунок», ви погоджуєтесь з&nbsp;<a href="privacy.html" target="_blank">політикою конфіденційності</a>.</p>
           </fieldset>
 
@@ -875,11 +890,18 @@
     </div>
   </footer>
 
-  <!-- Лише для узгодження, на живому сайті не буде -->
-  <button type="button" class="replay">Повторити інтро</button>
+
+  <!-- Кнопка «наверх»: з'являється після першого екрана, кільце показує, скільки прогорнуто -->
+  <button type="button" class="to-top" aria-label="Повернутися нагору">
+    <svg viewBox="0 0 48 48" aria-hidden="true">
+      <circle class="to-top__track" cx="24" cy="24" r="22"/>
+      <circle class="to-top__ring" cx="24" cy="24" r="22" pathLength="100"/>
+      <path class="to-top__arrow" d="M24 32V17M17.5 23.5 24 17l6.5 6.5"/>
+    </svg>
+  </button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="main.js?v=21"></script>
+  <script src="main.js?v=22"></script>
 </body>
 </html>
