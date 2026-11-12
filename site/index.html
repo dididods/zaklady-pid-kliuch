@@ -46,7 +46,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
-  <link rel="stylesheet" href="styles.css?v=28">
+  <link rel="stylesheet" href="styles.css?v=29">
 
   <!-- GSAP вантажимо якомога раніше: поки його немає, інтро не може стартувати -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -625,7 +625,14 @@
         <div class="calc">
          <div class="calc__main">
           <label class="calc__label" for="area">Площа закладу: <output id="area-out">35 м²</output></label>
-          <input class="calc__range" id="area" type="range" min="10" max="150" step="5" value="35">
+          <div class="slider" style="--p:.1786">
+            <span class="slider__ring" aria-hidden="true"></span>
+            <input class="calc__range" id="area" type="range" min="10" max="150" step="5" value="35">
+            <span class="slider__tip" aria-hidden="true">Потягніть</span>
+          </div>
+          <div class="slider__scale" aria-hidden="true">
+            <span style="--at:0">10</span><span style="--at:.2143">40</span><span style="--at:.5">80</span><span style="--at:1">150&nbsp;м²</span>
+          </div>
           <div class="calc__box">
             <div class="done-key calc__lock" aria-hidden="true">
               <span class="done-key__plate"></span>
@@ -746,6 +753,10 @@
             <p class="quiz__progress">Крок <span class="quiz__step-num">1</span> з&nbsp;<span class="quiz__step-total">6</span></p>
             <span class="quiz__bar" aria-hidden="true"><i></i></span>
           </div>
+          <p class="quiz__note" role="status" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            <span>Ваш розрахунок уже в&nbsp;заявці: <b class="quiz__note-pick"></b>. Лишилось кілька питань про&nbsp;заклад</span>
+          </p>
 
           <fieldset class="quiz__step is-active" data-step="format">
             <legend>Який заклад плануєте?</legend>
@@ -822,6 +833,7 @@
             <label class="quiz__sub" for="q-comment">Коментар <span class="quiz__opt-mark">(необов'язково)</span></label>
             <!-- якщо людина працювала з калькулятором, сюди підставляється її вибір (main.js, fillComment) -->
             <textarea class="field field--area" id="q-comment" name="comment" rows="3" placeholder="Що ще варто знати про ваш заклад"></textarea>
+            <p class="quiz__calc-hint" hidden>Підставили з&nbsp;калькулятора, можна змінити</p>
             <p class="quiz__consent">Натискаючи «Отримати розрахунок», ви погоджуєтесь з&nbsp;<a href="privacy.html" target="_blank">політикою конфіденційності</a>.</p>
           </fieldset>
 
@@ -902,6 +914,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="main.js?v=22"></script>
+  <script src="main.js?v=23"></script>
 </body>
 </html>

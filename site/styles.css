@@ -1101,7 +1101,7 @@ button { font: inherit; color: inherit; }
 }
 .calc__label { display: block; font-weight: 700; }
 .calc__label output { color: var(--hot); }
-.calc__range { width: 100%; margin: 20px 0 8px; accent-color: var(--accent); height: 28px; }
+.calc__range { width: 100%; margin: 0; }
 .calc__result { margin: 12px 0 0; font-family: var(--font-display); font-weight: 800; line-height: 1; }
 .calc__sum { font-size: clamp(2.6rem, 2rem + 2.5vw, 4rem); color: var(--hot); }
 .calc__cur { font-size: 1.4rem; }
@@ -1875,4 +1875,147 @@ html:not(.no-intro) { overflow: hidden; }
 @media (max-width: 560px) {
   .calc__go { flex-direction: column; align-items: stretch; }
   .calc__cta { width: 100%; white-space: normal; text-align: center; }
+}
+
+/* ===== Повзунок площі: товста доріжка, великий бігунець, підказка «Потягніть» ===== */
+.slider {
+  --t: 32px;                                            /* розмір бігунця */
+  --x: calc(var(--t) / 2 + (100% - var(--t)) * var(--p));  /* центр бігунця */
+  position: relative;
+  margin: 46px 0 4px;
+}
+.calc__range {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  height: 36px;
+  background: transparent;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.calc__range:active { cursor: grabbing; }
+.calc__range:focus { outline: none; }
+.calc__range::-webkit-slider-runnable-track {
+  height: 10px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--hot) var(--x), rgba(255, 241, 220, .14) var(--x));
+}
+.calc__range::-moz-range-track { height: 10px; border-radius: 99px; background: rgba(255, 241, 220, .14); }
+.calc__range::-moz-range-progress { height: 10px; border-radius: 99px; background: var(--hot); }
+.calc__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--t); height: var(--t);
+  margin-top: calc((10px - var(--t)) / 2);
+  border: 3px solid var(--bg);
+  border-radius: 50%;
+  background: var(--hot) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b1411' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 7l-5 5 5 5M15 7l5 5-5 5'/%3E%3C/svg%3E") center / 18px no-repeat;
+  box-shadow: 0 0 0 2px var(--hot), 0 6px 16px rgba(0, 0, 0, .5);
+  transition: transform .2s, box-shadow .2s;
+}
+.calc__range::-moz-range-thumb {
+  width: var(--t); height: var(--t);
+  box-sizing: border-box;
+  border: 3px solid var(--bg);
+  border-radius: 50%;
+  background: var(--hot) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b1411' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 7l-5 5 5 5M15 7l5 5-5 5'/%3E%3C/svg%3E") center / 18px no-repeat;
+  box-shadow: 0 0 0 2px var(--hot), 0 6px 16px rgba(0, 0, 0, .5);
+  transition: transform .2s, box-shadow .2s;
+}
+.calc__range:hover::-webkit-slider-thumb { transform: scale(1.1); }
+.calc__range:hover::-moz-range-thumb { transform: scale(1.1); }
+.calc__range:active::-webkit-slider-thumb,
+.calc__range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 2px var(--hot), 0 0 0 10px rgba(255, 180, 0, .22), 0 6px 16px rgba(0, 0, 0, .5); }
+.calc__range:active::-moz-range-thumb,
+.calc__range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 2px var(--hot), 0 0 0 10px rgba(255, 180, 0, .22), 0 6px 16px rgba(0, 0, 0, .5); }
+
+/* плашка «Потягніть» над бігунцем: їде разом з ним, зникає після першого дотику */
+.slider__tip {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: var(--x);
+  transform: translateX(-50%);
+  padding: 4px 11px;
+  border-radius: 99px;
+  background: var(--hot);
+  color: var(--bg);
+  font-size: .8125rem;
+  font-weight: 800;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity .35s, transform .35s;
+}
+.slider__tip::after {
+  content: "";
+  position: absolute;
+  top: 100%; left: 50%;
+  margin-left: -5px;
+  border: 5px solid transparent;
+  border-top-color: var(--hot);
+}
+.slider.is-touched .slider__tip { opacity: 0; transform: translate(-50%, 6px); }
+
+/* кільце-пульс навколо бігунця перед підказкою */
+.slider__ring {
+  position: absolute;
+  top: 50%; left: var(--x);
+  width: var(--t); height: var(--t);
+  margin: calc(var(--t) / -2) 0 0 calc(var(--t) / -2);
+  border: 2px solid var(--hot);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.slider.is-pulsing .slider__ring { animation: slider-pulse 1s ease-out 2; }
+@keyframes slider-pulse {
+  0% { opacity: .9; transform: scale(1); }
+  100% { opacity: 0; transform: scale(2.1); }
+}
+
+/* шкала під доріжкою */
+.slider__scale { position: relative; height: 20px; margin: 0 0 6px; color: var(--text-dim); font-size: .75rem; }
+.slider__scale span {
+  position: absolute;
+  top: 0;
+  left: calc(16px + (100% - 32px) * var(--at));
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.slider__scale span:first-child { transform: translateX(-30%); }
+.slider__scale span:last-child { transform: translateX(-75%); }
+
+/* ===== Квіз: підтвердження «розрахунок уже в заявці» ===== */
+.quiz__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 180, 0, .35);
+  background: rgba(255, 180, 0, .08);
+  font-size: .9375rem;
+  line-height: 1.4;
+}
+.quiz__note[hidden] { display: none; }
+.quiz__note svg {
+  flex: none;
+  width: 22px; height: 22px;
+  padding: 3px;
+  border-radius: 50%;
+  background: var(--hot);
+  fill: none;
+  stroke: var(--bg);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.quiz__note b { color: var(--hot); }
+.quiz__note.is-flash { animation: note-flash 1.6s ease-out .5s; }
+@keyframes note-flash {
+  0%, 30% { background: rgba(255, 180, 0, .32); box-shadow: 0 0 0 4px rgba(255, 180, 0, .18); }
+  100% { background: rgba(255, 180, 0, .08); box-shadow: 0 0 0 0 rgba(255, 180, 0, 0); }
+}
+.quiz__calc-hint { margin: 6px 0 0; color: var(--hot); font-size: .8125rem; }
+@media (prefers-reduced-motion: reduce) {
+  .slider.is-pulsing .slider__ring, .quiz__note.is-flash { animation: none; }
 }

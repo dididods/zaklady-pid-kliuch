@@ -672,11 +672,13 @@
     var price = [[20, 2800], [40, 3300], [60, 3600], [80, 4800]].filter(function (p) { return v <= p[0]; })[0];
     var on = svcCalc.filter(function (c) { return c.checked; });
     var off = svcCalc.filter(function (c) { return !c.checked; });
+    var head = 'З калькулятора: площа ' + (v > 80 ? 'понад 80' : v) + ' м²';
+    // обрано менше половини: перелічуємо, що саме треба
+    if (on.length && off.length > svcCalc.length / 2) return head + '. Що треба буде: ' + on.map(svcLabel).join(', ') + '.';
     var svc = !on.length ? 'послуги ще не обрані'
       : !off.length ? 'усе під ключ' + (price ? ' (пакет ' + price[1].toLocaleString('uk-UA').replace(/\s/g, ' ') + ' у.о.)' : '')
-      : off.length <= svcCalc.length / 2 ? 'під ключ, крім: ' + off.map(svcLabel).join(', ')
-      : 'окремі послуги: ' + on.map(svcLabel).join(', ');
-    return 'З калькулятора: площа ' + (v > 80 ? 'понад 80' : v) + ' м², ' + svc + '.';
+      : 'під ключ, крім: ' + off.map(svcLabel).join(', ');
+    return head + ', ' + svc + '.';
   };
   var areaTier = function (v) {
     return v <= 20 ? 'до 20 м²' : v <= 40 ? '20-40 м²' : v <= 60 ? '40-60 м²' : v <= 80 ? '60-80 м²' : 'понад 80 м²';
@@ -693,6 +695,7 @@
 
   if (range && calc) {
     var out = document.getElementById('area-out');
+    var slider = range.closest('.slider') || range;
     var sum = calc.querySelector('.calc__sum');
     var curEl = calc.querySelector('.calc__cur');
     var fullBox = calc.querySelector('.calc__full');
@@ -715,7 +718,7 @@
       curEl.hidden = !hit;
       sum.classList.toggle('is-custom', !hit);
       // заповнення доріжки повзунка
-      range.style.setProperty('--fill', ((v - range.min) / (range.max - range.min) * 100).toFixed(1) + '%');
+      slider.style.setProperty('--p', ((v - range.min) / (range.max - range.min)).toFixed(4));
       if (!hit) {
         if (hasGsap) gsap.killTweensOf(shown);
         sum.textContent = 'Індивідуально';
@@ -750,7 +753,10 @@
     var calcAreaToQuiz = function () {
       if (quizApi) { quizApi.answer('area', areaTier(+range.value)); quizApi.calcChanged(); }
     };
-    range.addEventListener('input', function () { updateCalc(); calcAreaToQuiz(); });
+    // людина сама взялася за повзунок: підказка «Потягніть» більше не потрібна
+    var touched = function () { slider.classList.add('is-touched'); slider.classList.remove('is-pulsing'); };
+    range.addEventListener('pointerdown', touched);
+    range.addEventListener('input', function () { touched(); updateCalc(); calcAreaToQuiz(); });
 
     svcCalc.forEach(function (c) {
       c.addEventListener('change', function () {
@@ -766,22 +772,25 @@
     });
     updateCalc();
 
-    // підказка: при першій появі повзунок сам «проїжджає», показуючи, що його можна рухати
-    if (hasST) {
+    // підказка: при першій появі бігунець пульсує, потім сам проїжджає вправо й назад
+    // разом із плашкою «Потягніть», а ціна в цей час міняється
+    if (hasST && !calm) {
       ScrollTrigger.create({
         trigger: '.calc',
         start: 'top 70%',
         once: true,
         onEnter: function () {
-          var o = { v: 10 };
+          if (slider.classList.contains('is-touched')) return;
+          var o = { v: +range.value };
+          var set = function () { range.value = Math.round(o.v / 5) * 5; updateCalc(); };
+          slider.classList.add('is-pulsing');
+          var tl = gsap.timeline({ delay: .4 })
+            .to(o, { v: 70, duration: .9, ease: 'power2.inOut', onUpdate: set }, 1)
+            .to(o, { v: 35, duration: .9, ease: 'power2.inOut', onUpdate: set }, '+=.35');
           // якщо людина сама взялася за повзунок, підказку зупиняємо
-          var stop = function () { gsap.killTweensOf(o); };
+          var stop = function () { tl.kill(); };
           range.addEventListener('pointerdown', stop, { once: true });
           range.addEventListener('keydown', stop, { once: true });
-          gsap.to(o, {
-            v: 35, duration: 1.4, ease: 'power2.inOut',
-            onUpdate: function () { range.value = Math.round(o.v / 5) * 5; updateCalc(); }
-          });
         }
       });
     }
@@ -813,8 +822,19 @@
     // коментар: сам підхоплює вибір з калькулятора, поки людина не почала писати в ньому сама
     var comment = quiz.querySelector('textarea[name="comment"]');
     var calcUsed = false, commentOwn = false;
-    var fillComment = function () { if (calcUsed && !commentOwn) comment.value = calcText(); };
-    comment.addEventListener('input', function () { commentOwn = comment.value.trim() !== ''; });
+    var commentHint = quiz.querySelector('.quiz__calc-hint');
+    var note = quiz.querySelector('.quiz__note');
+    var notePick = quiz.querySelector('.quiz__note-pick');
+    var calcPick = document.querySelector('.calc__pick');
+    var fillComment = function () {
+      if (calcUsed && !commentOwn) comment.value = calcText();
+      commentHint.hidden = !(calcUsed && !commentOwn && comment.value);
+      if (!note.hidden && calcPick) notePick.textContent = calcPick.textContent.trim();
+    };
+    comment.addEventListener('input', function () {
+      commentOwn = comment.value.trim() !== '';
+      commentHint.hidden = true;
+    });
 
     var picked = function (name) { return quiz.querySelector('input[name="' + name + '"]:checked'); };
     var val = function (name) { var r = picked(name); return r ? r.value : ''; };
@@ -968,6 +988,7 @@
       steps.forEach(function (st) { st.classList.remove('is-active'); });
       quiz.querySelector('.quiz__nav').hidden = true;
       quiz.querySelector('.quiz__top').hidden = true;
+      note.hidden = true;
       err.hidden = true;
       var doneBox = quiz.querySelector('.quiz__done');
       doneBox.hidden = false;
@@ -998,7 +1019,19 @@
       // людина змінила площу або галочки в калькуляторі
       calcChanged: function () { calcUsed = true; fillComment(); },
       // перейти до першого питання, на яке ще немає відповіді
-      jump: function () { if (!sent) show(firstOpen()); }
+      jump: function () { if (!sent) show(firstOpen()); },
+      // «Розрахувати мій заклад»: площа й послуги йдуть у заявку, і людина це бачить
+      fromCalc: function () {
+        if (sent) return;
+        if (range) quizApi.answer('area', areaTier(+range.value));
+        calcUsed = true;
+        note.hidden = false;
+        fillComment();
+        note.classList.remove('is-flash');
+        void note.offsetWidth;
+        note.classList.add('is-flash');
+        quizApi.jump();
+      }
     };
 
     // «Це про мене» з табличок: етап і приміщення
@@ -1017,7 +1050,12 @@
     });
     // «Розрахувати мій заклад» під калькулятором
     var fromCalc = document.querySelector('[data-from-calc]');
-    if (fromCalc) fromCalc.addEventListener('click', function () { quizApi.calcChanged(); quizApi.jump(); });
+    if (fromCalc) fromCalc.addEventListener('click', function (e) {
+      e.preventDefault();
+      quizApi.fromCalc();
+      // прокручуємо саме до форми (відступ під плашку меню дає scroll-padding-top)
+      quiz.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+    });
 
     show(0);
   })();
@@ -1095,7 +1133,7 @@
     if (!header) return;
     var burger = header.querySelector('.burger');
     var onScroll = function () {
-      header.classList.toggle('is-scrolled', window.scrollY > window.innerHeight * 0.5);
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
