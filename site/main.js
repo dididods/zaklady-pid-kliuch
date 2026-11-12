@@ -202,6 +202,7 @@
     s.focused = i;
     s.vel = 0;
     stage.classList.add('has-focus');
+    hero.classList.add('is-focus');      // телефон: кнопка під орбітою тьмяніє, щоб не змагалась з карткою
     el.classList.add('is-focused');
 
     focusCard.querySelector('.focus__name').textContent = el.dataset.name;
@@ -233,6 +234,7 @@
     var el = items[s.focused];
     el.classList.remove('is-focused');
     stage.classList.remove('has-focus');
+    hero.classList.remove('is-focus');
     var done = function () { s.focused = -1; };
     if (hasGsap) {
       gsap.to(focusCard, { opacity: 0, duration: .2, onComplete: function () { focusCard.hidden = true; } });

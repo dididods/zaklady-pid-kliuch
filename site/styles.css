@@ -2090,4 +2090,8 @@ html:not(.no-intro) { overflow: hidden; }
 /* ===== Телефон: вибраний заклад піднімається поверх офера (над заголовковим блоком) ===== */
 @media (max-width: 760px) {
   .stage.has-focus { z-index: 7; }
+  /* картка закладу трохи нижче, а «Розрахувати вартість» під нею майже зникає */
+  .stage.has-focus .focus { bottom: -44px; }
+  .hero__cta { transition: opacity .35s; }
+  .hero.is-focus .hero__cta { opacity: .12; pointer-events: none; }
 }
