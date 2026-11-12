@@ -694,17 +694,6 @@ button { font: inherit; color: inherit; }
   text-decoration-color: rgba(227, 38, 28, .55);
   text-decoration-thickness: .055em;
 }
-.founder__quote {
-  margin: 26px 0 0;
-  padding: 18px 22px;
-  border-left: 4px solid var(--accent);
-  border-radius: 0 14px 14px 0;
-  background: rgba(227, 38, 28, .1);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1rem, .95rem + .3vw, 1.125rem);
-  line-height: 1.35;
-}
 
 /* --- франшиза чи свій заклад: повертаєте ключ, і заклад стає вашим --- */
 .vs {
@@ -2212,3 +2201,109 @@ html:not(.no-intro) { overflow: hidden; }
   background: var(--grain) 0 0 / 220px; opacity: .35; mix-blend-mode: soft-light;
 }
 
+
+/* ===== Дизайн v2: розкладка по всьому сайту ===== */
+
+/* Заголовки на темних блоках: гірчичне слово з червоним мазком */
+.section:not(.section--paper) .kw { color: var(--hot); }
+.section:not(.section--paper) .kw::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16' preserveAspectRatio='none'%3E%3Cpath d='M3 11 C 45 4 110 3 197 6 C 140 8 80 10 20 13' fill='none' stroke='%23e3261c' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E");
+  opacity: .75;
+}
+.section:not(.section--paper) .eyebrow__num { color: var(--hot); }
+.head-split > .switch { justify-self: end; align-self: end; width: max-content; max-width: 100%; }
+.head-split > .switch .switch__btn { white-space: nowrap; }
+.section--paper .head-split > .switch { margin-bottom: .2em; }
+
+/* Підтекст дрібніший, але читається */
+.section__lead { font-size: clamp(.98rem, .95rem + .2vw, 1.1rem); line-height: 1.6; }
+.founder__text > p { font-size: 1rem; line-height: 1.65; }
+.bs__step p { font-size: clamp(.95rem, .9rem + .2vw, 1.05rem); line-height: 1.6; }
+.steps p { font-size: .9rem; line-height: 1.55; }
+.steps__total { font-size: 1rem; }
+.faq details p { font-size: .95rem; line-height: 1.6; }
+
+/* Тепле світло на інших темних блоках */
+.section--glow {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(45% 55% at 100% 0%, rgba(255, 180, 0, .09), transparent 70%),
+    radial-gradient(55% 60% at 0% 100%, rgba(227, 38, 28, .13), transparent 70%),
+    var(--paper-dark) 0 0 / 260px,
+    var(--bg-2);
+}
+
+/* Картки на темному: та сама фактура паперу, світла кромка, глибока тінь */
+.vs, .case, .calc, .quiz {
+  background: var(--paper-dark) 0 0 / 260px, linear-gradient(160deg, #2b1f19 0%, #1d1512 100%);
+  border: 1px solid rgba(255, 241, 220, .07);
+  box-shadow: inset 0 1px 0 rgba(255, 241, 220, .07), 0 34px 60px -38px rgba(0, 0, 0, .9);
+}
+
+/* Цитата-смуга між шефом і франшизою */
+.quote-band {
+  position: relative;
+  max-width: 980px;
+  margin: clamp(56px, 7vw, 104px) auto 0;
+  padding: clamp(36px, 5vw, 64px) clamp(20px, 5vw, 64px);
+  border-radius: clamp(24px, 3vw, 36px);
+  text-align: center;
+  background:
+    radial-gradient(60% 90% at 50% 0%, rgba(255, 150, 50, .18), transparent 70%),
+    var(--paper-dark) 0 0 / 260px,
+    rgba(255, 241, 220, .025);
+  border: 1px solid rgba(255, 241, 220, .08);
+  box-shadow: inset 0 1px 0 rgba(255, 241, 220, .07), 0 40px 80px -50px rgba(0, 0, 0, .9);
+}
+.quote-band__mark { display: block; height: .55em; font-family: var(--font-display); font-weight: 800; font-size: clamp(4rem, 8vw, 6.5rem); line-height: 1; color: var(--hot); }
+.quote-band__text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.3rem, .95rem + 1.6vw, 2.2rem);
+  line-height: 1.28;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.quote-band__text .hl { color: var(--hot); }
+.quote-band figcaption { margin-top: 26px; font-size: .875rem; color: var(--text-dim); }
+.quote-band figcaption b { margin-right: 6px; color: var(--text); }
+
+/* Світлий аркуш «Що буде після заявки» */
+.section--paper .switch { background: rgba(36, 23, 15, .07); box-shadow: inset 0 0 0 1px rgba(36, 23, 15, .08); }
+.section--paper .switch__btn { color: var(--ink-dim); }
+.section--paper .switch__btn[aria-pressed="true"] { background: var(--ink); color: var(--text); }
+.section--paper .steps__rail { background: rgba(36, 23, 15, .12); }
+.section--paper .steps__fill { background: linear-gradient(var(--hot), var(--accent)); box-shadow: 0 0 10px rgba(227, 38, 28, .35); }
+.section--paper .steps li { border-bottom-color: rgba(36, 23, 15, .1); }
+.section--paper .steps li::before { background: #fffaf2; border-color: var(--accent); color: var(--accent); box-shadow: 0 6px 14px -8px rgba(90, 45, 15, .5); }
+.section--paper .steps li.is-passed::before { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 8px 18px -6px rgba(227, 38, 28, .55); }
+.section--paper .steps li::after { background: linear-gradient(90deg, rgba(255, 180, 0, .22), rgba(255, 180, 0, 0) 85%); }
+.section--paper .steps h3 { color: var(--ink); }
+.section--paper .steps p,
+.section--paper .steps__total { color: var(--ink-dim); }
+.section--paper .steps__total strong { color: var(--ink); }
+.section--paper .steps__key { filter: drop-shadow(0 4px 6px rgba(90, 45, 15, .45)); }
+
+/* Світлий аркуш «Питання» */
+.section--paper .faq details { border-bottom-color: rgba(36, 23, 15, .12); }
+.section--paper .faq summary { color: var(--ink); }
+.section--paper .faq summary::after { background: var(--ink); color: var(--hot); }
+.section--paper .faq details p { color: var(--ink-dim); }
+.section--paper .faq__more {
+  background: var(--grain-soft) 0 0 / 220px, linear-gradient(165deg, #fffcf6 0%, #fbf1e1 100%);
+  border: 1px solid rgba(120, 75, 35, .14);
+  box-shadow: inset 0 1px 0 #fff, 0 30px 46px -30px rgba(90, 45, 15, .5);
+}
+.section--paper .faq__more p { color: var(--ink-dim); }
+.section--paper .faq__more b { color: var(--ink); }
+.section--paper .btn--ghost { color: var(--ink); }
+.section--paper .btn--ghost:hover { background: rgba(36, 23, 15, .06); }
+
+@media (max-width: 900px) {
+  .head-split > .switch { justify-self: start; }
+}
+@media (max-width: 760px) {
+  .head-split > .switch .switch__btn { padding: 11px 14px; font-size: .875rem; }
+}

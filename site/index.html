@@ -46,7 +46,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
   <!-- ?v= — щоб браузер не брав застарілу версію з кешу; міняти при кожному оновленні -->
-  <link rel="stylesheet" href="styles.css?v=52">
+  <link rel="stylesheet" href="styles.css?v=55">
 
   <!-- GSAP вантажимо якомога раніше: поки його немає, інтро не може стартувати -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -391,11 +391,10 @@
           </div>
         </div>
         <div class="founder__text">
+          <p class="eyebrow"><span class="eyebrow__num">03</span>Про шефа</p>
           <h2 id="t-who">Заклад вам відкриває<br class="br-d"> <span class="hl">шеф&#8209;практик</span>, <s class="soft-strike">а&nbsp;не&nbsp;франшиза</s></h2>
           <p class="founder__name">Дмитро Барсуков, бренд-шеф і&nbsp;засновник бюро</p>
           <p>Сам щодня керую рестораном, який відкрив з&nbsp;нуля<br class="br-d"> і&nbsp;який працює вже два роки.<br class="br-d"> Тому знаю, що&nbsp;має працювати в&nbsp;закладі з&nbsp;першого дня,<br class="br-d"> а&nbsp;не&nbsp;тільки гарно виглядати на&nbsp;відкритті.</p>
-          <!-- слова клієнта з брифу, п. 6.2; формулювання погоджене користувачкою. Дефіс замість тире навмисно -->
-          <blockquote class="founder__quote">Для&nbsp;мене відкриття закладу&nbsp;-<br class="br-d"> це&nbsp;не&nbsp;просто черговий проєкт.<br class="br-d"> Це&nbsp;моя репутація.<br class="br-d"> Тому я вкладаю душу в&nbsp;кожну деталь<br class="br-d"> і&nbsp;відповідаю за&nbsp;результат.</blockquote>
           <ul class="founder__facts">
             <li><strong>з&nbsp;2012</strong> у&nbsp;громадському харчуванні</li>
             <li><strong>20+</strong> закладів відкрив і&nbsp;перезапустив по&nbsp;всій Україні</li>
@@ -404,6 +403,13 @@
           </ul>
         </div>
       </div>
+
+      <!-- Цитата-смуга між шефом і франшизою. Слова клієнта з брифу, п. 6.2; формулювання погоджене. Дефіс замість тире навмисно -->
+      <figure class="quote-band">
+        <span class="quote-band__mark" aria-hidden="true">«</span>
+        <blockquote class="quote-band__text">Для&nbsp;мене відкриття закладу&nbsp;- це&nbsp;не&nbsp;просто черговий проєкт. <span class="hl">Це&nbsp;моя репутація.</span> Тому я&nbsp;вкладаю душу в&nbsp;кожну деталь і&nbsp;відповідаю за&nbsp;результат.</blockquote>
+        <figcaption><b>Дмитро Барсуков</b> бренд-шеф і&nbsp;засновник бюро</figcaption>
+      </figure>
 
       <!-- Інтерактив: повертаєте ключ — франшизний заклад стає вашим.
            data-mode: "franchise" | "own". Автоматично вмикається при появі на екрані -->
@@ -456,8 +462,11 @@
 
     <!-- ===== 4. Що входить «під ключ» ===== -->
     <section class="section" id="pid-kliuch" aria-labelledby="t-turnkey">
-      <div class="section__head">
-        <h2 id="t-turnkey">Що&nbsp;ви&nbsp;отримуєте на&nbsp;кожному етапі</h2>
+      <div class="section__head head-split">
+        <div>
+          <p class="eyebrow"><span class="eyebrow__num">04</span>Під ключ</p>
+          <h2 id="t-turnkey">Що&nbsp;ви&nbsp;отримуєте на&nbsp;<span class="kw">кожному етапі</span></h2>
+        </div>
         <p class="section__lead">Від&nbsp;ідеї до&nbsp;першого гостя. Вам не&nbsp;треба шукати і&nbsp;зводити між собою десяток підрядників:<br class="br-d"> проєкт веду я, а&nbsp;кожен етап закриваємо з&nbsp;командою.</p>
       </div>
 
@@ -534,11 +543,12 @@
     </section>
 
     <!-- ===== 5. Кейси ===== -->
-    <section class="section section--alt" id="keisy" aria-labelledby="t-cases">
+    <section class="section section--alt section--glow" id="keisy" aria-labelledby="t-cases">
       <div class="cases">
         <div class="cases__head">
           <div>
-            <h2 id="t-cases">Заклади, які вже працюють</h2>
+            <p class="eyebrow"><span class="eyebrow__num">05</span>Кейси</p>
+            <h2 id="t-cases">Заклади, які вже <span class="kw">працюють</span></h2>
             <p class="cases__lead">Два - мій власний досвід, два - проєкти клієнтів.</p>
           </div>
           <p>Гортайте вбік</p>
@@ -586,9 +596,12 @@
     </section>
 
     <!-- ===== 6. Етапи ===== -->
-    <section class="section" id="etapy" aria-labelledby="t-steps">
-      <div class="section__head">
-        <h2 id="t-steps">Що&nbsp;буде після вашої заявки</h2>
+    <section class="section section--paper" id="etapy" aria-labelledby="t-steps">
+      <div class="section__head head-split">
+        <div>
+          <p class="eyebrow"><span class="eyebrow__num">06</span>Як це буде</p>
+          <h2 id="t-steps">Що&nbsp;буде після <span class="kw">вашої заявки</span></h2>
+        </div>
         <div class="switch" role="group" aria-label="Чи є у вас приміщення">
           <button type="button" class="switch__btn" aria-pressed="true" data-premises="yes">Є приміщення</button>
           <button type="button" class="switch__btn" aria-pressed="false" data-premises="no">Немає приміщення</button>
@@ -623,9 +636,12 @@
     </section>
 
     <!-- ===== 7. Вартість і зобов'язання ===== -->
-    <section class="section section--alt" id="vartist" aria-labelledby="t-price">
-      <div class="section__head">
-        <h2 id="t-price">Вартість послуг - відкрито, ще&nbsp;до&nbsp;розмови</h2>
+    <section class="section section--alt section--glow" id="vartist" aria-labelledby="t-price">
+      <div class="section__head head-split">
+        <div>
+          <p class="eyebrow"><span class="eyebrow__num">07</span>Вартість</p>
+          <h2 id="t-price">Вартість послуг - <span class="kw">відкрито</span>, ще&nbsp;до&nbsp;розмови</h2>
+        </div>
         <p class="section__lead price__lead"><span class="mark">Ціна залежить від&nbsp;площі закладу.</span><br> Це&nbsp;орієнтир: точну суму назву після знайомства з&nbsp;вашим проєктом.</p>
       </div>
 
@@ -714,9 +730,10 @@
     </section>
 
     <!-- ===== 8. Питання ===== -->
-    <section class="section" id="faq" aria-labelledby="t-faq">
+    <section class="section section--paper" id="faq" aria-labelledby="t-faq">
       <div class="section__head">
-        <h2 id="t-faq">Про&nbsp;що питають перед стартом</h2>
+        <p class="eyebrow"><span class="eyebrow__num">08</span>Питання</p>
+        <h2 id="t-faq">Про&nbsp;що питають <span class="kw">перед стартом</span></h2>
       </div>
       <div class="faq">
         <details>
@@ -764,10 +781,11 @@
     </section>
 
     <!-- ===== 9. Квіз-заявка ===== -->
-    <section class="section section--alt" id="zayavka" aria-labelledby="t-form">
+    <section class="section section--alt section--glow" id="zayavka" aria-labelledby="t-form">
       <div class="quiz-wrap">
         <div class="quiz-intro">
-          <h2 id="t-form">Розкажіть про свій заклад</h2>
+          <p class="eyebrow"><span class="eyebrow__num">09</span>Заявка</p>
+          <h2 id="t-form">Розкажіть про <span class="kw">свій заклад</span></h2>
           <p class="section__lead">Кілька коротких питань, і&nbsp;я&nbsp;підготую попередній розрахунок. Те, що&nbsp;ви&nbsp;вже обрали на&nbsp;сайті, тут заповнено.</p>
           <p class="quiz-intro__alt">Зручніше написати? <a href="https://t.me/Dima_Brss" target="_blank" rel="noopener">Telegram</a></p>
         </div>
@@ -939,6 +957,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="main.js?v=29"></script>
+  <script src="main.js?v=30"></script>
 </body>
 </html>

@@ -1193,3 +1193,32 @@
     update();
   })();
 })();
+
+/* Цитата-смуга: слова проявляються під час прокрутки (окремий блок, свої імена) */
+(function () {
+  var qBand = document.querySelector('.quote-band__text');
+  if (!qBand || !window.gsap || !window.ScrollTrigger) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var qWrap = function (node) {
+    [].slice.call(node.childNodes).forEach(function (ch) {
+      if (ch.nodeType === 3) {
+        var frag = document.createDocumentFragment();
+        ch.textContent.split(/( )/).forEach(function (part) {
+          if (part === ' ' || part === '') { frag.appendChild(document.createTextNode(part)); return; }
+          var w = document.createElement('span');
+          w.className = 'quote-band__w';
+          w.textContent = part;
+          frag.appendChild(w);
+        });
+        node.replaceChild(frag, ch);
+      } else if (ch.nodeType === 1) {
+        qWrap(ch);
+      }
+    });
+  };
+  qWrap(qBand);
+  gsap.fromTo(qBand.querySelectorAll('.quote-band__w'), { opacity: .18 }, {
+    opacity: 1, stagger: .1, ease: 'none',
+    scrollTrigger: { trigger: qBand, start: 'top 80%', end: 'bottom 55%', scrub: true }
+  });
+})();
