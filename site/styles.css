@@ -2096,3 +2096,7 @@ html:not(.no-intro) { overflow: hidden; }
 @media (max-width: 760px) {
   .stage.has-focus .focus { bottom: -44px; }   /* картка трохи нижче, на місці кнопки */
 }
+
+/* Тексти етап 5: акценти в етапах, підзаголовок кейсів */
+.bs__step p b { color: var(--hot); font-weight: 700; }
+.cases__head .cases__lead { margin-top: 10px; font-size: 1rem; }
