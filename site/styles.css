@@ -2223,7 +2223,7 @@ html:not(.no-intro) { overflow: hidden; }
 .quote-band {
   position: relative;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   column-gap: clamp(16px, 2.5vw, 36px);
   align-items: start;
   max-width: 1240px;
@@ -2255,6 +2255,9 @@ html:not(.no-intro) { overflow: hidden; }
   letter-spacing: -.01em;
 }
 .quote-band__text .hl { color: var(--hot); }
+.quote-band__mark { grid-column: 1; grid-row: 1 / span 2; }
+.quote-band__text, .quote-band figcaption { grid-column: 2; }
+.quote-band__mark--close { grid-column: 3; align-self: end; }
 .quote-band figcaption { margin-top: 16px; font-size: .875rem; color: var(--text-dim); }
 .quote-band figcaption b { margin-right: 6px; color: var(--text); }
 
@@ -2299,3 +2302,7 @@ html:not(.no-intro) { overflow: hidden; }
 /* «Що буде після заявки»: перемикач по центру над кроками */
 #etapy .head-split > .switch { align-self: center; justify-self: center; margin: 0; }
 #etapy .eyebrow { justify-content: center; }
+@media (max-width: 600px) {
+  .quote-band { column-gap: 12px; padding: 24px 18px; }
+  .quote-band__mark { font-size: 2.8rem; }
+}
