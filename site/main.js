@@ -592,54 +592,100 @@
   }
 
   /* =========================================================
-     4. Етапи: ключ їде по лінії шляху
+     4. Етапи: маршрут 4×2 (на телефоні стовпчиком) - хвиляста лінія
+        через кружечки кроків, ключ їде нею під час скролу
      ========================================================= */
   var stepsWrap = document.querySelector('.steps-wrap');
+  var rebuildRoute = function () {};
   if (stepsWrap) {
-    var rail = stepsWrap.querySelector('.steps__rail');
-    var fill = stepsWrap.querySelector('.steps__fill');
-    var skey = stepsWrap.querySelector('.steps__key');
+    var routeSvg = stepsWrap.querySelector('.route');
+    var routeBase = routeSvg.querySelector('.route__base');
+    var routeFill = routeSvg.querySelector('.route__fill');
+    var routeKey = stepsWrap.querySelector('.route__key');
     var stepItems = Array.prototype.slice.call(stepsWrap.querySelectorAll('.steps li'));
+    var routeLen = 0, stopLens = [], routeP = 0;
 
-    var CIRCLE_TOP = 14, CIRCLE = 42;   // кружечок кроку: відступ зверху і розмір (як у CSS)
-    var moveKey = function (p) {
-      var h = rail.offsetHeight;
-      var y = h * p;
-      var railTop = rail.offsetTop;
-      fill.style.height = y + 'px';
-      var passed = 0;
-      stepItems.forEach(function (li) {
-        // центр кружечка кроку відносно початку лінії
-        var c = li.offsetTop + CIRCLE_TOP + CIRCLE / 2 - railTop;
-        var on = c <= y + 2;
-        li.classList.toggle('is-passed', on);
-        if (on) passed++;
-      });
-      // ключ стоїть на відрізку лінії між останнім пройденим і наступним кружечком,
-      // а кінчиком «входить» у наступний — цифри не перекриває
-      var k = Math.min(Math.max(passed, 1), stepItems.length - 1);
-      // плашка підсвічує крок, біля якого зараз стоїть ключ
-      stepItems.forEach(function (li, i) { li.classList.toggle('is-current', i === k - 1); });
-      var from = stepItems[k - 1].offsetTop + CIRCLE_TOP + CIRCLE + 3 - railTop;
-      var to = stepItems[k].offsetTop + CIRCLE_TOP - railTop;
-      var len = Math.max(24, (to - from) / 0.9);   // кінчик стрижня — на 90% висоти малюнка
-      skey.style.top = from.toFixed(1) + 'px';
-      skey.style.height = len.toFixed(1) + 'px';
-      skey.style.width = (len / 3).toFixed(1) + 'px';
-      skey.style.marginLeft = (-len / 6).toFixed(1) + 'px';
+    // центр кружечка-номера (li::before) відносно .steps-wrap
+    var circleAt = function (li, wr) {
+      var cs = getComputedStyle(li, '::before');
+      var r = li.getBoundingClientRect();
+      var w = parseFloat(cs.width) || 42;
+      return {
+        x: r.left - wr.left + (parseFloat(cs.left) || 0) + (parseFloat(cs.marginLeft) || 0) + w / 2,
+        y: r.top - wr.top + (parseFloat(cs.top) || 0) + w / 2
+      };
     };
+    var f1 = function (n) { return n.toFixed(1); };
+    // відрізок між двома кружечками: S-хвиля; перехід на інший ряд - плавна петля збоку
+    var routeSeg = function (a, b, i, narrow) {
+      var dx = b.x - a.x, dy = b.y - a.y, len = Math.sqrt(dx * dx + dy * dy) || 1;
+      if (!narrow && Math.abs(dy) > Math.abs(dx)) {
+        var side = a.x > stepsWrap.clientWidth / 2 ? 1 : -1;
+        var bulge = Math.max(70, stepsWrap.clientWidth * 0.12) * side;
+        return ' C' + f1(a.x + bulge) + ' ' + f1(a.y) + ' ' + f1(b.x + bulge) + ' ' + f1(b.y) + ' ' + f1(b.x) + ' ' + f1(b.y);
+      }
+      var nx = -dy / len, ny = dx / len;
+      var amp = Math.min(narrow ? 12 : 22, len * 0.2) * (i % 2 ? 1 : -1);
+      return ' C' + f1(a.x + dx / 3 + nx * amp) + ' ' + f1(a.y + dy / 3 + ny * amp) + ' ' +
+        f1(a.x + 2 * dx / 3 - nx * amp) + ' ' + f1(a.y + 2 * dy / 3 - ny * amp) + ' ' + f1(b.x) + ' ' + f1(b.y);
+    };
+
+    var moveRoute = function (p) {
+      routeP = p;
+      if (!routeLen) return;
+      var L = routeLen * p;
+      routeFill.style.strokeDashoffset = (routeLen - L).toFixed(1);
+      var cur = 0;
+      stepItems.forEach(function (li, i) {
+        var on = stopLens[i] <= L + 2;
+        li.classList.toggle('is-passed', on);
+        if (on) cur = i;
+      });
+      stepItems.forEach(function (li, i) { li.classList.toggle('is-current', i === cur); });
+      var at = Math.min(Math.max(L, 0.5), routeLen - 0.5);
+      var pt = routeBase.getPointAtLength(at);
+      var pt2 = routeBase.getPointAtLength(Math.min(at + 1, routeLen));
+      var ang = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI;
+      routeKey.style.transform = 'translate(' + f1(pt.x - 8) + 'px,' + f1(pt.y - 24) + 'px) rotate(' + f1(ang - 90) + 'deg)';
+    };
+
+    rebuildRoute = function () {
+      var narrow = window.innerWidth <= 900;
+      var wr = stepsWrap.getBoundingClientRect();
+      var pts = stepItems.map(function (li) { return circleAt(li, wr); });
+      var d = 'M' + f1(pts[0].x) + ' ' + f1(pts[0].y);
+      var probe = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      routeSvg.appendChild(probe);
+      stopLens = [0];
+      for (var i = 1; i < pts.length; i++) {
+        d += routeSeg(pts[i - 1], pts[i], i, narrow);
+        probe.setAttribute('d', d);
+        stopLens.push(probe.getTotalLength());
+      }
+      routeSvg.removeChild(probe);
+      routeBase.setAttribute('d', d);
+      routeFill.setAttribute('d', d);
+      routeLen = stopLens[stopLens.length - 1];
+      routeFill.style.strokeDasharray = routeLen.toFixed(1);
+      moveRoute(routeP);
+    };
+
+    var routeTimer;
+    window.addEventListener('resize', function () { clearTimeout(routeTimer); routeTimer = setTimeout(rebuildRoute, 120); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(rebuildRoute);
+    rebuildRoute();
 
     if (hasST) {
       ScrollTrigger.create({
         trigger: stepsWrap,
-        start: 'top 55%',
-        end: 'bottom 55%',
+        start: 'top 65%',
+        end: 'bottom 60%',
         scrub: 0.6,
-        onUpdate: function (self) { moveKey(self.progress); }
+        onUpdate: function (self) { moveRoute(self.progress); }
       });
-      moveKey(0);
+      moveRoute(0);
     } else {
-      moveKey(1);
+      moveRoute(1);
     }
   }
 
@@ -654,6 +700,7 @@
       document.querySelectorAll('.steps__fork [data-yes]').forEach(function (el) {
         el.textContent = el.dataset[mode];
       });
+      rebuildRoute();
     });
   });
 
@@ -679,7 +726,7 @@
     // обрано менше половини: перелічуємо, що саме треба
     if (on.length && off.length > svcCalc.length / 2) return head + '. Що треба буде: ' + on.map(svcLabel).join(', ') + '.';
     var svc = !on.length ? 'послуги ще не обрані'
-      : !off.length ? 'усе під ключ' + (price ? ' (пакет ' + price[1].toLocaleString('uk-UA').replace(/\s/g, ' ') + ' у.о.)' : '')
+      : !off.length ? 'усе під ключ' + (price ? ' (пакет ' + price[1].toLocaleString('uk-UA').replace(/\s/g, ' ') + ' $)' : '')
       : 'під ключ, крім: ' + off.map(svcLabel).join(', ');
     return head + ', ' + svc + '.';
   };
@@ -744,7 +791,7 @@
       fullBox.hidden = partial;
       partBox.hidden = !partial;
       pkg.hidden = !hit;
-      if (hit) pkgSum.textContent = fmt(hit[1]) + ' у.о.';
+      if (hit) pkgSum.textContent = fmt(hit[1]) + ' $';
       // ключ знову в замку: коротке клацання-спалах
       if (wasPartial && !partial && hasGsap && !calm) {
         gsap.fromTo(lockFlash, { opacity: 0, scale: .4 }, { opacity: 1, scale: 1.3, duration: .18, delay: .3, yoyo: true, repeat: 1 });

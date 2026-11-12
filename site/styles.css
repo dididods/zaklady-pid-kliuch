@@ -2313,3 +2313,118 @@ html:not(.no-intro) { overflow: hidden; }
 @media (max-width: 1100px) {
   .site-header:not(.show-consult) .header-consult { margin-left: -8px; }
 }
+
+/* ===== Мотиви кухні: ніж (04 Кухня і меню) і вогник (06 Запуск), лише тут ===== */
+.bs__num--motif { display: flex; align-items: center; gap: .18em; }
+.bs__motif { flex: none; width: .62em; height: .62em; fill: none; stroke: var(--hot); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 10px rgba(255, 180, 0, .35)); }
+.bs__flame-core { fill: rgba(227, 38, 28, .55); stroke: var(--hot); }
+.bs__step.is-on .bs__motif--flame { transform-origin: 50% 90%; animation: motif-flicker 2.4s ease-in-out infinite; }
+.bs__step.is-on .bs__motif--knife { animation: motif-glint 3.2s ease-in-out infinite; }
+@keyframes motif-flicker {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  30% { transform: scale(1.04, .97) rotate(-2deg); }
+  60% { transform: scale(.97, 1.04) rotate(2deg); }
+}
+@keyframes motif-glint {
+  0%, 70%, 100% { filter: drop-shadow(0 0 10px rgba(255, 180, 0, .35)); }
+  80% { filter: drop-shadow(0 0 16px rgba(255, 210, 120, .85)); }
+}
+@media (prefers-reduced-motion: reduce) { .bs__motif { animation: none !important; } }
+
+/* ===== Квіз як паперовий бланк від шефа ===== */
+.quiz.quiz--paper {
+  --ink: #3d281c;
+  --ink-dim: #7b604c;
+  position: relative;
+  color: var(--ink);
+  background:
+    var(--grain-soft) 0 0 / 220px,
+    radial-gradient(60% 40% at 0% 0%, rgba(255, 180, 0, .16), transparent 70%),
+    linear-gradient(170deg, #fcf3e5 0%, #f3e3ca 100%);
+  border: 1px solid rgba(120, 75, 35, .16);
+  box-shadow: inset 0 1px 0 #fff, 0 40px 80px -40px rgba(0, 0, 0, .9);
+}
+.quiz__blank {
+  display: flex; justify-content: space-between; gap: 12px; margin: 0 0 18px; padding-bottom: 12px;
+  border-bottom: 2px dashed rgba(120, 75, 35, .22);
+  font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-dim);
+}
+.quiz__blank span:first-child { color: var(--accent); }
+.quiz--paper .quiz__progress { color: var(--ink-dim); }
+.quiz--paper .quiz__bar { background: rgba(61, 40, 28, .12); }
+.quiz--paper .quiz__bar i { background: linear-gradient(90deg, var(--hot), var(--accent)); }
+.quiz--paper .quiz__step legend { color: var(--ink); }
+.quiz--paper .pick,
+.quiz--paper .opt span { background: #fffaf2; border-color: rgba(61, 40, 28, .12); color: var(--ink); box-shadow: 0 6px 14px -10px rgba(90, 45, 15, .45); }
+.quiz--paper .pick { border-width: 2px; border-style: solid; }
+.quiz--paper .opt:hover span,
+.quiz--paper .pick:hover { border-color: rgba(227, 38, 28, .35); }
+.quiz--paper .pick:has(input:checked),
+.quiz--paper .opt:has(input:checked) span { border-color: var(--accent); background: #fff3e6; }
+.quiz--paper .pick:has(input:focus-visible),
+.quiz--paper .opt:has(input:focus-visible) span { outline-color: var(--accent); }
+.quiz--paper .field { background: #fffaf3; border-color: rgba(61, 40, 28, .16); color: var(--ink); }
+.quiz--paper .field::placeholder { color: rgba(123, 96, 76, .75); }
+.quiz--paper .field:focus { border-color: var(--accent); }
+.quiz--paper .quiz__sub--dim,
+.quiz--paper .quiz__opt-mark,
+.quiz--paper .quiz__consent,
+.quiz--paper .quiz__done p { color: var(--ink-dim); }
+.quiz--paper .quiz__consent a { color: var(--ink); }
+.quiz--paper .quiz__error { color: #c2271d; }
+.quiz--paper .quiz__calc-hint { color: var(--accent); }
+.quiz--paper .quiz__back { background: rgba(61, 40, 28, .08); color: var(--ink); border: 0; }
+.quiz--paper .quiz__back:hover { background: rgba(61, 40, 28, .14); }
+.quiz--paper .quiz__note { border-color: rgba(200, 120, 0, .35); background: rgba(255, 180, 0, .14); }
+.quiz--paper .quiz__note b { color: var(--accent); }
+.quiz--paper .quiz__note svg { background: var(--accent); stroke: #fff; }
+.quiz--paper .quiz__summary { background: #fff7ec; border-color: rgba(61, 40, 28, .14); }
+.quiz--paper .quiz__summary-title,
+.quiz--paper .quiz__done h3 { color: var(--accent); }
+.quiz--paper .quiz__summary-list dt { color: var(--ink-dim); }
+.bs__motif--knife { width: 1.05em; height: .53em; stroke-width: 1.3; transform: rotate(-14deg); }
+.bs__step.is-on .bs__motif--knife { transform: rotate(-14deg); }
+
+/* Блок 4: ключ на шкалі прибрано, етапи позначені контурними значками біля цифр */
+.bs__key { display: none; }
+
+/* ===== «Що буде після заявки»: маршрут 4×2, хвиляста лінія через кружечки ===== */
+.steps-wrap { max-width: 1240px; }
+.route { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
+.route path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.route__base { stroke: rgba(61, 40, 28, .28); stroke-width: 2.5; stroke-dasharray: .5 9; }
+.route__fill { stroke: var(--accent); stroke-width: 3; filter: drop-shadow(0 2px 6px rgba(227, 38, 28, .35)); }
+.route__key {
+  position: absolute; left: 0; top: 0; z-index: 3;
+  width: 16px; height: 48px; transform-origin: 8px 24px;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 5px rgba(90, 45, 15, .45));
+}
+.steps li::after { display: none; }
+
+@media (min-width: 901px) {
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-flow: dense;
+    column-gap: clamp(20px, 3vw, 48px);
+    row-gap: clamp(40px, 5vw, 64px);
+  }
+  .steps li { position: relative; z-index: 1; padding: 62px 6px 0; border: 0; text-align: center; }
+  .steps li:nth-child(1) { grid-area: 1 / 1; }
+  .steps li:nth-child(2) { grid-area: 1 / 2; }
+  .steps li:nth-child(3) { grid-area: 1 / 3; }
+  .steps li:nth-child(4) { grid-area: 1 / 4; }
+  .steps li:nth-child(5) { grid-area: 2 / 4; }
+  .steps li:nth-child(6) { grid-area: 2 / 3; }
+  .steps li:nth-child(7) { grid-area: 2 / 2; }
+  .steps li:nth-child(8) { grid-area: 2 / 1; }
+  .steps li::before { left: 50%; top: 0; margin-left: -21px; }
+  .steps h3 { padding-top: 0; }
+  .steps p { max-width: 22em; margin-left: auto; margin-right: auto; }
+  .steps li.is-current h3 { color: var(--accent); }
+}
+@media (max-width: 900px) {
+  .steps li { position: relative; z-index: 1; border: 0; }
+  .steps li.is-current h3 { color: var(--accent); }
+}
