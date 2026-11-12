@@ -2042,6 +2042,11 @@ html:not(.no-intro) { overflow: hidden; }
 .hero__bottom { grid-template-columns: 1fr 1fr; }
 @media (min-width: 901px) {
   .stage { margin-top: -96px; }
+  /* низькі екрани (ноутбук з масштабом 125%): перший екран не довший за вікно,
+     шеф і 20+ стоять по боках від підказки під орбітою */
+  .hero { min-height: max(100svh, 600px); }
+  .hero__bottom { margin-top: -44px; pointer-events: none; }
+  .hero__bottom > * { pointer-events: auto; }
 }
 @media (max-width: 900px) {
   .hero__cta { order: 2; margin-top: 12px; }   /* на планшеті й телефоні кнопка під орбітою */
@@ -2050,6 +2055,9 @@ html:not(.no-intro) { overflow: hidden; }
 @media (max-width: 760px) {
   .hero__cta { width: 100%; }
   .hero__cta .btn { width: 100%; }
+  /* шеф і 20+ не злипаються з кнопкою і між собою */
+  .hero__cta { margin-top: 16px; }
+  .hero__bottom { margin-top: 22px; gap: 20px; }
   /* орбіта сплюснута, будівлі трохи більші */
   .stage { --item: clamp(96px, 28vw, 124px); flex-basis: 300px; }
 }
