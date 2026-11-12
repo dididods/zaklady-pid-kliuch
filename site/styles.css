@@ -2113,8 +2113,8 @@ html:not(.no-intro) { overflow: hidden; }
 
 /* Світла секція: аркуш з теплими плямами, зерном і текстурою льону */
 .section--paper {
-  --ink: #24170f;
-  --ink-dim: #6f5745;
+  --ink: #3d281c;
+  --ink-dim: #7b604c;
   position: relative;
   isolation: isolate;
   margin: clamp(20px, 3vw, 40px) clamp(8px, 1.4vw, 20px);
