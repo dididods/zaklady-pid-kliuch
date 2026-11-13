@@ -545,12 +545,18 @@
       gsap.set(bsBlue, { opacity: .5 });
       setUI(0);
 
+      // точки «прилипання»: початок, середина кожного етапу, кінець.
+      // Один рух колеса - і сцена сама доїжджає до наступного етапу (або виходить із блоку)
+      var bsSnaps = [0];
+      for (var sk = 0; sk < N; sk++) bsSnaps.push((sk + .5) / N);
+      bsSnaps.push(1);
       bsST = ScrollTrigger.create({
         trigger: bs,
         start: 'center center',
-        end: function () { return '+=' + Math.round(window.innerHeight * .7 * N); },
+        end: function () { return '+=' + Math.round(window.innerHeight * .45 * N); },
         pin: true,
         anticipatePin: 1,
+        snap: { snapTo: bsSnaps, directional: true, delay: .05, duration: { min: .25, max: .55 }, ease: 'power2.inOut' },
         onUpdate: function (self) {
           show(Math.min(N - 1, Math.floor(self.progress * N * .999)));
         },
