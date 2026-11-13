@@ -1350,3 +1350,65 @@
   }, true);
   cTrack.addEventListener('dragstart', function (e) { e.preventDefault(); });
 })();
+
+/* Відео кухні: вантажиться й грає, лише коли видно на екрані */
+(function () {
+  var kVideo = document.querySelector('.proof video[data-src]');
+  if (!kVideo) return;
+  var kCalm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var kStart = function () {
+    if (!kVideo.src) kVideo.src = kVideo.dataset.src;
+    if (!kCalm) { var pr = kVideo.play(); if (pr && pr.catch) pr.catch(function () {}); }
+  };
+  if (!('IntersectionObserver' in window)) { kStart(); return; }
+  new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) kStart(); else kVideo.pause(); });
+  }, { rootMargin: '200px 0px' }).observe(kVideo);
+})();
+
+/* Страви шефа: збільшення за кліком, стрілки й Esc */
+(function () {
+  var dBtns = Array.prototype.slice.call(document.querySelectorAll('.dishes__open'));
+  if (!dBtns.length) return;
+  var box = document.createElement('div');
+  box.className = 'lightbox';
+  box.setAttribute('role', 'dialog');
+  box.setAttribute('aria-modal', 'true');
+  box.setAttribute('aria-label', 'Страви шефа');
+  box.innerHTML = '<img class="lightbox__img" alt="">' +
+    '<button type="button" class="lightbox__btn lightbox__close" aria-label="Закрити">×</button>' +
+    '<button type="button" class="lightbox__btn lightbox__prev" aria-label="Попереднє фото">‹</button>' +
+    '<button type="button" class="lightbox__btn lightbox__next" aria-label="Наступне фото">›</button>';
+  document.body.appendChild(box);
+  var bImg = box.querySelector('.lightbox__img');
+  var bIdx = 0, bLast = null;
+  var bShow = function (i) {
+    bIdx = (i + dBtns.length) % dBtns.length;
+    var src = dBtns[bIdx].querySelector('img');
+    bImg.src = src.currentSrc || src.src;
+    bImg.alt = src.alt;
+  };
+  var bOpen = function (i) {
+    bLast = document.activeElement;
+    bShow(i);
+    box.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
+    box.querySelector('.lightbox__close').focus();
+  };
+  var bClose = function () {
+    box.classList.remove('is-open');
+    document.documentElement.style.overflow = '';
+    if (bLast) bLast.focus();
+  };
+  dBtns.forEach(function (b, i) { b.addEventListener('click', function () { bOpen(i); }); });
+  box.querySelector('.lightbox__close').addEventListener('click', bClose);
+  box.querySelector('.lightbox__prev').addEventListener('click', function () { bShow(bIdx - 1); });
+  box.querySelector('.lightbox__next').addEventListener('click', function () { bShow(bIdx + 1); });
+  box.addEventListener('click', function (e) { if (e.target === box) bClose(); });
+  document.addEventListener('keydown', function (e) {
+    if (!box.classList.contains('is-open')) return;
+    if (e.key === 'Escape') bClose();
+    if (e.key === 'ArrowLeft') bShow(bIdx - 1);
+    if (e.key === 'ArrowRight') bShow(bIdx + 1);
+  });
+})();

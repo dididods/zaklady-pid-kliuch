@@ -2477,3 +2477,110 @@ html:not(.no-intro) { overflow: hidden; }
   .to-top, .to-top.is-on { transition: opacity .3s, transform .3s, visibility 0s, box-shadow .2s, bottom .45s cubic-bezier(.2, .9, .3, 1); }
   .mbar-on .to-top { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* ===== Справжня кухня (після блоку 4) ===== */
+.proof { position: relative; }
+.proof__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
+.proof__label { margin: 0 0 14px; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--hot); }
+.proof__title { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.7rem, 1.1rem + 2vw, 2.6rem); line-height: 1.08; letter-spacing: -.02em; }
+.proof__lead { margin: 18px 0 0; max-width: 26em; color: var(--text-dim); font-size: clamp(.98rem, .95rem + .2vw, 1.1rem); line-height: 1.6; }
+.proof__media { display: grid; grid-template-columns: .82fr 1fr 1fr; gap: clamp(10px, 1.4vw, 18px); }
+.proof__item {
+  margin: 0; overflow: hidden; border-radius: 22px; aspect-ratio: 3 / 4.4;
+  border: 1px solid rgba(255, 241, 220, .08);
+  box-shadow: 0 30px 60px -36px rgba(0, 0, 0, .9);
+  background: #2b1f19;
+}
+.proof__item:nth-child(2) { transform: translateY(24px); }
+.proof__item img, .proof__item video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.proof__item img { transition: transform .6s ease; }
+.proof__item:hover img { transform: scale(1.04); }
+@media (max-width: 900px) {
+  .proof__inner { grid-template-columns: 1fr; }
+  .proof__media { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
+  .proof__item--video { grid-row: span 2; aspect-ratio: auto; }
+  .proof__item { aspect-ratio: 1; }
+  .proof__item:nth-child(2) { transform: none; }
+}
+
+/* ===== Страви шефа (у блоці шефа, під фактами) ===== */
+.dishes { margin-top: clamp(24px, 3vw, 36px); }
+.dishes__title { margin: 0 0 12px; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--hot); }
+.dishes__list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.dishes__list li { overflow: hidden; aspect-ratio: 1; border-radius: 16px; border: 1px solid rgba(255, 241, 220, .08); box-shadow: 0 16px 30px -20px rgba(0, 0, 0, .9); }
+.dishes__list img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.dishes__list li:hover img { transform: scale(1.08); }
+@media (max-width: 600px) {
+  .dishes__list { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 42%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
+  .dishes__list li { scroll-snap-align: start; }
+}
+.proof__title .kw { white-space: normal; }
+@media (min-width: 901px) {
+  .proof__item { aspect-ratio: auto; height: clamp(300px, 32vw, 460px); }
+}
+@media (max-width: 900px) {
+  .proof__media .proof__item--video { aspect-ratio: auto; }
+}
+
+/* ===== «який відкрив з нуля»: підсвітка без зміни кольору тексту ===== */
+/* тепле світіння позаду слів (маркер відхилено) */
+.lit {
+  position: relative;
+  text-shadow: 0 0 16px rgba(255, 180, 0, .75), 0 0 3px rgba(255, 210, 140, .5);
+  background: radial-gradient(60% 95% at 50% 55%, rgba(255, 170, 60, .3), transparent 78%);
+  border-radius: 8px;
+  padding: 0 .15em;
+  margin: 0 -.15em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+
+/* ===== Страви шефа: збільшення за кліком ===== */
+.dishes__open { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.lightbox {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center; padding: 24px 64px;
+  background: rgba(14, 9, 7, .9);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  opacity: 0; visibility: hidden; transition: opacity .3s, visibility 0s .3s;
+}
+.lightbox.is-open { opacity: 1; visibility: visible; transition: opacity .3s, visibility 0s; }
+.lightbox__img {
+  max-width: min(92vw, 720px); max-height: 86vh; border-radius: 20px;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .9);
+  transform: scale(.94); transition: transform .35s cubic-bezier(.2, .9, .3, 1);
+}
+.lightbox.is-open .lightbox__img { transform: none; }
+.lightbox__btn {
+  position: absolute; display: grid; place-items: center; width: 48px; height: 48px; padding: 0;
+  border: 1px solid rgba(255, 241, 220, .2); border-radius: 50%;
+  background: rgba(255, 241, 220, .06); color: var(--hot); cursor: pointer; font-size: 1.4rem; line-height: 1;
+  transition: background-color .2s, color .2s;
+}
+.lightbox__btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.lightbox__close { top: 18px; right: 18px; }
+.lightbox__prev { left: 14px; top: 50%; margin-top: -24px; }
+.lightbox__next { right: 14px; top: 50%; margin-top: -24px; }
+@media (max-width: 600px) {
+  .lightbox { padding: 64px 12px; }
+  .lightbox__prev, .lightbox__next { top: auto; bottom: 18px; margin-top: 0; }
+  .lightbox__prev { left: calc(50% - 60px); }
+  .lightbox__next { right: calc(50% - 60px); }
+}
+
+/* ===== Кухня: бенто - текст | високе відео | два фото одне під одним ===== */
+@media (min-width: 901px) {
+  .proof__media { grid-template-columns: minmax(0, .78fr) minmax(0, 1fr); grid-template-rows: 1fr 1fr; height: clamp(380px, 36vw, 520px); }
+  .proof__item { height: auto; }
+  .proof__item--video { grid-row: 1 / span 2; }
+  .proof__item:nth-child(2) { transform: none; }
+}
+.proof__item--video { position: relative; }
+.proof__badge {
+  position: absolute; left: 12px; top: 12px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 999px;
+  background: rgba(14, 9, 7, .62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  font-size: .7rem; font-weight: 700; letter-spacing: .06em; color: var(--text);
+}
+.proof__badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: rec-blink 1.6s ease-in-out infinite; }
+@keyframes rec-blink { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .proof__badge i { animation: none; } }
