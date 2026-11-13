@@ -1184,10 +1184,23 @@
     var burger = header.querySelector('.burger');
     /* «Консультація» в шапці з'являється, коли кнопка першого екрана вже пішла вгору за край */
     var heroCtaBtn = document.querySelector('.hero__cta .btn');
+    var zayavkaSec = document.getElementById('zayavka');
+    var mBar = document.querySelector('.m-bar');
+    var mbarState = null;
     var onScroll = function () {
       header.classList.toggle('is-scrolled', window.scrollY > 8);
       var showConsult = heroCtaBtn ? heroCtaBtn.getBoundingClientRect().bottom < 72 : window.scrollY > 8;
       header.classList.toggle('show-consult', showConsult);
+      // телефон: нижня плашка - після першого екрана, але не поверх форми заявки
+      var mbarOn = showConsult && !(zayavkaSec && zayavkaSec.getBoundingClientRect().top < window.innerHeight * 0.9);
+      if (mbarOn !== mbarState) {
+        mbarState = mbarOn;
+        document.documentElement.classList.toggle('mbar-on', mbarOn);
+        if (mBar) {
+          mBar.setAttribute('aria-hidden', String(!mbarOn));
+          mBar.querySelectorAll('a').forEach(function (x) { x.tabIndex = mbarOn ? 0 : -1; });
+        }
+      }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
