@@ -948,7 +948,7 @@ button { font: inherit; color: inherit; }
 }
 .sign__link:hover { background: var(--accent); }
 
-.cases__head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
+.cases__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
 .cases__head p { margin: 0; color: var(--text-dim); font-size: .9375rem; }
 .cases__track {
   display: grid;
@@ -2428,3 +2428,24 @@ html:not(.no-intro) { overflow: hidden; }
   .steps li { position: relative; z-index: 1; border: 0; }
   .steps li.is-current h3 { color: var(--accent); }
 }
+
+/* Кейси: стрілки (комп'ютер) і підказка (телефон) */
+.cases__nav { display: flex; align-items: center; gap: 10px; flex: none; }
+.cases__hint { margin: 0; color: var(--text-dim); font-size: .9375rem; }
+.cases__arrow {
+  display: none; place-items: center; width: 48px; height: 48px; padding: 0;
+  border: 1px solid rgba(255, 241, 220, .18); border-radius: 50%;
+  background: rgba(255, 241, 220, .04); color: var(--hot); cursor: pointer;
+  transition: background-color .2s, border-color .2s, opacity .2s, transform .2s;
+}
+.cases__arrow svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.cases__arrow:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-1px); }
+.cases__arrow:disabled { opacity: .35; cursor: default; }
+@media (hover: hover) and (pointer: fine) {
+  .cases__hint { display: none; }
+  .cases__arrow { display: grid; }
+  .cases__track { cursor: grab; }
+  .cases__track.is-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+}
+.cases.no-scroll .cases__nav { display: none; }
+.cases.no-scroll .cases__track { cursor: auto; }

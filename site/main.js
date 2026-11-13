@@ -1273,3 +1273,61 @@
     scrollTrigger: { trigger: qBand, start: 'top 80%', end: 'bottom 55%', scrub: true }
   });
 })();
+
+/* Кейси: стрілки і перетягування мишкою (на телефоні - звичайне гортання пальцем) */
+(function () {
+  var cTrack = document.querySelector('.cases__track');
+  if (!cTrack) return;
+  var cArrows = document.querySelectorAll('.cases__arrow');
+  var cStep = function () {
+    var first = cTrack.querySelector('.case');
+    var gap = parseFloat(getComputedStyle(cTrack).columnGap) || 20;
+    return first ? first.getBoundingClientRect().width + gap : cTrack.clientWidth * 0.8;
+  };
+  var cUpdate = function () {
+    var max = cTrack.scrollWidth - cTrack.clientWidth - 2;
+    // усі кейси вміщаються - стрілки й підказка не потрібні
+    var cBox = cTrack.closest('.cases');
+    if (cBox) cBox.classList.toggle('no-scroll', max <= 0);
+    cArrows.forEach(function (b) {
+      b.disabled = b.dataset.dir === '-1' ? cTrack.scrollLeft <= 2 : cTrack.scrollLeft >= max;
+    });
+  };
+  cArrows.forEach(function (b) {
+    b.addEventListener('click', function () {
+      cTrack.scrollBy({ left: cStep() * Number(b.dataset.dir), behavior: 'smooth' });
+    });
+  });
+  cTrack.addEventListener('scroll', cUpdate, { passive: true });
+  window.addEventListener('resize', cUpdate);
+  window.addEventListener('load', cUpdate);
+  cUpdate();
+
+  // перетягування мишкою
+  var cDown = false, cMoved = false, cStartX = 0, cStartLeft = 0;
+  cTrack.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    cDown = true; cMoved = false; cStartX = e.clientX; cStartLeft = cTrack.scrollLeft;
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!cDown) return;
+    var dx = e.clientX - cStartX;
+    if (!cMoved && Math.abs(dx) > 5) { cMoved = true; cTrack.classList.add('is-dragging'); }
+    if (cMoved) cTrack.scrollLeft = cStartLeft - dx;
+  });
+  window.addEventListener('pointerup', function () {
+    if (!cDown) return;
+    cDown = false;
+    if (cMoved) {
+      cTrack.classList.remove('is-dragging');
+      // докотити до найближчої картки
+      var s = cStep();
+      cTrack.scrollTo({ left: Math.round(cTrack.scrollLeft / s) * s, behavior: 'smooth' });
+    }
+  });
+  // після перетягування клік по картці не спрацьовує
+  cTrack.addEventListener('click', function (e) {
+    if (cMoved) { e.preventDefault(); e.stopPropagation(); cMoved = false; }
+  }, true);
+  cTrack.addEventListener('dragstart', function (e) { e.preventDefault(); });
+})();

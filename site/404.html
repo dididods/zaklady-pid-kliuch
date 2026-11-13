@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Сторінку не знайдено | Бюро ресторанних рішень</title>
+  <!-- 404 відкривається з будь-якої адреси, тому шляхи до файлів ставимо від кореня сайту (скрипт нижче) -->
+  <script>
+    window.__base = location.pathname.indexOf('/zaklady-pid-kliuch/') === 0 ? '/zaklady-pid-kliuch/' : '/';
+    document.write('<link rel="icon" href="' + window.__base + 'favicon.png" type="image/png">');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #1b1411; --text: #fff1dc; --dim: #d6c3a8; --accent: #e3261c; --hot: #ffb400; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px 16px;
+      color: var(--text);
+      font: 1.0625rem/1.55 "Manrope", system-ui, sans-serif;
+      text-align: center;
+      background:
+        radial-gradient(45% 50% at 50% 42%, rgba(255, 150, 50, .22), transparent 70%),
+        radial-gradient(40% 35% at 12% 88%, rgba(227, 38, 28, .16), transparent 72%),
+        var(--bg);
+    }
+    main { max-width: 560px; }
+    .logo { width: 108px; height: auto; margin-bottom: 18px; }
+    /* арка-двері, як в інтро, тільки зачинені й без ключа */
+    .door {
+      position: relative;
+      width: 150px; height: 200px; margin: 0 auto 28px;
+      border-radius: 75px 75px 10px 10px;
+      background: linear-gradient(90deg, #5b3a24 0 49%, #3a2416 49% 51%, #5b3a24 51%);
+      box-shadow: inset 0 0 0 6px #2a1a10, 0 0 0 8px #1f140d, 0 30px 60px -20px rgba(0, 0, 0, .9), 0 0 80px rgba(255, 150, 50, .25);
+    }
+    .door::before, .door::after {
+      content: ""; position: absolute; top: 50%; width: 10px; height: 26px; margin-top: -13px;
+      border-radius: 5px; background: linear-gradient(#ffd27a, #b8801f);
+    }
+    .door::before { right: 50%; margin-right: 8px; }
+    .door::after { left: 50%; margin-left: 8px; }
+    .code { margin: 0 0 6px; font: 600 .75rem "Unbounded", sans-serif; letter-spacing: .2em; color: var(--hot); }
+    h1 { margin: 0; font: 800 clamp(1.8rem, 1.2rem + 3vw, 2.8rem)/1.08 "Unbounded", sans-serif; letter-spacing: -.02em; }
+    h1 span { color: var(--hot); }
+    p.lead { margin: 16px auto 28px; max-width: 26em; color: var(--dim); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 52px; padding: 0 28px; border-radius: 14px;
+      background: var(--accent); color: #fff6ea; font-weight: 700; text-decoration: none;
+      box-shadow: 0 12px 30px -10px rgba(227, 38, 28, .7);
+      transition: transform .2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="home" href="/"><img class="logo" src="" width="360" height="303" alt="Бюро ресторанних рішень"></a>
+    <div class="door" aria-hidden="true"></div>
+    <p class="code">ПОМИЛКА 404</p>
+    <h1>Таких дверей <span>у&nbsp;нас немає</span></h1>
+    <p class="lead">Можливо, адреса змінилась або в&nbsp;ній помилка. Головна сторінка відчинена завжди.</p>
+    <a class="btn home" href="/">На&nbsp;головну</a>
+  </main>
+  <script>
+    document.querySelector('.logo').src = window.__base + 'img/logo.webp';
+    [].forEach.call(document.querySelectorAll('a.home'), function (a) { a.href = window.__base; });
+  </script>
+</body>
+</html>
