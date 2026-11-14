@@ -99,13 +99,14 @@
     // тоді при натисканні (збільшення до ~2,2) картинка лишається чіткою, а не розтягнутою
     var big = mobile && trayEl ? 2.2 : 1;
     if (stage.classList.contains('tray-big') !== (big > 1)) stage.classList.toggle('tray-big', big > 1);
-    var rx = w * (mobile ? (trayEl ? 0.47 : 0.62) : 0.4 + 0.08 * s.focus);   // на телефоні ширше, щоб будівлі не злипались (з підносом - щоб уміщався)
+    var rx = w * (mobile ? (trayEl ? 0.5 : 0.62) : 0.4 + 0.08 * s.focus);   // на телефоні ширше, щоб будівлі не злипались (з підносом - щоб уміщався)
     var ry = (mobile ? h * (trayEl ? 0.16 : 0.21) : Math.min(h * 0.2, w * 0.1)) * s.tilt;   // планшет: висока сцена не задирає орбіту   // на телефоні орбіта сплюснута
 
     // ТЕСТ: піднос під орбітою - йде за нахилом, основи будівель стоять на ньому
     if (trayEl) {
       var itemPx = items[0].offsetWidth / big;
-      var trx = mobile ? w * 0.48 : w * 0.4 + itemPx * 0.42;
+      var trx = mobile ? Math.min(w * 0.56, window.innerWidth / 2 - 6) :   // телефон: піднос майже на всю ширину екрана
+        w * 0.4 + itemPx * 0.42;
       var tryy = ry + itemPx * (mobile ? 0.2 : 0.17);
       trayEl.style.width = (trx * 2).toFixed(1) + 'px';
       trayEl.style.height = (tryy * 2).toFixed(1) + 'px';
@@ -118,7 +119,7 @@
       var t = (z + 1) / 2;
       var x = Math.sin(a) * rx + s.px * (0.4 + t);
       var y = z * ry;
-      var sc = (mobile ? 0.5 : 0.44) + (mobile ? (trayEl ? 0.4 : 0.5) : 0.48) * Math.pow(t, 1.3);   // на підносі передні трохи менші, щоб не торкались
+      var sc = (mobile ? 0.5 : 0.44) + (mobile ? (trayEl ? 0.45 : 0.5) : 0.48) * Math.pow(t, 1.3);   // на підносі передні трохи менші, щоб не торкались
       var bright = 0.5 + 0.5 * t;
       // прозорість лише в дальній частині орбіти: збоку будинки ще повністю видні
       var ot = Math.min(1, Math.max(0, (t - 0.05) / 0.35));

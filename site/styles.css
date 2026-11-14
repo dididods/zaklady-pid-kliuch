@@ -2704,7 +2704,7 @@ html:not(.no-intro) { overflow: hidden; }
   background: radial-gradient(closest-side, rgba(0, 0, 0, .6), rgba(0, 0, 0, .2) 60%, transparent);
 }
 /* телефон з підносом: будівлі менші, щоб не злипались на вужчій орбіті */
-.stage.tray-big { --item: calc(clamp(82px, 24vw, 102px) * 2.2); }   /* ×2.2 - клас і big ставить main.js */
+.stage.tray-big { --item: calc(clamp(86px, 26vw, 140px) * 2.2); }   /* ×2.2 - клас і big ставить main.js */
 
 .stage.has-focus .tray__body { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
 /* вибраний заклад: без відображення і повороту, щоб картинка лишалась чіткою */
@@ -2736,11 +2736,19 @@ html:not(.no-intro) { overflow: hidden; }
 /* Блок 4 на телефоні: шапка зверху і плашка «Консультація» знизу не закривають текст етапу */
 @media (max-width: 760px) {
   .bs:not(.bs--static) { padding: 64px 0 92px; gap: 4px; }
-  .bs:not(.bs--static) .bs__stage { width: min(100%, 32svh); }
+  .bs:not(.bs--static) .bs__stage { width: min(100%, 40svh); }
+  .bs:not(.bs--static) .bs__rail { height: 44px; margin-bottom: 6px; }
+  .bs:not(.bs--static) .bs__num { font-size: 2.5rem; }
+  .bs:not(.bs--static) .bs__step h3 { font-size: 1.5rem; }
+  .bs:not(.bs--static) .bs__step p { font-size: 1rem; line-height: 1.55; }
+}
+/* низькі телефони: компактніше, щоб текст етапу вміщався */
+@media (max-width: 760px) and (max-height: 740px) {
+  .bs:not(.bs--static) .bs__stage { width: min(100%, 31svh); }
   .bs:not(.bs--static) .bs__rail { height: 40px; margin-bottom: 4px; }
   .bs:not(.bs--static) .bs__num { font-size: 2.2rem; }
   .bs:not(.bs--static) .bs__step h3 { font-size: 1.3rem; }
-  .bs:not(.bs--static) .bs__step p { font-size: .9rem; line-height: 1.5; }
+  .bs:not(.bs--static) .bs__step p { font-size: .92rem; line-height: 1.5; }
 }
 /* квіз: поле для ніка в Telegram */
 .quiz__tg { margin-top: 12px; }
@@ -2752,4 +2760,12 @@ html:not(.no-intro) { overflow: hidden; }
 @media (max-width: 480px) {
   .quiz__back { padding: 0 16px; }
   .quiz__next { flex: 1; min-width: 0; padding: 0 16px; font-size: 1rem; }
+}
+/* Блок 4 на телефоні: будівля на всю ширину; сцена нижча за квадрат, порожні поля кадру зверху й знизу обрізаються */
+@media (max-width: 760px) {
+  .bs:not(.bs--static) .bs__stage { width: 76%; max-width: 46svh; aspect-ratio: 1 / .9; }
+  .bs:not(.bs--static) .bs__frame { object-fit: cover; }
+}
+@media (max-width: 760px) and (max-height: 740px) {
+  .bs:not(.bs--static) .bs__stage { width: 76%; aspect-ratio: 1 / .78; }
 }
