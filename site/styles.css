@@ -2696,10 +2696,6 @@ html:not(.no-intro) { overflow: hidden; }
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 245, 225, .5), transparent);
 }
-/* будинки відбиваються в полірованому дні (Chrome, Safari, Edge; деінде просто без відображення) */
-.stage.has-tray .orbit__item img {
-  -webkit-box-reflect: below -6% linear-gradient(transparent 62%, rgba(255, 255, 255, .22));
-}
 .stage.has-tray .orbit__shadow {
   background: radial-gradient(closest-side, rgba(0, 0, 0, .6), rgba(0, 0, 0, .2) 60%, transparent);
 }
