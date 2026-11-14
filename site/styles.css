@@ -2584,3 +2584,24 @@ html:not(.no-intro) { overflow: hidden; }
 .proof__badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: rec-blink 1.6s ease-in-out infinite; }
 @keyframes rec-blink { 50% { opacity: .25; } }
 @media (prefers-reduced-motion: reduce) { .proof__badge i { animation: none; } }
+
+/* ===== Десктоп: Telegram над кнопкою «нагору» (у шапці його більше немає) ===== */
+.float-tg {
+  position: fixed; right: 20px; bottom: 84px; z-index: 80;
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(27, 20, 17, .92); color: var(--hot);
+  border: 1.5px solid rgba(255, 180, 0, .55);
+  box-shadow: 0 10px 26px -8px rgba(0, 0, 0, .7), 0 0 22px -8px rgba(255, 180, 0, .45);
+  opacity: 0; visibility: hidden; transform: translateY(14px) scale(.9);
+  transition: opacity .3s, transform .3s, visibility 0s .3s, background-color .2s, color .2s, border-color .2s;
+}
+.float-tg svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; stroke-linecap: round; }
+.to-top.is-on + .float-tg { opacity: 1; visibility: visible; transform: none; transition: opacity .3s, transform .3s, visibility 0s, background-color .2s, color .2s, border-color .2s; }
+.float-tg:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.float-tg:focus-visible { outline: 2px solid var(--hot); outline-offset: 3px; }
+@media (min-width: 761px) {
+  .site-header .bar-tg { display: none; }
+}
+@media (max-width: 760px) {
+  .float-tg { display: none; }
+}
