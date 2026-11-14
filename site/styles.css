@@ -2511,7 +2511,7 @@ html:not(.no-intro) { overflow: hidden; }
 .dishes__list img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
 .dishes__list li:hover img { transform: scale(1.08); }
 @media (max-width: 600px) {
-  .dishes__list { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 42%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
+  .dishes__list { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 42%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 16px; scrollbar-color: var(--accent) transparent; }   /* смужка прокрутки як у кейсах */
   .dishes__list li { scroll-snap-align: start; }
 }
 .proof__title .kw { white-space: normal; }
@@ -2604,4 +2604,152 @@ html:not(.no-intro) { overflow: hidden; }
 }
 @media (max-width: 760px) {
   .float-tg { display: none; }
+}
+
+/* ===== ТЕСТ: срібний піднос під орбітою (розмір і місце задає main.js) ===== */
+.tray {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  /* торець краю і тінь на стіл - тут, бо маска нижче обрізала б їх */
+  box-shadow:
+    0 4px 0 #8b7d70,
+    0 6px 0 #3a302a,
+    0 8px 0 #1a1411,
+    0 34px 50px -14px rgba(0, 0, 0, .85);
+}
+.tray__body {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  /* дальня частина підносу тане так само, як дальні будинки */
+  /* маска вдвічі вища за піднос: при фокусі зсуваємо її вниз, і піднос плавно стає непрозорим */
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, .15) 0%, rgba(0, 0, 0, .4) 4.5%, #000 11%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, .15) 0%, rgba(0, 0, 0, .4) 4.5%, #000 11%);
+  -webkit-mask-size: 100% 200%;
+  mask-size: 100% 200%;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+  transition: -webkit-mask-position .5s ease, mask-position .5s ease;
+  /* обідок: кільцеві відблиски, як на полірованому металі, + теплий відсвіт вогню */
+  background:
+    radial-gradient(55% 45% at 50% 100%, rgba(255, 170, 70, .4), transparent 70%),
+    conic-gradient(from 200deg at 50% 50%,
+      #4a4039 0deg, #fff6e8 22deg, #8d8177 48deg, #3f3630 80deg, #cfc3b4 120deg,
+      #fffaf0 150deg, #7a6e64 185deg, #2f2722 215deg, #b3a698 260deg, #f6ecdd 300deg,
+      #6d6158 335deg, #4a4039 360deg);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 235, .55),   /* тонка світла кромка */
+    inset 0 2px 3px rgba(255, 255, 255, .5);
+}
+/* дно: дальня стінка обідка видна більше, ніж ближня */
+.tray__well {
+  position: absolute;
+  left: 6.5%;
+  right: 6.5%;
+  top: 11%;
+  bottom: 7%;
+  border-radius: 50%;
+  /* дно - теж метал: світліше спереду, косі м'які відблиски, відсвіт вогню в центрі */
+  background:
+    radial-gradient(40% 48% at 50% 40%, rgba(255, 165, 70, .45), rgba(255, 120, 40, .12) 60%, transparent 80%),
+    linear-gradient(104deg, transparent 16%, rgba(255, 252, 245, .45) 29%, transparent 40%, transparent 57%, rgba(255, 252, 245, .32) 68%, transparent 79%),
+    radial-gradient(75% 55% at 50% 95%, rgba(255, 246, 230, .35), transparent 70%),
+    linear-gradient(180deg, #7a6c61 0%, #a29485 35%, #c8baa9 72%, #ddd0bf 100%);
+  box-shadow:
+    inset 0 12px 18px rgba(0, 0, 0, .4),          /* тінь від дальньої стінки */
+    inset 0 -2px 0 rgba(255, 248, 235, .55),      /* яскравий внутрішній край спереду */
+    inset 0 -8px 14px rgba(255, 200, 140, .12),
+    0 -1px 0 rgba(0, 0, 0, .45),
+    0 1px 0 rgba(255, 248, 235, .35);
+}
+/* кільце, де дно переходить у стінку: тонка тиснена лінія, як на справжній таці */
+.tray__well::before {
+  content: "";
+  position: absolute;
+  inset: 7% 5% 5%;
+  border-radius: 50%;
+  box-shadow:
+    0 1px 0 rgba(255, 248, 235, .35),
+    inset 0 1px 0 rgba(0, 0, 0, .28);
+}
+/* блик на ближньому краї + слабкий на дальньому */
+.tray__glint {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: 1.2%;
+  height: 4%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 252, 245, 1), rgba(255, 240, 215, .3) 60%, transparent);
+  filter: blur(.8px);
+}
+.tray__glint::after {
+  content: "";
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: -2260%;   /* біля дальнього краю */
+  height: 70%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 245, 225, .5), transparent);
+}
+/* будинки відбиваються в полірованому дні (Chrome, Safari, Edge; деінде просто без відображення) */
+.stage.has-tray .orbit__item img {
+  -webkit-box-reflect: below -6% linear-gradient(transparent 62%, rgba(255, 255, 255, .22));
+}
+.stage.has-tray .orbit__shadow {
+  background: radial-gradient(closest-side, rgba(0, 0, 0, .6), rgba(0, 0, 0, .2) 60%, transparent);
+}
+/* телефон з підносом: будівлі менші, щоб не злипались на вужчій орбіті */
+.stage.tray-big { --item: calc(clamp(82px, 24vw, 102px) * 2.2); }   /* ×2.2 - клас і big ставить main.js */
+
+.stage.has-focus .tray__body { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
+/* вибраний заклад: без відображення і повороту, щоб картинка лишалась чіткою */
+.stage .orbit__item.is-focused img { -webkit-box-reflect: unset; }
+@keyframes alive {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2.5%); }
+}
+
+/* Телефон і планшет: кнопка «Розрахувати вартість» під офером, як на десктопі; задні будівлі проходять за нею */
+@media (max-width: 900px) {
+  .hero__cta { order: 0; width: auto; margin-top: 18px; }
+  .hero__cta .btn { width: auto; }
+  .stage { margin-top: -138px; }
+  .hero__bottom { order: 3; }
+}
+@media (max-width: 760px) {
+  .stage.has-focus .focus { bottom: -6px; }   /* кнопка тепер нагорі, тож картка не опускається на її місце */
+}
+/* телефон: сцена фіксованої висоти, щоб підпис і шеф стояли одразу під підносом */
+@media (max-width: 760px) {
+  .hero { min-height: 0; }
+  .stage.has-tray { flex: 0 0 370px; }
+  .stage.has-tray .stage__hint { bottom: 64px; }
+  .stage.has-tray ~ .hero__bottom { margin-top: -50px; }
+  .hero__cta .btn { min-height: 50px; padding: 0 22px; font-size: 1rem; border-radius: 12px; }
+}
+
+/* Блок 4 на телефоні: шапка зверху і плашка «Консультація» знизу не закривають текст етапу */
+@media (max-width: 760px) {
+  .bs:not(.bs--static) { padding: 64px 0 92px; gap: 4px; }
+  .bs:not(.bs--static) .bs__stage { width: min(100%, 32svh); }
+  .bs:not(.bs--static) .bs__rail { height: 40px; margin-bottom: 4px; }
+  .bs:not(.bs--static) .bs__num { font-size: 2.2rem; }
+  .bs:not(.bs--static) .bs__step h3 { font-size: 1.3rem; }
+  .bs:not(.bs--static) .bs__step p { font-size: .9rem; line-height: 1.5; }
+}
+/* квіз: поле для ніка в Telegram */
+.quiz__tg { margin-top: 12px; }
+.quiz__tg .field { width: 100%; }
+.quiz__tg-hint { margin: 6px 0 0; font-size: .8125rem; line-height: 1.45; color: var(--ink-dim, var(--text-dim)); }
+.quiz__tg + .quiz__sub { margin-top: 22px; }
+/* квіз на телефоні: «Назад» + «Отримати розрахунок» не розпирають бланк ширше за екран */
+.quiz { min-width: 0; }
+@media (max-width: 480px) {
+  .quiz__back { padding: 0 16px; }
+  .quiz__next { flex: 1; min-width: 0; padding: 0 16px; font-size: 1rem; }
 }

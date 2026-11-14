@@ -88,13 +88,29 @@
   };
 
   var lastFilter = [];
+  var trayEl = stage.querySelector('.tray');
+  if (trayEl) stage.classList.add('has-tray');
 
   function layout() {
     var w = stage.clientWidth;
     var h = stage.clientHeight;
     var mobile = w < 600;
-    var rx = w * (mobile ? 0.62 : 0.4 + 0.08 * s.focus);   // на телефоні ширше, щоб будівлі не злипались
-    var ry = h * (mobile ? 0.21 : 0.2) * s.tilt;   // на телефоні орбіта сплюснута
+    // телефон з підносом: будинок верстається у 2,2 раза більшим і зменшується масштабом,
+    // тоді при натисканні (збільшення до ~2,2) картинка лишається чіткою, а не розтягнутою
+    var big = mobile && trayEl ? 2.2 : 1;
+    if (stage.classList.contains('tray-big') !== (big > 1)) stage.classList.toggle('tray-big', big > 1);
+    var rx = w * (mobile ? (trayEl ? 0.47 : 0.62) : 0.4 + 0.08 * s.focus);   // на телефоні ширше, щоб будівлі не злипались (з підносом - щоб уміщався)
+    var ry = (mobile ? h * (trayEl ? 0.16 : 0.21) : Math.min(h * 0.2, w * 0.1)) * s.tilt;   // планшет: висока сцена не задирає орбіту   // на телефоні орбіта сплюснута
+
+    // ТЕСТ: піднос під орбітою - йде за нахилом, основи будівель стоять на ньому
+    if (trayEl) {
+      var itemPx = items[0].offsetWidth / big;
+      var trx = mobile ? w * 0.48 : w * 0.4 + itemPx * 0.42;
+      var tryy = ry + itemPx * (mobile ? 0.2 : 0.17);
+      trayEl.style.width = (trx * 2).toFixed(1) + 'px';
+      trayEl.style.height = (tryy * 2).toFixed(1) + 'px';
+      trayEl.style.transform = 'translate(' + (s.px * 0.9 - trx).toFixed(1) + 'px,' + (h * 0.44 + itemPx * 0.27 - tryy).toFixed(1) + 'px)';
+    }
 
     items.forEach(function (el, i) {
       var a = s.angle + i * step;
@@ -102,9 +118,11 @@
       var t = (z + 1) / 2;
       var x = Math.sin(a) * rx + s.px * (0.4 + t);
       var y = z * ry;
-      var sc = (mobile ? 0.5 : 0.44) + (mobile ? 0.5 : 0.48) * Math.pow(t, 1.3);
+      var sc = (mobile ? 0.5 : 0.44) + (mobile ? (trayEl ? 0.4 : 0.5) : 0.48) * Math.pow(t, 1.3);   // на підносі передні трохи менші, щоб не торкались
       var bright = 0.5 + 0.5 * t;
-      var op = 0.5 + 0.5 * t;
+      // прозорість лише в дальній частині орбіти: збоку будинки ще повністю видні
+      var ot = Math.min(1, Math.max(0, (t - 0.05) / 0.35));
+      var op = 0.5 + 0.5 * ot * ot * (3 - 2 * ot);
       var zi = z > 0 ? 60 + Math.round(t * 100) : Math.round(t * 40);
       var f = s.focus;
 
@@ -112,7 +130,7 @@
         // вибраний заклад виїжджає вперед і збільшується;
         // на телефоні — високо вгору, поверх офера, щоб під ним помістилася картка
         var fx = mobile ? 0 : -w * 0.08;
-        var fy = mobile ? -h * 0.44 : h * 0.06;
+        var fy = mobile ? -h * (trayEl ? 0.27 : 0.44) : h * 0.06;   // з підносом сцена вже піднята під кнопку
         var fs = mobile ? 2.2 : 1.55;
         x = x * (1 - f) + fx * f;
         y = y * (1 - f) + fy * f;
@@ -122,14 +140,20 @@
         zi = 400;
       } else if (s.focused > -1) {
         bright *= 1 - 0.45 * f;
-        op *= 1 - (mobile ? 0.8 : 0.4) * f;
+        op *= 1 - (mobile ? (trayEl ? 1 : 0.8) : 0.4) * f;   // телефон з підносом: інші заклади зникають зовсім, піднос чистий
       }
 
-      el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + sc.toFixed(3) + ')';
+      sc /= big;
+      // вибраний заклад, що вже виїхав: цілі пікселі і масштаб без дробу - так картинка не розмивається
+      var crisp = i === s.focused && f > 0.98;
+      el.style.transform = crisp
+        ? 'translate3d(' + Math.round(x) + 'px,' + Math.round(y) + 'px,0)' + (Math.abs(sc - 1) < 0.01 ? '' : ' scale(' + sc.toFixed(3) + ')')
+        : 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + sc.toFixed(3) + ')';
       el.style.zIndex = String(zi);
       el.style.opacity = op.toFixed(2);
       // фільтр перемальовує картинку, тому міняємо його сходинками, а не щокадру
       var fl = 'brightness(' + (Math.round(bright * 20) / 20).toFixed(2) + ')';
+      if (crisp || (i === s.focused && bright > 0.97)) fl = 'none';   // фільтр теж пом'якшує картинку
       if (lastFilter[i] !== fl) { el.style.filter = fl; lastFilter[i] = fl; }
       el.firstElementChild.tabIndex = t > 0.6 || i === s.focused ? 0 : -1;
     });
@@ -204,6 +228,11 @@
     stage.classList.add('has-focus');
     hero.classList.add('is-focus');      // телефон: кнопка під орбітою тьмяніє, щоб не змагалась з карткою
     el.classList.add('is-focused');
+    // чіткість збільшеного закладу: беремо повну картинку 800 px (вантажиться лише тепер)
+    // і знімаємо will-change, щоб браузер перемалював шар у новому розмірі, а не розтягував старий
+    var fImg = el.querySelector('img');
+    if (fImg && fImg.getAttribute('sizes') !== '800px') fImg.setAttribute('sizes', '800px');
+    el.style.willChange = 'auto';
 
     focusCard.querySelector('.focus__name').textContent = el.dataset.name;
     focusCard.querySelector('.focus__desc').textContent = el.dataset.desc || '';
@@ -235,7 +264,7 @@
     el.classList.remove('is-focused');
     stage.classList.remove('has-focus');
     hero.classList.remove('is-focus');
-    var done = function () { s.focused = -1; };
+    var done = function () { s.focused = -1; el.style.willChange = ''; };
     if (hasGsap) {
       gsap.to(focusCard, { opacity: 0, duration: .2, onComplete: function () { focusCard.hidden = true; } });
       gsap.to(s, { focus: 0, duration: .6, ease: 'power3.inOut', onComplete: done });
@@ -868,6 +897,10 @@
     var err = quiz.querySelector('.quiz__error');
     var city = quiz.querySelector('input[name="city"]');
     var nameF = quiz.querySelector('input[name="name"]');
+    var tgBox = quiz.querySelector('.quiz__tg');
+    var tgF = quiz.querySelector('input[name="telegram"]');
+    // нік без @ і пробілів; у Telegram це 5-32 символи: латиниця, цифри, _
+    var tgNick = function () { return tgF ? tgF.value.trim().replace(/^@+/, '').replace(/^https?:\/\/t\.me\//i, '') : ''; };
     var phone = quiz.querySelector('input[name="phone"]');
     var cur = 0, sent = false;
     var given = {};    // кроки, заповнені з інших блоків сайту
@@ -932,7 +965,9 @@
         case 'contact':
           if (nameF.value.trim().length < 2) return "Вкажіть ваше ім'я";
           if (phoneDigits().length !== 9) return 'Вкажіть номер телефону повністю';
-          return val('channel') ? '' : "Оберіть, як зручніше зв'язатися";
+          if (!val('channel')) return "Оберіть, як зручніше зв'язатися";
+          if (val('channel') === 'Telegram' && !/^[A-Za-z0-9_]{5,32}$/.test(tgNick())) return 'Вкажіть нік у Telegram латиницею, від 5 символів (або оберіть інший спосіб)';
+          return '';
       }
       return '';
     };
@@ -992,6 +1027,15 @@
     quiz.querySelectorAll('input[name="premises"], input[name="channel"]').forEach(function (r) {
       r.addEventListener('change', refresh);
     });
+    // Telegram: показуємо поле для ніка і ставимо в нього курсор
+    quiz.querySelectorAll('input[name="channel"]').forEach(function (r) {
+      r.addEventListener('change', function () {
+        var on = val('channel') === 'Telegram';
+        tgBox.hidden = !on;
+        if (on && !tgF.value) tgF.focus({ preventScroll: true });
+      });
+    });
+    tgF.addEventListener('input', refresh);
     city.addEventListener('input', refresh);
     nameF.addEventListener('input', refresh);
     // Enter у текстовому полі = «Далі», а не відправка форми
@@ -1029,7 +1073,7 @@
         ['Приміщення', label('premises')],
         ['Площа', label('area')],
         ['Відкриття', label('when')],
-        ["Зв'язок", label('channel') + ', ' + phone.value],
+        ["Зв'язок", label('channel') + (val('channel') === 'Telegram' ? ' @' + tgNick() : '') + ', ' + phone.value],
         ['Коментар', comment.value.trim()]
       ];
       var dl = quiz.querySelector('.quiz__summary-list');
