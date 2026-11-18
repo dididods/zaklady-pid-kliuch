@@ -1457,3 +1457,35 @@
     if (e.key === 'ArrowRight') bShow(bIdx + 1);
   });
 })();
+
+/* Ланцюжок «переробляти»: ланки загоряються по черзі, коли потрапляють на екран */
+(function () {
+  var redoBox = document.querySelector('.redo');
+  if (!redoBox || !('IntersectionObserver' in window)) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var redoLinks = Array.prototype.slice.call(redoBox.querySelectorAll('.redo__link'));
+  var redoQueue = [], redoBusy = false;
+  redoBox.classList.add('redo--anim');
+
+  function redoNext() {
+    var link = redoQueue.shift();
+    if (!link) { redoBusy = false; return; }
+    redoBusy = true;
+    link.classList.add('is-on');
+    if (redoLinks.every(function (l) { return l.classList.contains('is-on'); })) redoBox.classList.add('is-done');
+    setTimeout(redoNext, 300);
+  }
+  var redoSeen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      // швидко прогорнули вбік: попередні ланки теж загоряються, темних позаду не лишається
+      redoLinks.slice(0, redoLinks.indexOf(en.target) + 1).forEach(function (l) {
+        redoSeen.unobserve(l);
+        if (!l.classList.contains('is-on') && redoQueue.indexOf(l) < 0) redoQueue.push(l);
+      });
+    });
+    redoQueue.sort(function (a, b) { return redoLinks.indexOf(a) - redoLinks.indexOf(b); });
+    if (!redoBusy) redoNext();
+  }, { threshold: .6 });
+  redoLinks.forEach(function (l) { redoSeen.observe(l); });
+})();

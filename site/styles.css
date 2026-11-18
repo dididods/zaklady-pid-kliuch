@@ -2102,8 +2102,6 @@ html:not(.no-intro) { overflow: hidden; }
   font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
   color: var(--ink-dim, var(--text-dim));
 }
-.eyebrow__num { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 600; letter-spacing: 0; color: var(--accent); }
-.eyebrow__num::after { content: ""; width: 40px; height: 1px; background: currentColor; opacity: .5; }
 .kw { position: relative; isolation: isolate; color: var(--accent); white-space: nowrap; }
 .kw::after {
   content: ""; position: absolute; z-index: -1; left: -3%; right: -3%; bottom: -.06em; height: .3em;
@@ -2191,7 +2189,6 @@ html:not(.no-intro) { overflow: hidden; }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16' preserveAspectRatio='none'%3E%3Cpath d='M3 11 C 45 4 110 3 197 6 C 140 8 80 10 20 13' fill='none' stroke='%23e3261c' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E");
   opacity: .75;
 }
-.section:not(.section--paper) .eyebrow__num { color: var(--hot); }
 .head-split > .switch { justify-self: end; align-self: end; width: max-content; max-width: 100%; }
 .head-split > .switch .switch__btn { white-space: nowrap; }
 .section--paper .head-split > .switch { margin-bottom: .2em; }
@@ -2762,4 +2759,88 @@ html:not(.no-intro) { overflow: hidden; }
   .bs:not(.bs--static) { display: flex; flex-direction: column; padding: 60px 0 96px; gap: 0; }
   .bs:not(.bs--static) .bs__stage { flex: 1 1 0; min-height: 0; width: auto; max-width: 100%; aspect-ratio: 1; align-self: center; }
   .bs:not(.bs--static) .bs__info { flex: none; margin-top: 4px; }
+}
+
+/* ===== Ланцюжок «Найдорожче у відкритті - переробляти» (перед блоком 4) ===== */
+.section.redo { padding-top: clamp(40px, 5vw, 72px); padding-bottom: clamp(40px, 5vw, 72px); }
+.redo__head h2 { margin-bottom: 0; font-size: clamp(1.7rem, 3vw, 2.75rem); }   /* вступ до блоку 4: заголовок менший за основні */
+.redo__lead { margin: 14px 0 0; color: var(--text-dim); font-size: 1.0625rem; }
+.redo__chain {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 30px;
+  margin-top: clamp(22px, 3vw, 34px);
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+.redo__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 148px;
+  padding: 18px 16px;
+  border: 1px solid rgba(255, 180, 0, .34);
+  border-radius: 18px;
+  background: linear-gradient(160deg, rgba(255, 180, 0, .09), rgba(255, 241, 220, .025) 70%);
+  transition: opacity .45s ease, transform .45s cubic-bezier(.2, .9, .3, 1.2), border-color .45s ease;
+}
+/* стрілка до наступної ланки */
+.redo__link:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -21px;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  border-top: 2px solid var(--hot);
+  border-right: 2px solid var(--hot);
+  transform: rotate(45deg);
+}
+.redo__num { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; line-height: 1; color: var(--hot); }
+.redo__text { font-weight: 700; font-size: 1rem; line-height: 1.32; color: var(--text); }
+.redo__link--last { border-color: var(--accent); background: linear-gradient(160deg, rgba(227, 38, 28, .3), rgba(227, 38, 28, .08)); box-shadow: 0 16px 36px -20px rgba(227, 38, 28, .9); }
+.redo__link--last .redo__num { color: #ff6a55; }
+
+.redo__end { display: flex; align-items: center; justify-content: space-between; gap: 20px 32px; margin-top: clamp(22px, 3vw, 32px); }
+.redo__out { margin: 0; font-size: clamp(1.0625rem, 1rem + .4vw, 1.3rem); line-height: 1.4; color: var(--text); }
+.redo__out b { color: var(--hot); font-weight: 700; }
+.redo__end .btn { flex: none; }
+
+/* поява по черзі: клас ставить main.js, без JS і при вимкнених анімаціях усе видно одразу */
+.redo--anim .redo__link:not(.is-on) { opacity: .28; transform: translateY(10px); }
+@media (min-width: 901px) {
+  .redo--anim .redo__end { opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+  .redo--anim.is-done .redo__end { opacity: 1; transform: none; }
+}
+@media (max-width: 1100px) {
+  .redo__chain { gap: 24px; }
+  .redo__link { padding: 16px 12px; }
+  .redo__link:not(:last-child)::after { right: -17px; }
+  .redo__text { font-size: .9375rem; }
+}
+/* телефон і планшет: ланки гортаються вбік, висновок і кнопка лишаються під ними */
+@media (max-width: 900px) {
+  .redo__chain {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(170px, 56%);
+    gap: 30px;
+    margin-left: calc(var(--gutter) * -1);
+    margin-right: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 16px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: var(--gutter);
+    scrollbar-color: var(--accent) transparent;
+  }
+  .redo__link { min-height: 136px; scroll-snap-align: start; }
+  .redo__link:not(:last-child)::after { right: -20px; }
+  .redo__end { flex-direction: column; align-items: flex-start; margin-top: 14px; }
+}
+/* телефон: плашка «Відкрито!» не залазить під кнопку меню */
+@media (max-width: 760px) {
+  .bs:not(.bs--static) .bs__badge { top: 10%; right: 0; }
 }
