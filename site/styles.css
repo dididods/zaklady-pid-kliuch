@@ -2844,3 +2844,40 @@ html:not(.no-intro) { overflow: hidden; }
 @media (max-width: 760px) {
   .bs:not(.bs--static) .bs__badge { top: 10%; right: 0; }
 }
+
+/* ===== Калькулятор: формат закладу і темний зал, де світло показує площу ===== */
+.calc-fmt { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+.calc-fmt__opt { position: relative; cursor: pointer; }
+.calc-fmt__opt input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.calc-fmt__opt span {
+  display: block;
+  padding: 7px 12px;
+  border: 1px solid rgba(255, 241, 220, .2);
+  border-radius: 99px;
+  font-size: .8125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--text);
+  transition: background-color .2s, border-color .2s, color .2s;
+}
+.calc-fmt__opt:hover span { border-color: var(--hot); }
+.calc-fmt__opt input:checked + span { background: var(--hot); border-color: var(--hot); color: #1b1411; }
+.calc-fmt__opt input:focus-visible + span { outline: 2px solid var(--hot); outline-offset: 2px; }
+
+.calc-plan { margin-top: 14px; }
+.calc-plan__draw { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px rgba(255, 241, 220, .12), 0 14px 30px rgba(0, 0, 0, .35); }
+.calc-plan__tag { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 0 0 8px; }
+.calc-plan__fmt { font-size: .9375rem; font-weight: 700; color: var(--text-dim); }
+.calc-plan__m2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem); line-height: 1.1; color: var(--hot); }
+.hall__on { opacity: 0; transition: opacity .35s ease; }
+.hall__on.is-on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .hall__on { transition: none; } }
+.calc-plan__size { margin: 12px 0 18px; text-align: center; font-size: .9375rem; color: var(--text-dim); }
+.calc-plan__size b { color: var(--hot); font-weight: 700; }
+@media (max-width: 900px) {
+  .calc-fmt { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 10px; scrollbar-color: var(--accent) transparent; }
+  .calc-fmt__opt { flex: none; }
+}
+/* тарифи перейшли під чекліст: колонки калькулятора однакові за висотою */
+.calc__services .calc__tiers { margin-top: 18px; }

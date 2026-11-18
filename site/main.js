@@ -748,6 +748,7 @@
   var calc = document.querySelector('.calc');
   var range = document.getElementById('area');
   var svcCalc = calc ? Array.prototype.slice.call(calc.querySelectorAll('input[name="svc"]')) : [];
+  var calcFormatShow = function () {};   // показати формат на підносі калькулятора
   var quizApi = null;           // з'явиться нижче, коли квіз готовий
   var updateCalc = function () {};
   // підсумок калькулятора для коментаря в квізі: тільки відмічені послуги
@@ -797,8 +798,108 @@
     var wasPartial = false;
     var fmt = function (n) { return Math.round(n).toLocaleString('uk-UA').replace(/ |,/g, ' '); };
 
+    /* Світло в залі: масштаб завжди однаковий, росте лише освітлена площа */
+    var planDraw = calc.querySelector('.calc-plan__draw');
+    var planFmt = calc.querySelector('.calc-plan__fmt');
+    var planM2 = calc.querySelector('.calc-plan__m2');
+    var planArea = calc.querySelector('.calc-plan__area');
+    var planSide = calc.querySelector('.calc-plan__side');
+    var calcFmtInputs = Array.prototype.slice.call(calc.querySelectorAll('input[name="calc-format"]'));
+    /* Темний зал 15 × 10 м згори: меблі стоять на місцях, світло вмикається лише на обраній площі */
+    var hallItems = [];
+    var hallOff = '', hallOn = '';
+    var hallPx = function (m) { return +(m * 30).toFixed(1); };
+    var hallRect = function (x, y, w, h, r, attrs) {
+      return '<rect x="' + hallPx(x) + '" y="' + hallPx(y) + '" width="' + hallPx(w) + '" height="' + hallPx(h) + '" rx="' + r + '" ' + attrs + '/>';
+    };
+    var hallAdd = function (x0, x1, y1, off, on) {
+      hallItems.push({ x0: x0, x1: x1, y1: y1 });
+      hallOff += off;
+      hallOn += '<g class="hall__on">' + on + '</g>';
+    };
+    var hallDim = 'fill="none" stroke="#fff1dc" stroke-opacity=".13"';
+    var hallCol, hallRow, hallCx, hallCy;
+    // кухня і прилавок уздовж верхньої стіни
+    for (hallCol = -4.5; hallCol <= 4.5; hallCol++) {
+      hallCx = 7.5 + hallCol * 1.3;
+      hallAdd(hallCx - .55, hallCx + .55, 1.05,
+        hallRect(hallCx - .55, .2, 1.1, .8, 3, hallDim),
+        hallRect(hallCx - .55, .2, 1.1, .8, 3, 'fill="#d9dde0"') +
+          '<circle cx="' + hallPx(hallCx - .24) + '" cy="' + hallPx(.6) + '" r="5" fill="#5b6064"/>' +
+          '<circle cx="' + hallPx(hallCx + .24) + '" cy="' + hallPx(.6) + '" r="5" fill="#5b6064"/>');
+      hallAdd(hallCx - .65, hallCx + .65, 2,
+        hallRect(hallCx - .65, 1.55, 1.3, .42, 0, hallDim),
+        hallRect(hallCx - .65, 1.55, 1.3, .42, 0, 'fill="#e0a458"'));
+    }
+    // столи: кожен вмикається, лише коли вміщається цілком
+    var hallTable = function (cx, cy, attrChair, attrTop) {
+      return hallRect(cx - .17, cy - .76, .34, .24, 2, attrChair) + hallRect(cx - .17, cy + .52, .34, .24, 2, attrChair) +
+        hallRect(cx - .76, cy - .17, .24, .34, 2, attrChair) + hallRect(cx + .52, cy - .17, .24, .34, 2, attrChair) +
+        '<circle cx="' + hallPx(cx) + '" cy="' + hallPx(cy) + '" r="' + hallPx(.44) + '" ' + attrTop + '/>';
+    };
+    [3.3, 5.6, 7.9].forEach(function (rowY) {
+      [-6.3, -4.5, -2.7, -.9, .9, 2.7, 4.5, 6.3].forEach(function (colX) {
+        hallCx = 7.5 + colX;
+        hallCy = rowY;
+        hallAdd(hallCx - .78, hallCx + .78, hallCy + .78,
+          hallTable(hallCx, hallCy, hallDim, hallDim),
+          '<circle cx="' + hallPx(hallCx) + '" cy="' + hallPx(hallCy) + '" r="' + hallPx(1.5) + '" fill="url(#hallPool)"/>' +
+            hallTable(hallCx, hallCy, 'fill="#e3261c"', 'fill="#ffc861"') +
+            '<circle cx="' + hallPx(hallCx) + '" cy="' + hallPx(hallCy) + '" r="3.5" fill="#fff1dc"/>');
+      });
+    });
+    var hallRoomBox = 'x="0" y="0" width="450" height="300"';
+    planDraw.innerHTML =
+      '<defs>' +
+        '<clipPath id="hallBox"><rect width="450" height="300" rx="14"/></clipPath>' +
+        '<clipPath id="hallRoom"><rect class="hall__geo" ' + hallRoomBox + '/></clipPath>' +
+        '<radialGradient id="hallPool"><stop offset="0" stop-color="#ffd08a" stop-opacity=".5"/><stop offset="1" stop-color="#ffd08a" stop-opacity="0"/></radialGradient>' +
+        '<pattern id="hallWood" width="90" height="30" patternUnits="userSpaceOnUse"><rect width="90" height="30" fill="#83502a"/><path d="M0 .5H90M0 15.5H90M30 0V15M75 15V30" stroke="#5f3819" stroke-width="1"/></pattern>' +
+      '</defs>' +
+      '<g clip-path="url(#hallBox)">' +
+        '<rect width="450" height="300" fill="#120d0a"/>' + hallOff +
+        [72, 58, 45, 33, 22, 12].map(function (sw) {
+          return '<rect class="hall__geo" ' + hallRoomBox + ' fill="none" stroke="#ffa63d" stroke-opacity=".045" stroke-linejoin="round" stroke-width="' + sw + '"/>';
+        }).join('') +
+        '<g clip-path="url(#hallRoom)">' +
+          '<rect width="450" height="300" fill="url(#hallWood)"/>' +
+          '<rect width="450" height="66" fill="#57534e"/>' + hallOn +
+        '</g>' +
+        '<rect class="hall__geo" ' + hallRoomBox + ' fill="none" stroke="#ffc861" stroke-opacity=".75" stroke-width="1.5"/>' +
+      '</g>';
+    var hallGeo = Array.prototype.slice.call(planDraw.querySelectorAll('.hall__geo'));
+    var hallLit = Array.prototype.slice.call(planDraw.querySelectorAll('.hall__on'));
+    var planRender = function (v) {
+      var w = Math.sqrt(v * 1.5), d = v / w;
+      var x0 = (15 - w) / 2, x1 = x0 + w;
+      hallGeo.forEach(function (el) {
+        el.setAttribute('x', hallPx(x0));
+        el.setAttribute('width', hallPx(w));
+        el.setAttribute('height', hallPx(d));
+      });
+      hallItems.forEach(function (it, i) {
+        hallLit[i].classList.toggle('is-on', it.x0 >= x0 && it.x1 <= x1 && it.y1 <= d);
+      });
+      planM2.textContent = v + ' м²';
+      planArea.textContent = v + ' м²';
+      planSide.textContent = w.toFixed(1).replace('.', ',') + ' × ' + d.toFixed(1).replace('.', ',') + ' м';
+    };
+    calcFormatShow = function (value) {
+      var opt = calcFmtInputs.filter(function (r) { return r.value === value; })[0];
+      if (!opt) return;
+      opt.checked = true;
+      planFmt.textContent = value;
+    };
+    calcFmtInputs.forEach(function (r) {
+      r.addEventListener('change', function () {
+        calcFormatShow(r.value);
+        if (quizApi) quizApi.answer('format', r.value);
+      });
+    });
+
     updateCalc = function () {
       var v = +range.value;
+      planRender(v);
       var hit = prices.filter(function (p) { return v <= p[0]; })[0];
       out.textContent = (v > 80 ? 'понад 80' : v) + ' м²';
       curEl.hidden = !hit;
@@ -1143,9 +1244,14 @@
         quizApi.jump();
       });
     });
+    // обрали формат у заявці: той самий заклад стає на піднос у калькуляторі
+    quiz.querySelectorAll('input[name="format"]').forEach(function (r) {
+      r.addEventListener('change', function () { calcFormatShow(r.value); });
+    });
     // «Хочу такий заклад» з орбіти: формат уже обраний
     document.querySelector('.focus__cta').addEventListener('click', function (e) {
       quizApi.answer('format', e.currentTarget.dataset.format);
+      calcFormatShow(e.currentTarget.dataset.format);
       quizApi.jump();
       closeFocus();
     });
