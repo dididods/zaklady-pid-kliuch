@@ -2099,9 +2099,11 @@ html:not(.no-intro) { overflow: hidden; }
 .head-split .section__lead { margin: 0 0 .4em; max-width: 30em; font-size: clamp(.95rem, .9rem + .2vw, 1.05rem); line-height: 1.6; }
 .eyebrow {
   display: flex; align-items: center; gap: 12px; margin: 0 0 18px;
-  font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--ink-dim, var(--text-dim));
+  font-size: .8rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent);
 }
+.eyebrow::before { content: ""; flex: none; width: 40px; height: 2px; border-radius: 2px; background: currentColor; opacity: .7; }
+.section:not(.section--paper) .eyebrow { color: var(--hot); }
 .kw { position: relative; isolation: isolate; color: var(--accent); white-space: nowrap; }
 .kw::after {
   content: ""; position: absolute; z-index: -1; left: -3%; right: -3%; bottom: -.06em; height: .3em;
